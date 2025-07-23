@@ -1,8 +1,7 @@
 "use client";
 
-import { useActionState, useEffect } from 'react';
-import { useFormStatus } from 'react-dom';
-import { getWeatherDataByZip } from '@/app/actions';
+import { useState, useEffect } from 'react';
+import { getWeatherDataByZip, ForecastData } from '@/lib/weather';
 import { useToast } from "@/hooks/use-toast";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -11,35 +10,45 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Loader2, ThermometerSun } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 
-const initialState = {
-  data: null,
-  error: null,
-};
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button type="submit" disabled={pending} className="font-semibold">
-      {pending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-      Get Weather
-    </Button>
-  );
-}
-
 export default function Home() {
-  const [state, formAction] = useActionState(getWeatherDataByZip, initialState);
+  const [data, setData] = useState<ForecastData | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    if (state.error) {
+    if (error) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: state.error,
+        description: error,
       });
+      setError(null); // Reset error after showing toast
     }
-  }, [state, toast]);
+  }, [error, toast]);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+    setData(null);
+    setError(null);
+
+    const formData = new FormData(event.currentTarget);
+    const zipCode = formData.get('zipcode') as string;
+
+    try {
+      const weatherData = await getWeatherDataByZip(zipCode);
+      setData(weatherData);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4 sm:p-8 md:p-12 lg:p-24 bg-background font-body">
@@ -54,7 +63,7 @@ export default function Home() {
           Enter a US zip code to see the 24-hour temperature forecast.
         </p>
 
-        <form action={formAction} className="flex w-full max-w-sm mx-auto items-center space-x-2 mb-12">
+        <form onSubmit={handleSubmit} className="flex w-full max-w-sm mx-auto items-center space-x-2 mb-12">
           <Input 
             type="text" 
             name="zipcode" 
@@ -64,13 +73,24 @@ export default function Home() {
             maxLength={5}
             className="text-base"
           />
-          <SubmitButton />
+          <Button type="submit" disabled={loading} className="font-semibold">
+            {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+            Get Weather
+          </Button>
         </form>
 
         <div className="w-full">
-          {state.data ? (
-            <TemperatureChart data={state.data.forecast} location={state.data.location} />
-          ) : (
+          {loading && (
+            <Card className="w-full">
+              <CardContent className="flex flex-col items-center justify-center h-96">
+                <Loader2 className="w-24 h-24 text-primary animate-spin" />
+              </CardContent>
+            </Card>
+          )}
+          {data && !loading && (
+            <TemperatureChart data={data.forecast} location={data.location} />
+          )}
+          {!data && !loading && (
             <Card className="w-full animate-in fade-in-0 duration-500">
                 <CardHeader>
                     <CardTitle>Welcome!</CardTitle>
