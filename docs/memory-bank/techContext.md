@@ -2,7 +2,7 @@
 
 ## 1. Frontend Framework
 
-- **Next.js**: The project is built using Next.js, a React framework for building server-side rendered and statically generated web applications. This is indicated by the presence of `next.config.ts` and the `src/app` directory structure.
+- **Next.js**: The project is built using Next.js, a React framework for building server-side rendered and statically generated web applications. This is indicated by the presence of `next.config.mjs` and the `src/app` directory structure.
 - **React**: The core UI library.
 - **TypeScript**: The project uses TypeScript for static typing, as evidenced by `tsconfig.json` and `.tsx` file extensions.
 
