@@ -14,7 +14,6 @@
 ## 3. API and Data Fetching
 
 - **Open Meteo API**: The primary source for weather data.
-- **Genkit**: The `src/ai/genkit.ts` file suggests the use of Genkit for AI-related tasks, possibly for interacting with the weather API or other services.
 
 ## 4. Development Environment
 

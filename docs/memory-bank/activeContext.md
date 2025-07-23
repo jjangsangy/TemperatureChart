@@ -2,25 +2,23 @@
 
 ## 1. Current Focus
 
-The current focus is on establishing a comprehensive and accurate Memory Bank for the TemperatureChart project. This involves creating the initial set of core documentation files that capture the project's purpose, technology stack, and architecture.
+The current focus is on maintaining a clean and efficient codebase for the TemperatureChart project by removing unused components and dependencies.
 
 ## 2. Recent Changes
 
-- **Initialized Memory Bank**: Created the `docs/memory-bank` directory and the following core files:
-    - `projectbrief.md`
-    - `productContext.md`
-    - `techContext.md`
-    - `systemPatterns.md`
-- **Information Gathering**: Populated the initial Memory Bank files by analyzing the existing project structure and the `docs/blueprint.md` file.
+- **Removed Unused AI Features**: Deleted the `src/ai` directory and removed Genkit-related dependencies from `package.json`.
+- **Removed Unused UI Components**: Deleted numerous unused `shadcn/ui` components from `src/components/ui`.
+- **Removed Unused Hooks**: Deleted `src/hooks/use-mobile.tsx` and `src/hooks/use-toast.ts`.
+- **Fixed Import Errors**: Corrected import statements in `src/app/layout.tsx` and `src/app/page.tsx` after component removals.
+- **Updated Memory Bank**: Updated `techContext.md` and `systemPatterns.md` to reflect the removal of AI features.
 
 ## 3. Next Steps
 
-- Create the `progress.md` file to complete the initial Memory Bank setup.
-- Review the populated Memory Bank for accuracy and completeness.
+- Update `progress.md` to reflect the current status of the project after code cleanup.
 - Await further instructions from the user.
 
 ## 4. Key Decisions & Insights
 
-- The project is a well-structured Next.js application using modern tools like Tailwind CSS and Shadcn/UI.
-- The `blueprint.md` file provides a solid foundation for understanding the project's core requirements.
-- The Memory Bank will be the single source of truth for this project moving forward.
+- The project is now streamlined, focusing solely on its core functionality of displaying temperature data.
+- The removal of unused code improves maintainability and reduces bundle size.
+- The Memory Bank has been updated to accurately reflect the current state of the project.

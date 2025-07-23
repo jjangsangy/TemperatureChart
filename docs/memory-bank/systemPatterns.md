@@ -10,7 +10,6 @@ The application follows a component-based architecture, typical of Next.js/React
     - **`src/components/temperature-chart.tsx`**: A dedicated component for the main data visualization feature.
 - **`src/lib`**: For utility functions and external service integrations (e.g., `weather.ts`).
 - **`src/hooks`**: For custom React hooks.
-- **`src/ai`**: For AI-related logic, likely using Genkit.
 
 ## 2. Data Flow
 
