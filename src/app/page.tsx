@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getWeatherDataByZip, ForecastData } from '@/lib/weather';
 import { useToast } from "@/hooks/use-toast";
 import { Input } from '@/components/ui/input';
@@ -14,7 +14,27 @@ export default function Home() {
   const [data, setData] = useState<ForecastData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [zipCode, setZipCode] = useState<string>('');
   const { toast } = useToast();
+
+  const handleFetchWeather = useCallback(async (zip: string) => {
+    setLoading(true);
+    setData(null);
+    setError(null);
+    try {
+      const weatherData = await getWeatherDataByZip(zip);
+      setData(weatherData);
+      localStorage.setItem('lastZipCode', zip); // Save to localStorage on success
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (error) {
@@ -27,26 +47,18 @@ export default function Home() {
     }
   }, [error, toast]);
 
+  useEffect(() => {
+    const savedZipCode = localStorage.getItem('lastZipCode');
+    if (savedZipCode) {
+      setZipCode(savedZipCode);
+      handleFetchWeather(savedZipCode);
+    }
+  }, [handleFetchWeather]);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true);
-    setData(null);
-    setError(null);
-
-    const formData = new FormData(event.currentTarget);
-    const zipCode = formData.get('zipcode') as string;
-
-    try {
-      const weatherData = await getWeatherDataByZip(zipCode);
-      setData(weatherData);
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An unknown error occurred.");
-      }
-    } finally {
-      setLoading(false);
+    if (zipCode) {
+      handleFetchWeather(zipCode);
     }
   };
 
@@ -71,6 +83,8 @@ export default function Home() {
             required 
             pattern="\d{5}"
             maxLength={5}
+            value={zipCode}
+            onChange={(e) => setZipCode(e.target.value)}
             className="text-base"
           />
           <Button type="submit" disabled={loading} className="font-semibold">
@@ -90,7 +104,7 @@ export default function Home() {
           {data && !loading && (
             <TemperatureChart data={data.forecast} location={data.location} />
           )}
-          {!data && !loading && (
+          {!data && !loading && !zipCode && ( // Only show welcome card if no data and no zip code entered yet
             <Card className="w-full animate-in fade-in-0 duration-500">
                 <CardHeader>
                     <CardTitle>Welcome!</CardTitle>
