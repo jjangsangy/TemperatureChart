@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { getWeatherDataByZip, ForecastData } from '@/lib/weather';
-import { useToast } from "@/hooks/use-toast";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { TemperatureChart } from '@/components/temperature-chart';
@@ -15,7 +14,6 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [zipCode, setZipCode] = useState<string>('');
-  const { toast } = useToast();
 
   const handleFetchWeather = useCallback(async (zip: string) => {
     setLoading(true);
@@ -36,16 +34,6 @@ export default function Home() {
     }
   }, []);
 
-  useEffect(() => {
-    if (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error,
-      });
-      setError(null); // Reset error after showing toast
-    }
-  }, [error, toast]);
 
   useEffect(() => {
     const savedZipCode = localStorage.getItem('lastZipCode');
