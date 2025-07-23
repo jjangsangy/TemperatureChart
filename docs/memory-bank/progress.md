@@ -6,6 +6,7 @@
 - **UI Components**: Essential UI components from Shadcn/UI are available and integrated.
 - **Core Logic (Inferred)**: The foundational logic for fetching weather data and displaying the chart is likely in place or partially implemented.
 - **Codebase Cleanliness**: Unused AI features, UI components, and hooks have been successfully removed, and related import errors have been resolved.
+- **Dependency Optimization**: Unnecessary dependencies have been identified and removed, streamlining the project. `next-themes` and `lucide-react` were re-added as they are in use. `@radix-ui/react-dropdown-menu`, `@radix-ui/react-slot`, `class-variance-authority`, `recharts`, `tailwind-merge`, and `zod` were also re-added by the user, indicating their necessity.
 
 ## 2. What's Left to Build
 
