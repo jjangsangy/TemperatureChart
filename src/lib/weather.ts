@@ -13,6 +13,8 @@ export interface ForecastData {
         time: string;
         temperature: number;
     }[];
+    sunrise: string;
+    sunset: string;
 }
 
 export async function getWeatherDataByZip(zipCode: string, unit: 'fahrenheit' | 'celsius'): Promise<ForecastData> {
@@ -44,7 +46,7 @@ export async function getWeatherDataByZip(zipCode: string, unit: 'fahrenheit' | 
   const longitude = parseFloat(place.longitude);
   const location = `${place['place name']}, ${place['state abbreviation']}`;
 
-  const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&temperature_unit=${unit}&forecast_days=1&timezone=auto`;
+  const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&daily=sunrise,sunset&temperature_unit=${unit}&forecast_days=1&timezone=auto`;
   const weatherResponse = await fetch(weatherUrl);
    if (!weatherResponse.ok) {
       console.error("Weather API error:", weatherResponse.statusText);
@@ -52,11 +54,15 @@ export async function getWeatherDataByZip(zipCode: string, unit: 'fahrenheit' | 
   }
   const weatherData = await weatherResponse.json();
   const hourlyData = weatherData.hourly;
+  const dailyData = weatherData.daily;
 
   const forecast = hourlyData.time.map((t: string, index: number) => ({
     time: t,
     temperature: Math.round(hourlyData.temperature_2m[index]),
   }));
 
-  return { location, forecast };
+  const sunrise = dailyData.sunrise[0];
+  const sunset = dailyData.sunset[0];
+
+  return { location, forecast, sunrise, sunset };
 }

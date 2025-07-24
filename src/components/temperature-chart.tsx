@@ -26,6 +26,8 @@ interface TemperatureChartProps {
   data: Forecast[];
   location: string;
   unit: 'f' | 'c'; // 'f' for Fahrenheit, 'c' for Celsius
+  sunrise: string;
+  sunset: string;
 }
 
 const chartConfig = {
@@ -34,7 +36,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function TemperatureChart({ data, location, unit }: TemperatureChartProps) {
+export function TemperatureChart({ data, location, unit, sunrise, sunset }: TemperatureChartProps) {
     const [currentHour, setCurrentHour] = useState<number | null>(null);
     const [currentDay, setCurrentDay] = useState<string | null>(null);
 
@@ -43,14 +45,27 @@ export function TemperatureChart({ data, location, unit }: TemperatureChartProps
         setCurrentHour(now.getHours());
         setCurrentDay(now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }));
     }, []);
+
+    const sunriseHour = new Date(sunrise).getHours();
+    const sunsetHour = new Date(sunset).getHours();
     
     const mappedData = data.map(item => {
         const date = new Date(item.time);
         const hour = date.getHours();
+        
+        let fill = 'hsl(var(--primary))'; // Default fill color
+        if (hour === currentHour) {
+            fill = 'hsl(var(--accent))'; // Highlight current hour
+        } else if (hour < sunriseHour || hour >= sunsetHour) {
+            fill = 'hsl(var(--primary) / 0.5)'; // Dim for night
+        } else {
+            fill = 'hsl(var(--primary))'; // Bright for day
+        }
+
         return {
             hour: date.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true }).replace(' ', ''),
             temperature: Math.round(item.temperature), // Temperature is already in the correct unit from API
-            fill: hour === currentHour ? 'hsl(var(--accent))' : 'hsl(var(--primary))'
+            fill: fill
         };
     });
 

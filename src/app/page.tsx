@@ -120,7 +120,13 @@ export default function Home() {
             </Card>
           )}
           {data && !loading && (
-            <TemperatureChart data={data.forecast} location={data.location} unit={unit} />
+            <TemperatureChart 
+              data={data.forecast} 
+              location={data.location} 
+              unit={unit} 
+              sunrise={data.sunrise} 
+              sunset={data.sunset} 
+            />
           )}
           {!data && !loading && !zipCode && ( // Only show welcome card if no data and no zip code entered yet
             <Card className="w-full animate-in fade-in-0 duration-500">
