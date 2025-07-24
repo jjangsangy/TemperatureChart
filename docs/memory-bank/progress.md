@@ -35,6 +35,9 @@ The project has undergone significant cleanup and core functionality enhancement
     - `src/lib/weather.ts`: Updated `getWeatherDataByZip` to fetch `daily=sunrise,sunset` data.
     - `src/components/temperature-chart.tsx`: Modified to use `sunrise` and `sunset` props to determine day/night and adjust bar `fill` color accordingly (dim for night, bright for day, accent for current hour).
     - `src/app/page.tsx`: Updated to pass `sunrise` and `sunset` data from the API response to the `TemperatureChart` component.
+- **Footer Implementation**: Added a footer component with a link to the GitHub repository and author acknowledgment, including the current year.
+    - `src/components/footer.tsx`: Created a new component for the footer and added the current year.
+    - `src/app/page.tsx`: Integrated the `Footer` component into the main page.
 
 ## 4. Known Issues
 

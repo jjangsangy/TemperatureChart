@@ -18,6 +18,7 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **API Enhancement**: Modified `src/lib/weather.ts` to include `daily=sunrise,sunset` in the Open Meteo API call, fetching sunrise and sunset times.
 - **Chart Visualization Enhancement**: Updated `src/components/temperature-chart.tsx` to use the fetched sunrise and sunset data to visually distinguish between day and night hours by dimming the bar color for night and brightening it for day. The current hour highlighting remains.
 - **Data Flow Update**: Modified `src/app/page.tsx` to pass the new `sunrise` and `sunset` data to the `TemperatureChart` component.
+- **Added Footer Component**: Created `src/components/footer.tsx` and integrated it into `src/app/page.tsx` to display a link to the GitHub repository and author acknowledgment, including the current year.
 
 ## 3. Next Steps
 
