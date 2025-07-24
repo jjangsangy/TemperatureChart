@@ -21,6 +21,7 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **Data Flow Update**: Modified `src/app/page.tsx` to pass the new `sunrise`, `sunset`, and other daily metadata to the `TemperatureChart` and `Metadata` components.
 - **Added Footer Component**: Created `src/components/footer.tsx` and integrated it into `src/app/page.tsx` to display a link to the GitHub repository and author acknowledgment, including the current year.
 - **Dependency Added**: Installed `date-fns` for date and time formatting in the `Metadata` component.
+- **Tooltip Shading**: Removed `cursor={false}` from `ChartTooltip` in `src/components/temperature-chart.tsx` to enable hover-activated shading on the bar chart.
 
 ## 3. Next Steps
 
@@ -37,3 +38,4 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - The client-side conversion logic for temperature units in the chart component was removed as the API now provides the temperature in the correct unit, avoiding redundant conversions.
 - The temperature unit toggle button in `src/app/page.tsx` was refined to be smaller, use "°C" / "°F" symbols, and repositioned next to the theme toggle for better aesthetics.
 - **Visual Clarity**: The addition of day/night visual distinction in the chart significantly improves the readability and contextual understanding of the temperature forecast.
+- **Enhanced Interactivity**: Enabling the tooltip cursor provides a more interactive and informative user experience when hovering over chart elements.

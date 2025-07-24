@@ -104,7 +104,6 @@ export function TemperatureChart({ data, location, unit, sunrise, sunset }: Temp
                 ticks={yAxisTicks}
             />
             <ChartTooltip
-              cursor={false}
               content={<ChartTooltipContent 
                 formatter={(value, name, props) => (
                     <div className="flex flex-col">
