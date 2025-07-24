@@ -36,9 +36,12 @@ const chartConfig = {
 
 export function TemperatureChart({ data, location, unit }: TemperatureChartProps) {
     const [currentHour, setCurrentHour] = useState<number | null>(null);
+    const [currentDay, setCurrentDay] = useState<string | null>(null);
 
     useEffect(() => {
-        setCurrentHour(new Date().getHours());
+        const now = new Date();
+        setCurrentHour(now.getHours());
+        setCurrentDay(now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }));
     }, []);
     
     const mappedData = data.map(item => {
@@ -62,7 +65,7 @@ export function TemperatureChart({ data, location, unit }: TemperatureChartProps
   return (
     <Card className="w-full animate-in fade-in-0 duration-500 shadow-lg border-primary/20">
       <CardHeader>
-        <CardTitle>24-Hour Forecast</CardTitle>
+        <CardTitle>24-Hour Forecast for {currentDay}</CardTitle>
         <CardDescription>{location}</CardDescription>
       </CardHeader>
       <CardContent>
