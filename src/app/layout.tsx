@@ -3,7 +3,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
-  title: 'TemperatureChart',
+  title: 'Temperature Chart',
   description: 'Hourly temperature forecast by zip code.',
   icons: {
     icon: '/favicon.svg',
