@@ -5,6 +5,9 @@ import { ThemeProvider } from '@/components/theme-provider';
 export const metadata: Metadata = {
   title: 'TemperatureChart',
   description: 'Hourly temperature forecast by zip code.',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
@@ -18,7 +21,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </head>
       <body className="font-body antialiased" suppressHydrationWarning>
         <ThemeProvider
