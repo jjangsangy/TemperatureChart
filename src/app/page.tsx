@@ -16,13 +16,14 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [zipCode, setZipCode] = useState<string>('');
+
   // Initialize unit from localStorage directly
   const [unit, setUnit] = useState<'f' | 'c'>(() => {
-    if (typeof window !== 'undefined') { // Check if window is defined (client-side)
+    if (typeof window !== 'undefined') {
       const savedUnit = localStorage.getItem('temperatureUnit');
       return savedUnit === 'c' ? 'c' : 'f';
     }
-    return 'f'; // Default for server-side rendering or initial client render
+    return 'f';
   });
 
   // Save unit to localStorage whenever it changes
