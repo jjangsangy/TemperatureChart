@@ -2,7 +2,7 @@
 
 ## 1. Current Focus
 
-The current focus is on maintaining a clean and efficient codebase for the TemperatureChart project by removing unused components and dependencies.
+The current focus is on enhancing the temperature chart visualization by incorporating day/night indicators and maintaining a clean and efficient codebase.
 
 ## 2. Recent Changes
 
@@ -15,10 +15,12 @@ The current focus is on maintaining a clean and efficient codebase for the Tempe
 - **Fixed `tailwindcss-animate` reference**: Removed the `tailwindcss-animate` reference from `tailwind.config.ts` after uninstalling the package.
 - **Re-added `next-themes` and `lucide-react`**: These dependencies were found to be in use and were reinstalled to resolve module not found errors.
 - **User Re-added Dependencies**: The user re-added `@radix-ui/react-dropdown-menu`, `@radix-ui/react-slot`, `class-variance-authority`, `recharts`, `tailwind-merge`, and `zod`, indicating they are necessary.
+- **API Enhancement**: Modified `src/lib/weather.ts` to include `daily=sunrise,sunset` in the Open Meteo API call, fetching sunrise and sunset times.
+- **Chart Visualization Enhancement**: Updated `src/components/temperature-chart.tsx` to use the fetched sunrise and sunset data to visually distinguish between day and night hours by dimming the bar color for night and brightening it for day. The current hour highlighting remains.
+- **Data Flow Update**: Modified `src/app/page.tsx` to pass the new `sunrise` and `sunset` data to the `TemperatureChart` component.
 
 ## 3. Next Steps
 
-- Continue with the remaining tasks outlined in `progress.md`, focusing on UI implementation and API integration.
 - Await further instructions from the user.
 
 ## 4. Key Decisions & Insights
@@ -31,10 +33,4 @@ The current focus is on maintaining a clean and efficient codebase for the Tempe
 - Implemented a temperature unit toggle (Fahrenheit/Celsius) with `localStorage` persistence, enhancing user experience and customization.
 - The client-side conversion logic for temperature units in the chart component was removed as the API now provides the temperature in the correct unit, avoiding redundant conversions.
 - The temperature unit toggle button in `src/app/page.tsx` was refined to be smaller, use "°C" / "°F" symbols, and repositioned next to the theme toggle for better aesthetics.
-
-## 4. Key Decisions & Insights
-
-- The project is now streamlined, focusing solely on its core functionality of displaying temperature data.
-- The removal of unused code improves maintainability and reduces bundle size.
-- It's crucial to thoroughly verify dependency usage, as simple file searches might miss indirect or framework-level usages.
-- User feedback is paramount in determining necessary dependencies, especially for those not directly imported but used by the framework or other components.
+- **Visual Clarity**: The addition of day/night visual distinction in the chart significantly improves the readability and contextual understanding of the temperature forecast.

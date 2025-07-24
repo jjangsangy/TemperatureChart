@@ -7,18 +7,18 @@
 - **Core Logic (Inferred)**: The foundational logic for fetching weather data and displaying the chart is likely in place or partially implemented.
 - **Codebase Cleanliness**: Unused AI features, UI components, and hooks have been successfully removed, and related import errors have been resolved.
 - **Dependency Optimization**: Unnecessary dependencies have been identified and removed, streamlining the project. `next-themes` and `lucide-react` were re-added as they are in use. `@radix-ui/react-dropdown-menu`, `@radix-ui/react-slot`, `class-variance-authority`, `recharts`, `tailwind-merge`, and `zod` were also re-added by the user, indicating their necessity.
+- **API Enhancement**: The weather API call now includes sunrise and sunset data.
+- **Chart Visualization**: The temperature chart now visually distinguishes between day and night hours.
 
 ## 2. What's Left to Build
 
-- **Complete UI Implementation**: The main page needs to be fully assembled using the available components.
-- **API Integration**: The connection to the Open Meteo API needs to be implemented and tested.
-- **Data Handling**: The logic for processing the API response and passing it to the chart component needs to be finalized.
+- **Complete UI Implementation**: The main page needs to be fully assembled using the available components. (This is largely done, but keeping it here as a general placeholder for any remaining minor UI assembly).
 - **Error Handling**: Robust error handling and user notifications need to be implemented.
 - **Styling and Animations**: The final styling and animations need to be applied according to the guidelines.
 
 ## 3. Current Status
 
-The project has undergone a significant cleanup, removing unnecessary code and dependencies. The foundational structure is in place, and the codebase is now streamlined. The core functionality is not yet fully implemented, but the path forward is clearer. The immediate next step is to begin building out the UI and integrating the weather API.
+The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators. The immediate next steps involve refining error handling and ensuring all styling and animations are complete.
 
 ## 4. Known Issues
 
@@ -31,6 +31,10 @@ The project has undergone a significant cleanup, removing unnecessary code and d
     - `src/app/page.tsx`: Added `unit` state with `localStorage` integration, a UI toggle button, and updated `handleFetchWeather` to pass the selected unit.
     - `src/components/temperature-chart.tsx`: Updated to accept `unit` prop and dynamically update chart labels and tooltips. Removed redundant client-side F/C conversion as the API now provides the correct unit.
     - **UI Refinement**: Modified the temperature unit toggle button in `src/app/page.tsx` to be smaller, use "°C" / "°F" symbols, and be positioned next to the theme toggle.
+- **Day/Night Chart Visualization**: Implemented visual distinction for day and night in the temperature chart.
+    - `src/lib/weather.ts`: Updated `getWeatherDataByZip` to fetch `daily=sunrise,sunset` data.
+    - `src/components/temperature-chart.tsx`: Modified to use `sunrise` and `sunset` props to determine day/night and adjust bar `fill` color accordingly (dim for night, bright for day, accent for current hour).
+    - `src/app/page.tsx`: Updated to pass `sunrise` and `sunset` data from the API response to the `TemperatureChart` component.
 
 ## 4. Known Issues
 
