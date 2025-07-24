@@ -25,15 +25,16 @@ interface Forecast {
 interface TemperatureChartProps {
   data: Forecast[];
   location: string;
+  unit: 'f' | 'c'; // 'f' for Fahrenheit, 'c' for Celsius
 }
 
 const chartConfig = {
   temperature: {
-    label: "Temp. (°F)",
+    label: "Temperature",
   },
 } satisfies ChartConfig;
 
-export function TemperatureChart({ data, location }: TemperatureChartProps) {
+export function TemperatureChart({ data, location, unit }: TemperatureChartProps) {
     const [currentHour, setCurrentHour] = useState<number | null>(null);
 
     useEffect(() => {
@@ -45,15 +46,18 @@ export function TemperatureChart({ data, location }: TemperatureChartProps) {
         const hour = date.getHours();
         return {
             hour: date.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true }).replace(' ', ''),
-            temperature: item.temperature,
+            temperature: Math.round(item.temperature), // Temperature is already in the correct unit from API
             fill: hour === currentHour ? 'hsl(var(--accent))' : 'hsl(var(--primary))'
         };
     });
 
     const maxTemp = Math.max(...mappedData.map(d => d.temperature));
+    // Adjust top tick calculation for Celsius if needed, or keep it dynamic
     const topTick = Math.ceil((maxTemp + 10) / 10) * 10;
     const yAxisTicks = Array.from({ length: Math.floor(topTick / 10) + 1 }, (_, i) => i * 10);
     const chartData = mappedData;
+
+    const unitSymbol = unit === 'f' ? '°F' : '°C';
 
   return (
     <Card className="w-full animate-in fade-in-0 duration-500 shadow-lg border-primary/20">
@@ -77,7 +81,7 @@ export function TemperatureChart({ data, location }: TemperatureChartProps) {
                 tickLine={false}
                 axisLine={false}
                 tickMargin={10}
-                tickFormatter={(value) => `${value}°`}
+                tickFormatter={(value) => `${value}${unitSymbol}`}
                 domain={[0, yAxisTicks[yAxisTicks.length - 1]]}
                 ticks={yAxisTicks}
             />
@@ -87,7 +91,7 @@ export function TemperatureChart({ data, location }: TemperatureChartProps) {
                 formatter={(value, name, props) => (
                     <div className="flex flex-col">
                         <span className="font-semibold">{props.payload.hour}</span>
-                        <span className="text-muted-foreground">{`${value}°F`}</span>
+                        <span className="text-muted-foreground">{`${value}${unitSymbol}`}</span>
                     </div>
                 )}
                 indicator="dot"

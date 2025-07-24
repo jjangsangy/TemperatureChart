@@ -14,13 +14,30 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [zipCode, setZipCode] = useState<string>('');
+  const [unit, setUnit] = useState<'f' | 'c'>('f'); // 'f' for Fahrenheit, 'c' for Celsius
 
-  const handleFetchWeather = useCallback(async (zip: string) => {
+  // Load unit from localStorage on mount
+  useEffect(() => {
+    const savedUnit = localStorage.getItem('temperatureUnit');
+    if (savedUnit === 'c') {
+      setUnit('c');
+    } else {
+      setUnit('f');
+    }
+  }, []);
+
+  // Save unit to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('temperatureUnit', unit);
+  }, [unit]);
+
+  const handleFetchWeather = useCallback(async (zip: string, currentUnit: 'f' | 'c') => {
     setLoading(true);
     setData(null);
     setError(null);
     try {
-      const weatherData = await getWeatherDataByZip(zip);
+      const apiUnit = currentUnit === 'f' ? 'fahrenheit' : 'celsius';
+      const weatherData = await getWeatherDataByZip(zip, apiUnit);
       setData(weatherData);
       localStorage.setItem('lastZipCode', zip); // Save to localStorage on success
     } catch (err) {
@@ -39,20 +56,33 @@ export default function Home() {
     const savedZipCode = localStorage.getItem('lastZipCode');
     if (savedZipCode) {
       setZipCode(savedZipCode);
-      handleFetchWeather(savedZipCode);
+      // Use the current unit state when fetching data on mount
+      handleFetchWeather(savedZipCode, unit); 
     }
-  }, [handleFetchWeather]);
+  }, [handleFetchWeather, unit]); // Add unit to dependency array
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (zipCode) {
-      handleFetchWeather(zipCode);
+      handleFetchWeather(zipCode, unit);
     }
+  };
+
+  const handleUnitToggle = () => {
+    setUnit(prevUnit => (prevUnit === 'f' ? 'c' : 'f'));
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4 sm:p-8 md:p-12 lg:p-24 bg-background font-body">
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-4 right-4 flex items-center space-x-2">
+        <Button 
+            variant="ghost" 
+            onClick={handleUnitToggle} 
+            disabled={loading}
+            className="text-lg px-2 py-1 h-auto" // Adjust padding and height for smaller button
+        >
+            {unit === 'f' ? '°C' : '°F'}
+        </Button>
         <ThemeToggle />
       </div>
       <div className="z-10 w-full max-w-7xl items-center justify-center text-center">
@@ -90,7 +120,7 @@ export default function Home() {
             </Card>
           )}
           {data && !loading && (
-            <TemperatureChart data={data.forecast} location={data.location} />
+            <TemperatureChart data={data.forecast} location={data.location} unit={unit} />
           )}
           {!data && !loading && !zipCode && ( // Only show welcome card if no data and no zip code entered yet
             <Card className="w-full animate-in fade-in-0 duration-500">

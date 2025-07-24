@@ -18,7 +18,7 @@ The current focus is on maintaining a clean and efficient codebase for the Tempe
 
 ## 3. Next Steps
 
-- Update `progress.md` to reflect the current status of the project after code cleanup.
+- Continue with the remaining tasks outlined in `progress.md`, focusing on UI implementation and API integration.
 - Await further instructions from the user.
 
 ## 4. Key Decisions & Insights
@@ -26,5 +26,15 @@ The current focus is on maintaining a clean and efficient codebase for the Tempe
 - The project is now streamlined, focusing solely on its core functionality of displaying temperature data.
 - The removal of unused code improves maintainability and reduces bundle size.
 - The Memory Bank has been updated to accurately reflect the current state of the project.
+- It's crucial to thoroughly verify dependency usage, as simple file searches might miss indirect or framework-level usages.
+- User feedback is paramount in determining necessary dependencies, especially for those not directly imported but used by the framework or other components.
+- Implemented a temperature unit toggle (Fahrenheit/Celsius) with `localStorage` persistence, enhancing user experience and customization.
+- The client-side conversion logic for temperature units in the chart component was removed as the API now provides the temperature in the correct unit, avoiding redundant conversions.
+- The temperature unit toggle button in `src/app/page.tsx` was refined to be smaller, use "°C" / "°F" symbols, and repositioned next to the theme toggle for better aesthetics.
+
+## 4. Key Decisions & Insights
+
+- The project is now streamlined, focusing solely on its core functionality of displaying temperature data.
+- The removal of unused code improves maintainability and reduces bundle size.
 - It's crucial to thoroughly verify dependency usage, as simple file searches might miss indirect or framework-level usages.
 - User feedback is paramount in determining necessary dependencies, especially for those not directly imported but used by the framework or other components.

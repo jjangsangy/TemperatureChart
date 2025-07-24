@@ -23,3 +23,15 @@ The project has undergone a significant cleanup, removing unnecessary code and d
 ## 4. Known Issues
 
 - None at this time.
+
+## 5. Completed Tasks
+
+- **Temperature Unit Toggle**: Implemented a toggle for Fahrenheit/Celsius conversion with `localStorage` persistence.
+    - `src/lib/weather.ts`: Modified `getWeatherDataByZip` to accept a `unit` parameter for API calls.
+    - `src/app/page.tsx`: Added `unit` state with `localStorage` integration, a UI toggle button, and updated `handleFetchWeather` to pass the selected unit.
+    - `src/components/temperature-chart.tsx`: Updated to accept `unit` prop and dynamically update chart labels and tooltips. Removed redundant client-side F/C conversion as the API now provides the correct unit.
+    - **UI Refinement**: Modified the temperature unit toggle button in `src/app/page.tsx` to be smaller, use "°C" / "°F" symbols, and be positioned next to the theme toggle.
+
+## 4. Known Issues
+
+- None at this time.
