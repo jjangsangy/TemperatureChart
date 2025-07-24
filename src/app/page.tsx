@@ -5,6 +5,7 @@ import { getWeatherDataByZip, ForecastData } from '@/lib/weather';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { TemperatureChart } from '@/components/temperature-chart';
+import { Metadata } from '@/components/metadata'; // Import the new Metadata component
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, ThermometerSun } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -15,17 +16,14 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [zipCode, setZipCode] = useState<string>('');
-  const [unit, setUnit] = useState<'f' | 'c'>('f'); // 'f' for Fahrenheit, 'c' for Celsius
-
-  // Load unit from localStorage on mount
-  useEffect(() => {
-    const savedUnit = localStorage.getItem('temperatureUnit');
-    if (savedUnit === 'c') {
-      setUnit('c');
-    } else {
-      setUnit('f');
+  // Initialize unit from localStorage directly
+  const [unit, setUnit] = useState<'f' | 'c'>(() => {
+    if (typeof window !== 'undefined') { // Check if window is defined (client-side)
+      const savedUnit = localStorage.getItem('temperatureUnit');
+      return savedUnit === 'c' ? 'c' : 'f';
     }
-  }, []);
+    return 'f'; // Default for server-side rendering or initial client render
+  });
 
   // Save unit to localStorage whenever it changes
   useEffect(() => {
@@ -113,25 +111,36 @@ export default function Home() {
             </Button>
           </form>
 
-          <div className="w-full">
+          <div> {/* Removed w-full from this div */}
             {loading && (
-              <Card className="w-full">
+              <Card className="w-full mx-auto"> {/* Removed max-w-md */}
                 <CardContent className="flex flex-col items-center justify-center h-96">
                   <Loader2 className="w-24 h-24 text-primary animate-spin" />
                 </CardContent>
               </Card>
             )}
             {data && !loading && (
-              <TemperatureChart 
-                data={data.forecast} 
-                location={data.location} 
-                unit={unit} 
-                sunrise={data.sunrise} 
-                sunset={data.sunset} 
-              />
+              <>
+                <TemperatureChart 
+                  data={data.forecast} 
+                  location={data.location} 
+                  unit={unit} 
+                  sunrise={data.sunrise} 
+                  sunset={data.sunset} 
+                />
+                <Metadata
+                  temperatureMax={data.temperatureMax}
+                  temperatureMin={data.temperatureMin}
+                  sunrise={data.sunrise}
+                  sunset={data.sunset}
+                  precipitationProbabilityMax={data.precipitationProbabilityMax}
+                  daylightDuration={data.daylightDuration}
+                  unit={unit === 'f' ? 'fahrenheit' : 'celsius'}
+                />
+              </>
             )}
             {!data && !loading && !zipCode && ( // Only show welcome card if no data and no zip code entered yet
-              <Card className="w-full animate-in fade-in-0 duration-500">
+              <Card className="w-full mx-auto animate-in fade-in-0 duration-500"> {/* Removed max-w-md */}
                   <CardHeader>
                       <CardTitle>Welcome!</CardTitle>
                       <CardDescription>Your 24-hour forecast will appear here.</CardDescription>

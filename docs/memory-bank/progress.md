@@ -38,6 +38,11 @@ The project has undergone significant cleanup and core functionality enhancement
 - **Footer Implementation**: Added a footer component with a link to the GitHub repository and author acknowledgment, including the current year.
     - `src/components/footer.tsx`: Created a new component for the footer and added the current year.
     - `src/app/page.tsx`: Integrated the `Footer` component into the main page.
+- **Metadata Component**: Added a new component to display daily weather metadata.
+    - `src/lib/weather.ts`: Modified `getWeatherDataByZip` to fetch `temperature_2m_max`, `temperature_2m_min`, `precipitation_probability_max`, and `daylight_duration`.
+    - `src/components/metadata.tsx`: Created a new component to display these daily metadata points.
+    - `src/app/page.tsx`: Integrated the `Metadata` component between the zip code input and the temperature chart, passing the new data.
+    - **Dependency Added**: Installed `date-fns` for date and time formatting.
 
 ## 4. Known Issues
 

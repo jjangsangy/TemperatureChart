@@ -78,7 +78,7 @@ export function TemperatureChart({ data, location, unit, sunrise, sunset }: Temp
     const unitSymbol = unit === 'f' ? '°F' : '°C';
 
   return (
-    <Card className="w-full animate-in fade-in-0 duration-500 shadow-lg border-primary/20">
+    <Card className="w-full mb-4 animate-in fade-in-0 duration-500 shadow-lg border-primary/20">
       <CardHeader>
         <CardTitle>24-Hour Forecast for {currentDay}</CardTitle>
         <CardDescription>{location}</CardDescription>

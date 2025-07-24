@@ -15,10 +15,12 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **Fixed `tailwindcss-animate` reference**: Removed the `tailwindcss-animate` reference from `tailwind.config.ts` after uninstalling the package.
 - **Re-added `next-themes` and `lucide-react`**: These dependencies were found to be in use and were reinstalled to resolve module not found errors.
 - **User Re-added Dependencies**: The user re-added `@radix-ui/react-dropdown-menu`, `@radix-ui/react-slot`, `class-variance-authority`, `recharts`, `tailwind-merge`, and `zod`, indicating they are necessary.
-- **API Enhancement**: Modified `src/lib/weather.ts` to include `daily=sunrise,sunset` in the Open Meteo API call, fetching sunrise and sunset times.
+- **API Enhancement**: Modified `src/lib/weather.ts` to include `daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration` in the Open Meteo API call, fetching additional daily metadata.
+- **New Component Added**: Created `src/components/metadata.tsx` to display daily weather metadata.
 - **Chart Visualization Enhancement**: Updated `src/components/temperature-chart.tsx` to use the fetched sunrise and sunset data to visually distinguish between day and night hours by dimming the bar color for night and brightening it for day. The current hour highlighting remains.
-- **Data Flow Update**: Modified `src/app/page.tsx` to pass the new `sunrise` and `sunset` data to the `TemperatureChart` component.
+- **Data Flow Update**: Modified `src/app/page.tsx` to pass the new `sunrise`, `sunset`, and other daily metadata to the `TemperatureChart` and `Metadata` components.
 - **Added Footer Component**: Created `src/components/footer.tsx` and integrated it into `src/app/page.tsx` to display a link to the GitHub repository and author acknowledgment, including the current year.
+- **Dependency Added**: Installed `date-fns` for date and time formatting in the `Metadata` component.
 
 ## 3. Next Steps
 
