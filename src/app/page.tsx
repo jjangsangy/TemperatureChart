@@ -21,7 +21,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [zipCode, setZipCode] = useState<string>('');
-  const [date, setDate] = useState<Date | undefined>(new Date()); // New state for selected date
+  const [date, setDate] = useState<Date>(new Date());
 
   const [unit, setUnit] = useState<'f' | 'c'>('f');
 
@@ -180,7 +180,7 @@ export default function Home() {
                 <Calendar
                   mode="single"
                   selected={date}
-                  onSelect={setDate}
+                  onSelect={(selectedDay) => setDate(selectedDay || new Date())} // Ensure date is always defined
                   initialFocus
                 />
               </PopoverContent>
@@ -204,6 +204,7 @@ export default function Home() {
                   sunrise={data.sunrise} 
                   sunset={data.sunset}
                   timeFormat={timeFormat}
+                  selectedDate={date}
                 />
                 <Metadata
                   temperatureMax={data.temperatureMax}

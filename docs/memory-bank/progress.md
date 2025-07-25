@@ -19,6 +19,7 @@
 - **Daily Overview Layout**: Adjusted the `Metadata` component (`src/components/metadata.tsx`) to display daily overview items in a 2-column grid on mobile, improving layout and readability.
 - **Type and Test Issues Fixed**: All type errors and test failures in `src/lib/weather.test.ts` have been resolved by updating `getWeatherDataByZip` calls with the `date` argument and correcting the mock API URL assertion.
 - **Missing Dependency Type Errors Fixed**: Installed `react-day-picker` and `@radix-ui/react-popover` to resolve "Cannot find module" and "implicitly has an 'any' type" errors in `src/components/ui/calendar.tsx` and `src/components/ui/popover.tsx`.
+- **Current Hour Highlighting**: The bar corresponding to the current hour is highlighted, but now only when the selected day is the current day.
 
 ## 2. What's Left to Build
 

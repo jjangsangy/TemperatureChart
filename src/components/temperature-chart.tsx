@@ -33,6 +33,7 @@ interface TemperatureChartProps {
   sunrise: string;
   sunset: string;
   timeFormat: 'ampm' | 'military';
+  selectedDate: Date;
 }
 
 const chartConfig = {
@@ -85,15 +86,23 @@ function formatTime(dateString: string, format: 'ampm' | 'military'): string {
     }
 }
 
-export function TemperatureChart({ data, location, unit, sunrise, sunset, timeFormat }: TemperatureChartProps) {
+export function TemperatureChart({ data, location, unit, sunrise, sunset, timeFormat, selectedDate }: TemperatureChartProps) {
     const [currentHour, setCurrentHour] = useState<number | null>(null);
     const [currentDay, setCurrentDay] = useState<string | null>(null);
+    const [isCurrentDay, setIsCurrentDay] = useState<boolean>(false);
 
     useEffect(() => {
         const now = new Date();
         setCurrentHour(now.getHours());
         setCurrentDay(now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }));
-    }, []);
+
+        const today = new Date();
+        setIsCurrentDay(
+            selectedDate.getDate() === today.getDate() &&
+            selectedDate.getMonth() === today.getMonth() &&
+            selectedDate.getFullYear() === today.getFullYear()
+        );
+    }, [selectedDate]);
 
     const sunriseHour = new Date(sunrise).getHours();
     const sunsetHour = new Date(sunset).getHours();
@@ -103,8 +112,8 @@ export function TemperatureChart({ data, location, unit, sunrise, sunset, timeFo
         const hour = date.getHours();
         
         let fill = 'hsl(var(--primary))'; // Default fill color
-        if (hour === currentHour) {
-            fill = 'hsl(var(--accent))'; // Highlight current hour
+        if (hour === currentHour && isCurrentDay) {
+            fill = 'hsl(var(--accent))'; // Highlight current hour only if it's the current day
         } else if (hour < sunriseHour || hour >= sunsetHour) {
             fill = 'hsl(var(--primary) / 0.5)'; // Dim for night
         } else {
