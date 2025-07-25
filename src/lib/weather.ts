@@ -2,11 +2,6 @@ import { z } from 'zod';
 
 const zipCodeSchema = z.string().regex(/^\d{5}$/, { message: "Invalid ZIP code format." });
 
-interface GeocodeResult {
-  place_name: string;
-  center: [number, number]; // [longitude, latitude]
-}
-
 export interface ForecastData {
     location: string;
     forecast: {

@@ -10,8 +10,6 @@ The application follows a component-based architecture, typical of Next.js/React
     - **`src/components/temperature-chart.tsx`**: A dedicated component for the main data visualization feature.
 - **`src/components/metadata.tsx`**: A new component for displaying daily weather metadata.
 - **`src/lib`**: For utility functions and external service integrations (e.g., `weather.ts`).
-- **`src/hooks`**: For custom React hooks.
-
 ## 2. Data Flow
 
 1.  **User Input**: The user enters a zip code in a component likely located in `src/app/page.tsx`.
@@ -26,4 +24,3 @@ The application follows a component-based architecture, typical of Next.js/React
 
 - **Component-Based UI**: The UI is broken down into smaller, reusable components, promoting modularity and maintainability.
 - **Provider Pattern**: The `theme-provider.tsx` suggests the use of the Provider pattern for managing global state like themes.
-- **Custom Hooks**: The `src/hooks` directory indicates the use of custom hooks to encapsulate and reuse stateful logic.
