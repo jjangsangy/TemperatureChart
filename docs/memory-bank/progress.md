@@ -16,6 +16,7 @@
 - **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
 - **Responsive Header Layout**: The header is now fully responsive, with toggle buttons positioned inline with the main title on larger screens for a cleaner UI. The breakpoint for rearrangement has been adjusted to `lg` for better tablet responsiveness.
 - **Responsive Text Sizes**: Implemented responsive text size adjustments across `src/app/page.tsx`, `src/components/temperature-chart.tsx`, and `src/components/metadata.tsx` to ensure optimal readability on mobile devices while maintaining aesthetics on larger screens.
+- **Daily Overview Layout**: Adjusted the `Metadata` component (`src/components/metadata.tsx`) to display daily overview items in a 2-column grid on mobile, improving layout and readability.
 
 ## 2. What's Left to Build
 

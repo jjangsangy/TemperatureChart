@@ -37,7 +37,7 @@ export function Metadata({
       <CardHeader>
         <CardTitle className="text-base sm:text-lg">Daily Overview</CardTitle>
       </CardHeader>
-      <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+      <CardContent className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         <div className="flex items-center space-x-2 text-xs sm:text-sm">
           <Thermometer data-testid="max-temp-icon" className="h-4 w-4 text-muted-foreground" />
           <span>Max Temp: {Math.round(temperatureMax)}°{unit === 'fahrenheit' ? 'F' : 'C'}</span>
