@@ -123,7 +123,7 @@ export default function Home() {
             </h1>
             <div className="flex items-center space-x-2 justify-center lg:absolute lg:right-0 lg:top-0">
                 <Button 
-                    variant="ghost" 
+                    variant="outline" 
                     onClick={handleUnitToggle} 
                     disabled={loading}
                     className="text-lg px-2 py-1 h-auto"
@@ -131,7 +131,7 @@ export default function Home() {
                     {unit === 'f' ? '°C' : '°F'}
                 </Button>
                 <Button 
-                    variant="ghost" 
+                    variant="outline" 
                     onClick={handleTimeFormatToggle} 
                     disabled={loading}
                     className="text-lg px-2 py-1 h-auto"
