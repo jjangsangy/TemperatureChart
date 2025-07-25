@@ -16,7 +16,7 @@ interface Payload<V extends ValueType, N extends NameType> {
   color?: string;
   fill?: string;
   stroke?: string;
-  payload: any; // This will typically be the original data object
+  payload: any;
 }
 
 // Format: { THEME_NAME: CSS_SELECTOR }

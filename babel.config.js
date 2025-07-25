@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
     experimental: {
         forceSwcTransforms: true,
     },
@@ -7,3 +7,5 @@ module.exports = {
         ["babel-plugin-react-compiler", {}]
     ],
 };
+
+export default config; 

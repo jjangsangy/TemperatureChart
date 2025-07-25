@@ -3,30 +3,58 @@ import { render, screen } from '@testing-library/react';
 import { TemperatureChart } from './temperature-chart';
 
 // Mock recharts components to simplify testing and avoid complex SVG rendering issues
-jest.mock('recharts', () => ({
-  BarChart: ({ children, data }: { children: React.ReactNode; data: any[] }) => (
-    <div data-testid="bar-chart">
-      {data.map((_, i) => (
-        <div key={i} data-testid="bar" />
-      ))}
-      {children}
-    </div>
-  ),
-  Bar: () => null, // Render null as BarChart mock handles rendering the bars
-  XAxis: () => <div data-testid="x-axis" />,
-  YAxis: () => <div data-testid="y-axis" />,
-  CartesianGrid: () => <div data-testid="cartesian-grid" />,
-  Tooltip: () => <div data-testid="tooltip" />,
-  ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="responsive-container">{children}</div>
-  ),
-}));
+jest.mock('recharts', () => {
+  interface MockData {
+    time: string;
+    temperature: number;
+    relativeHumidity: number;
+    apparentTemperature: number;
+    precipitationProbability: number;
+    weatherCode: number;
+  }
+
+  return {
+    BarChart: ({ children, data }: { children: React.ReactNode; data: MockData[] }) => (
+      <div data-testid="bar-chart">
+        {data.map((_, i) => (
+          <div key={i} data-testid="bar" />
+        ))}
+        {children}
+      </div>
+    ),
+    Bar: () => null, // Render null as BarChart mock handles rendering the bars
+    XAxis: () => <div data-testid="x-axis" />,
+    YAxis: () => <div data-testid="y-axis" />,
+    CartesianGrid: () => <div data-testid="cartesian-grid" />,
+    Tooltip: () => <div data-testid="tooltip" />,
+    ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
+      <div data-testid="responsive-container">{children}</div>
+    ),
+  };
+});
 
 // Mock ChartTooltip and ChartTooltipContent from @/components/ui/chart
 jest.mock('@/components/ui/chart', () => ({
   ChartContainer: ({ children }: { children: React.ReactNode }) => <div data-testid="chart-container">{children}</div>,
   ChartTooltip: ({ content }: { content: React.ReactNode }) => <div data-testid="chart-tooltip">{content}</div>,
-  ChartTooltipContent: ({ formatter }: { formatter: any }) => (
+  ChartTooltipContent: ({
+    formatter,
+  }: {
+    formatter: (
+      value: number,
+      name: string,
+      props: {
+        payload: {
+          hour: string;
+          temperature: number;
+          relativeHumidity: number;
+          apparentTemperature: number;
+          precipitationProbability: number;
+          weatherCode: number;
+        };
+      },
+    ) => React.ReactNode;
+  }) => (
     <div data-testid="chart-tooltip-content">
       {formatter &&
         formatter(20, 'temperature', {

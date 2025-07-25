@@ -18,7 +18,6 @@ import { cn } from '@/lib/utils';
 export default function Home() {
   const [data, setData] = useState<ForecastData | null>(null);
   const [celsiusData, setCelsiusData] = useState<ForecastData | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [zipCode, setZipCode] = useState<string>('');
   const [date, setDate] = useState<Date>(new Date());
@@ -54,17 +53,13 @@ export default function Home() {
     setLoading(true);
     setData(null);
     setCelsiusData(null);
-    setError(null);
     try {
       const weatherData = await getWeatherDataByZip(zip, selectedDate); // Pass selectedDate
       setCelsiusData(weatherData);
       localStorage.setItem('lastZipCode', zip);
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('An unknown error occurred.');
-      }
+      // Error is not currently displayed to the user, so we just log it.
+      console.error('Error fetching weather data:', err);
     } finally {
       setLoading(false);
     }
