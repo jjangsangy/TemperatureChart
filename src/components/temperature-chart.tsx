@@ -147,6 +147,11 @@ export function TemperatureChart({ data, location, unit, sunrise, sunset }: Temp
             />
             <ChartTooltip
               content={<ChartTooltipContent 
+                labelFormatter={(value) => (
+                    <div className="text-lg font-bold text-foreground">
+                        {value}
+                    </div>
+                )}
                 formatter={(value, name, props) => (
                     <div className="flex flex-col text-sm p-2">
                         <div className="flex items-center space-x-2 mb-1">
