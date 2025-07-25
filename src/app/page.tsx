@@ -13,18 +13,21 @@ import { Footer } from '@/components/footer';
 
 export default function Home() {
   const [data, setData] = useState<ForecastData | null>(null);
+  const [celsiusData, setCelsiusData] = useState<ForecastData | null>(null); // Store original Celsius data
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [zipCode, setZipCode] = useState<string>('');
 
-  // Initialize unit from localStorage directly
-  const [unit, setUnit] = useState<'f' | 'c'>(() => {
+  // Initialize unit with a default value, then update from localStorage on mount
+  const [unit, setUnit] = useState<'f' | 'c'>('f');
+
+  // Save unit to localStorage whenever it changes
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedUnit = localStorage.getItem('temperatureUnit');
-      return savedUnit === 'c' ? 'c' : 'f';
+      setUnit(savedUnit === 'c' ? 'c' : 'f');
     }
-    return 'f';
-  });
+  }, []); // Run once on mount
 
   const [timeFormat, setTimeFormat] = useState<'ampm' | 'military'>(() => {
     if (typeof window !== 'undefined') {
@@ -36,7 +39,9 @@ export default function Home() {
 
   // Save unit to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('temperatureUnit', unit);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('temperatureUnit', unit);
+    }
   }, [unit]);
 
   // Save timeFormat to localStorage whenever it changes
@@ -44,14 +49,14 @@ export default function Home() {
     localStorage.setItem('timeFormat', timeFormat);
   }, [timeFormat]);
 
-  const handleFetchWeather = useCallback(async (zip: string, currentUnit: 'f' | 'c') => {
+  const handleFetchWeather = useCallback(async (zip: string) => {
     setLoading(true);
     setData(null);
+    setCelsiusData(null); // Clear Celsius data on new fetch
     setError(null);
     try {
-      const apiUnit = currentUnit === 'f' ? 'fahrenheit' : 'celsius';
-      const weatherData = await getWeatherDataByZip(zip, apiUnit);
-      setData(weatherData);
+      const weatherData = await getWeatherDataByZip(zip); // Fetch in Celsius
+      setCelsiusData(weatherData);
       localStorage.setItem('lastZipCode', zip); // Save to localStorage on success
     } catch (err) {
       if (err instanceof Error) {
@@ -64,22 +69,42 @@ export default function Home() {
     }
   }, []);
 
-
   useEffect(() => {
     const savedZipCode = localStorage.getItem('lastZipCode');
     if (savedZipCode) {
       setZipCode(savedZipCode);
-      // Use the current unit state when fetching data on mount
-      handleFetchWeather(savedZipCode, unit); 
+      handleFetchWeather(savedZipCode); 
     }
-  }, [handleFetchWeather, unit]); // Add unit to dependency array
+  }, [handleFetchWeather]); // Removed unit from dependency array
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (zipCode) {
-      handleFetchWeather(zipCode, unit);
+      handleFetchWeather(zipCode);
     }
   };
+
+  // Effect to convert Celsius data to Fahrenheit when unit changes
+  useEffect(() => {
+    if (celsiusData) {
+      if (unit === 'f') {
+        const fahrenheitForecast = celsiusData.forecast.map(item => ({
+          ...item,
+          temperature: Math.round((item.temperature * 9/5) + 32),
+          apparentTemperature: Math.round((item.apparentTemperature * 9/5) + 32),
+        }));
+        setData({
+          ...celsiusData,
+          forecast: fahrenheitForecast,
+          temperatureMax: Math.round((celsiusData.temperatureMax * 9/5) + 32),
+          temperatureMin: Math.round((celsiusData.temperatureMin * 9/5) + 32),
+        });
+      } else {
+        // If unit is Celsius, just use the original celsiusData
+        setData(celsiusData);
+      }
+    }
+  }, [celsiusData, unit]);
 
   const handleUnitToggle = () => {
     setUnit(prevUnit => (prevUnit === 'f' ? 'c' : 'f'));
@@ -162,7 +187,7 @@ export default function Home() {
                   sunset={data.sunset}
                   precipitationProbabilityMax={data.precipitationProbabilityMax}
                   daylightDuration={data.daylightDuration}
-                  unit={unit === 'f' ? 'fahrenheit' : 'celsius'}
+                  unit={unit === 'f' ? 'fahrenheit' : 'celsius'} // This will be handled by the component
                 />
               </>
             )}

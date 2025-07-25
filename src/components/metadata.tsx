@@ -21,6 +21,7 @@ export function Metadata({
   daylightDuration,
   unit,
 }: MetadataProps) {
+
   const formatTime = (isoString: string) => {
     return format(new Date(isoString), "h:mm a");
   };

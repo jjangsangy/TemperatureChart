@@ -25,7 +25,7 @@ export interface ForecastData {
     daylightDuration: number;
 }
 
-export async function getWeatherDataByZip(zipCode: string, unit: 'fahrenheit' | 'celsius'): Promise<ForecastData> {
+export async function getWeatherDataByZip(zipCode: string): Promise<ForecastData> {
   const validation = zipCodeSchema.safeParse(zipCode);
   if (!validation.success) {
     throw new Error("Please enter a valid 5-digit US zip code.");
@@ -54,7 +54,7 @@ export async function getWeatherDataByZip(zipCode: string, unit: 'fahrenheit' | 
   const longitude = parseFloat(place.longitude);
   const location = `${place['place name']}, ${place['state abbreviation']}`;
 
-  const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=${unit}&forecast_days=1&timezone=auto`;
+  const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&forecast_days=1&timezone=auto`;
   const weatherResponse = await fetch(weatherUrl);
    if (!weatherResponse.ok) {
       console.error("Weather API error:", weatherResponse.statusText);

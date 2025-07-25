@@ -35,9 +35,9 @@ The project has undergone significant cleanup and core functionality enhancement
     - Removed the hour display from the tooltip content in `src/components/temperature-chart.tsx`.
     - Updated `src/components/temperature-chart.test.tsx` to no longer assert the presence of the hour in the tooltip.
 - **Temperature Unit Toggle**: Implemented a toggle for Fahrenheit/Celsius conversion with `localStorage` persistence.
-    - `src/lib/weather.ts`: Modified `getWeatherDataByZip` to accept a `unit` parameter for API calls.
-    - `src/app/page.tsx`: Added `unit` state with `localStorage` integration, a UI toggle button, and updated `handleFetchWeather` to pass the selected unit.
-    - `src/components/temperature-chart.tsx`: Updated to accept `unit` prop and dynamically update chart labels and tooltips. Removed redundant client-side F/C conversion as the API now provides the correct unit.
+    - `src/lib/weather.ts`: Modified `getWeatherDataByZip` to always fetch data in Celsius.
+    - `src/app/page.tsx`: Added `celsiusData` state to store original Celsius data, and a `useEffect` hook to convert to Fahrenheit when the unit is toggled.
+    - `src/components/temperature-chart.tsx`: Updated to accept `unit` prop and dynamically update chart labels and tooltips.
     - **UI Refinement**: Modified the temperature unit toggle button in `src/app/page.tsx` to be smaller, use "°C" / "°F" symbols, and be positioned next to the theme toggle.
 - **Day/Night Chart Visualization**: Implemented visual distinction for day and night in the temperature chart.
     - `src/lib/weather.ts`: Updated `getWeatherDataByZip` to fetch `daily=sunrise,sunset` data.
@@ -59,8 +59,8 @@ The project has undergone significant cleanup and core functionality enhancement
     - Updated `src/components/temperature-chart.tsx` to display these new data points in the chart's tooltip, including a `getWeatherDescription` helper function.
     - Refactored `getWeatherDescription` to use `function functionName() {}` syntax.
     - Enhanced tooltip aesthetics in `src/components/temperature-chart.tsx` with `lucide-react` icons, improved layout, and bolded key-value pairs.
-- **Test Fixes (Partial)**:
-    - Updated `src/components/temperature-chart.test.tsx` to adjust tooltip content mock and use a more flexible text matcher for the hour, and added a null check for the element.
+- **Test Fixes (Complete)**:
+    - Updated `src/lib/weather.test.ts` to remove the `unit` parameter from `getWeatherDataByZip` calls, update the `fetchMock` assertion to expect `celsius`, and remove the redundant test case.
 - **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
     - `src/app/page.tsx`: Added `timeFormat` state with `localStorage` integration, a UI toggle button, and passed the `timeFormat` to `TemperatureChart`.
     - `src/components/temperature-chart.tsx`: Updated to accept `timeFormat` prop and format chart x-axis labels accordingly using a new `formatTime` helper function.

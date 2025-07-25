@@ -49,7 +49,7 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - It's crucial to thoroughly verify dependency usage, as simple file searches might miss indirect or framework-level usages.
 - User feedback is paramount in determining necessary dependencies, especially for those not directly imported but used by the framework or other components.
 - Implemented a temperature unit toggle (Fahrenheit/Celsius) with `localStorage` persistence, enhancing user experience and customization.
-- The client-side conversion logic for temperature units in the chart component was removed as the API now provides the temperature in the correct unit, avoiding redundant conversions.
+- The application now fetches temperature data exclusively in Celsius and performs the conversion to Fahrenheit on the client-side. This avoids making separate API calls when the user toggles the temperature unit.
 - The temperature unit toggle button in `src/app/page.tsx` was refined to be smaller, use "°C" / "°F" symbols, and repositioned next to the theme toggle for better aesthetics.
 - **Visual Clarity**: The addition of day/night visual distinction in the chart significantly improves the readability and contextual understanding of the temperature forecast.
 - **Enhanced Interactivity**: Enabling the tooltip cursor provides a more interactive and informative user experience when hovering over chart elements.

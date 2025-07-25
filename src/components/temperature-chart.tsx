@@ -41,6 +41,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+
 function getWeatherDescription(code: number): string {
     switch (code) {
         case 0: return "Clear sky";
@@ -97,7 +98,7 @@ export function TemperatureChart({ data, location, unit, sunrise, sunset, timeFo
     const sunriseHour = new Date(sunrise).getHours();
     const sunsetHour = new Date(sunset).getHours();
     
-    const mappedData = data.map(item => {
+    const chartData = data.map(item => {
         const date = new Date(item.time);
         const hour = date.getHours();
         
@@ -121,11 +122,10 @@ export function TemperatureChart({ data, location, unit, sunrise, sunset, timeFo
         };
     });
 
-    const maxTemp = Math.max(...mappedData.map(d => d.temperature));
+    const maxTemp = Math.max(...chartData.map(d => d.temperature));
     // Adjust top tick calculation for Celsius if needed, or keep it dynamic
     const topTick = Math.ceil((maxTemp + 10) / 10) * 10;
     const yAxisTicks = Array.from({ length: Math.floor(topTick / 10) + 1 }, (_, i) => i * 10);
-    const chartData = mappedData;
 
     const unitSymbol = unit === 'f' ? '°F' : '°C';
 
@@ -166,7 +166,7 @@ export function TemperatureChart({ data, location, unit, sunrise, sunset, timeFo
                     <div className="flex flex-col text-sm p-2">
                         <div className="flex items-center space-x-2 mb-1">
                             <Thermometer className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-muted-foreground"><span className="font-bold">Temp:</span> {`${value}${unitSymbol}`}</span>
+                            <span className="text-muted-foreground"><span className="font-bold">Temp:</span> {`${props.payload.temperature}${unitSymbol}`}</span>
                         </div>
                         <div className="flex items-center space-x-2 mb-1">
                             <ThermometerSun className="h-4 w-4 text-muted-foreground" />
