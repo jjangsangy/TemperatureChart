@@ -69,3 +69,6 @@ The project has undergone significant cleanup and core functionality enhancement
     - `src/components/temperature-chart.tsx`: Updated to accept `timeFormat` prop and format chart x-axis labels accordingly using a new `formatTime` helper function.
 - **Responsive Header Layout**: Updated the header in `src/app/page.tsx` to be more responsive, with toggle buttons positioned inline with the main title on larger screens. The breakpoint for rearrangement has been adjusted to `lg`.
 - **Responsive Text Sizes**: Implemented responsive text size adjustments across `src/app/page.tsx`, `src/components/temperature-chart.tsx`, and `src/components/metadata.tsx` to ensure optimal readability on mobile devices while maintaining aesthetics on larger screens.
+- **Date Selection Feature**: Added a "Change Day" button with a calendar dropdown to allow users to select a specific date for the weather forecast. The `getWeatherDataByZip` function was updated to accept and use this date for API calls.
+- **Bug Fix**: Corrected the geocoding API URL in `src/lib/weather.ts` from `api.zippopot.us` to `api.zippopotam.us` to resolve `ERR_NAME_NOT_RESOLVED` errors.
+- **Bug Fix**: Removed `forecast_days=1` parameter from Open-Meteo API call in `src/lib/weather.ts` to resolve conflict with `start_date` and `end_date` parameters.

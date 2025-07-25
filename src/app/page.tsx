@@ -5,29 +5,32 @@ import { getWeatherDataByZip, ForecastData } from '@/lib/weather';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { TemperatureChart } from '@/components/temperature-chart';
-import { Metadata } from '@/components/metadata'; // Import the new Metadata component
+import { Metadata } from '@/components/metadata';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, ThermometerSun } from 'lucide-react';
+import { Loader2, ThermometerSun, CalendarIcon } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Footer } from '@/components/footer';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 export default function Home() {
   const [data, setData] = useState<ForecastData | null>(null);
-  const [celsiusData, setCelsiusData] = useState<ForecastData | null>(null); // Store original Celsius data
+  const [celsiusData, setCelsiusData] = useState<ForecastData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [zipCode, setZipCode] = useState<string>('');
+  const [date, setDate] = useState<Date | undefined>(new Date()); // New state for selected date
 
-  // Initialize unit with a default value, then update from localStorage on mount
   const [unit, setUnit] = useState<'f' | 'c'>('f');
 
-  // Save unit to localStorage whenever it changes
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedUnit = localStorage.getItem('temperatureUnit');
       setUnit(savedUnit === 'c' ? 'c' : 'f');
     }
-  }, []); // Run once on mount
+  }, []);
 
   const [timeFormat, setTimeFormat] = useState<'ampm' | 'military'>(() => {
     if (typeof window !== 'undefined') {
@@ -37,27 +40,25 @@ export default function Home() {
     return 'ampm';
   });
 
-  // Save unit to localStorage whenever it changes
   useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('temperatureUnit', unit);
     }
   }, [unit]);
 
-  // Save timeFormat to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('timeFormat', timeFormat);
   }, [timeFormat]);
 
-  const handleFetchWeather = useCallback(async (zip: string) => {
+  const handleFetchWeather = useCallback(async (zip: string, selectedDate: Date | undefined) => {
     setLoading(true);
     setData(null);
-    setCelsiusData(null); // Clear Celsius data on new fetch
+    setCelsiusData(null);
     setError(null);
     try {
-      const weatherData = await getWeatherDataByZip(zip); // Fetch in Celsius
+      const weatherData = await getWeatherDataByZip(zip, selectedDate); // Pass selectedDate
       setCelsiusData(weatherData);
-      localStorage.setItem('lastZipCode', zip); // Save to localStorage on success
+      localStorage.setItem('lastZipCode', zip);
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -73,18 +74,17 @@ export default function Home() {
     const savedZipCode = localStorage.getItem('lastZipCode');
     if (savedZipCode) {
       setZipCode(savedZipCode);
-      handleFetchWeather(savedZipCode); 
+      handleFetchWeather(savedZipCode, date); // Pass date to initial fetch
     }
-  }, [handleFetchWeather]); // Removed unit from dependency array
+  }, [handleFetchWeather, date]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (zipCode) {
-      handleFetchWeather(zipCode);
+      handleFetchWeather(zipCode, date); // Pass date to submit fetch
     }
   };
 
-  // Effect to convert Celsius data to Fahrenheit when unit changes
   useEffect(() => {
     if (celsiusData) {
       if (unit === 'f') {
@@ -100,7 +100,6 @@ export default function Home() {
           temperatureMin: Math.round((celsiusData.temperatureMin * 9/5) + 32),
         });
       } else {
-        // If unit is Celsius, just use the original celsiusData
         setData(celsiusData);
       }
     }
@@ -127,7 +126,7 @@ export default function Home() {
                     variant="ghost" 
                     onClick={handleUnitToggle} 
                     disabled={loading}
-                    className="text-lg px-2 py-1 h-auto" // Adjust padding and height for smaller button
+                    className="text-lg px-2 py-1 h-auto"
                 >
                     {unit === 'f' ? '°C' : '°F'}
                 </Button>
@@ -135,7 +134,7 @@ export default function Home() {
                     variant="ghost" 
                     onClick={handleTimeFormatToggle} 
                     disabled={loading}
-                    className="text-lg px-2 py-1 h-auto" // Adjust padding and height for smaller button
+                    className="text-lg px-2 py-1 h-auto"
                 >
                     {timeFormat === 'ampm' ? '24H' : 'AM/PM'}
                 </Button>
@@ -162,11 +161,33 @@ export default function Home() {
               {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               Get Weather
             </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-[180px] justify-start text-left font-normal",
+                    !date && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {date ? format(date, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
           </form>
 
-          <div> {/* Removed w-full from this div */}
+          <div>
             {loading && (
-              <Card className="w-full mx-auto"> {/* Removed max-w-md */}
+              <Card className="w-full mx-auto">
                 <CardContent className="flex flex-col items-center justify-center h-96">
                   <Loader2 className="w-24 h-24 text-primary animate-spin" />
                 </CardContent>
@@ -189,12 +210,12 @@ export default function Home() {
                   sunset={data.sunset}
                   precipitationProbabilityMax={data.precipitationProbabilityMax}
                   daylightDuration={data.daylightDuration}
-                  unit={unit === 'f' ? 'fahrenheit' : 'celsius'} // This will be handled by the component
+                  unit={unit === 'f' ? 'fahrenheit' : 'celsius'}
                 />
               </>
             )}
-            {!data && !loading && !zipCode && ( // Only show welcome card if no data and no zip code entered yet
-              <Card className="w-full mx-auto animate-in fade-in-0 duration-500"> {/* Removed max-w-md */}
+            {!data && !loading && !zipCode && (
+              <Card className="w-full mx-auto animate-in fade-in-0 duration-500">
                   <CardHeader>
                       <CardTitle>Welcome!</CardTitle>
                       <CardDescription>Your 24-hour forecast will appear here.</CardDescription>

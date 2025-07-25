@@ -60,3 +60,6 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **Testing Challenges**: Mocking complex UI components like tooltips requires careful attention to the rendered DOM structure and flexible querying strategies. The resolution involved aligning the component's rendering with the test's expectations by explicitly including the hour in the tooltip, and then removing it as per user feedback, updating the test accordingly.
 - **Time Format Customization**: Added a time format toggle (AM/PM vs. 24H) with `localStorage` persistence, providing more user customization options.
 - **Improved Responsiveness**: The application now features improved responsiveness, particularly with text sizes, ensuring a better user experience across various device sizes.
+- **Date Selection Feature**: Added a "Change Day" button with a calendar dropdown to allow users to select a specific date for the weather forecast. The `getWeatherDataByZip` function was updated to accept and use this date for API calls.
+- **Bug Fix**: Corrected the geocoding API URL in `src/lib/weather.ts` from `api.zippopot.us` to `api.zippopotam.us` to resolve `ERR_NAME_NOT_RESOLVED` errors.
+- **Bug Fix**: Removed `forecast_days=1` parameter from Open-Meteo API call in `src/lib/weather.ts` to resolve conflict with `start_date` and `end_date` parameters.
