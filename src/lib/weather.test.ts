@@ -48,6 +48,10 @@ describe('getWeatherDataByZip', () => {
       hourly: {
         time: ['2025-07-24T00:00', '2025-07-24T01:00'],
         temperature_2m: [20, 19],
+        relative_humidity_2m: [70, 75],
+        apparent_temperature: [22, 20],
+        precipitation_probability: [10, 5],
+        weather_code: [0, 1],
       },
       daily: {
         sunrise: ['2025-07-24T05:30'],
@@ -69,8 +73,8 @@ describe('getWeatherDataByZip', () => {
     expect(result).toEqual({
       location: 'Los Angeles, CA',
       forecast: [
-        { time: '2025-07-24T00:00', temperature: 20 },
-        { time: '2025-07-24T01:00', temperature: 19 },
+        { time: '2025-07-24T00:00', temperature: 20, relativeHumidity: 70, apparentTemperature: 22, precipitationProbability: 10, weatherCode: 0 },
+        { time: '2025-07-24T01:00', temperature: 19, relativeHumidity: 75, apparentTemperature: 20, precipitationProbability: 5, weatherCode: 1 },
       ],
       sunrise: '2025-07-24T05:30',
       sunset: '2025-07-24T20:00',
@@ -83,7 +87,7 @@ describe('getWeatherDataByZip', () => {
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(fetchMock).toHaveBeenCalledWith('https://api.zippopotam.us/us/90210');
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://api.open-meteo.com/v1/forecast?latitude=34.05&longitude=-118.25&hourly=temperature_2m&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=fahrenheit&forecast_days=1&timezone=auto'
+      'https://api.open-meteo.com/v1/forecast?latitude=34.05&longitude=-118.25&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=fahrenheit&forecast_days=1&timezone=auto'
     );
   });
 
@@ -95,6 +99,10 @@ describe('getWeatherDataByZip', () => {
       hourly: {
         time: ['2025-07-24T00:00'],
         temperature_2m: [20],
+        relative_humidity_2m: [70],
+        apparent_temperature: [22],
+        precipitation_probability: [10],
+        weather_code: [0],
       },
       daily: {
         sunrise: ['2025-07-24T05:30'],

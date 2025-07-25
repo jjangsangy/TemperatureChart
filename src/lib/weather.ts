@@ -12,6 +12,10 @@ export interface ForecastData {
     forecast: {
         time: string;
         temperature: number;
+        relativeHumidity: number;
+        apparentTemperature: number;
+        precipitationProbability: number;
+        weatherCode: number;
     }[];
     sunrise: string;
     sunset: string;
@@ -50,7 +54,7 @@ export async function getWeatherDataByZip(zipCode: string, unit: 'fahrenheit' | 
   const longitude = parseFloat(place.longitude);
   const location = `${place['place name']}, ${place['state abbreviation']}`;
 
-  const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=${unit}&forecast_days=1&timezone=auto`;
+  const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=${unit}&forecast_days=1&timezone=auto`;
   const weatherResponse = await fetch(weatherUrl);
    if (!weatherResponse.ok) {
       console.error("Weather API error:", weatherResponse.statusText);
@@ -63,6 +67,10 @@ export async function getWeatherDataByZip(zipCode: string, unit: 'fahrenheit' | 
   const forecast = hourlyData.time.map((t: string, index: number) => ({
     time: t,
     temperature: Math.round(hourlyData.temperature_2m[index]),
+    relativeHumidity: Math.round(hourlyData.relative_humidity_2m[index]),
+    apparentTemperature: Math.round(hourlyData.apparent_temperature[index]),
+    precipitationProbability: Math.round(hourlyData.precipitation_probability[index]),
+    weatherCode: hourlyData.weather_code[index],
   }));
 
   const sunrise = dailyData.sunrise[0];

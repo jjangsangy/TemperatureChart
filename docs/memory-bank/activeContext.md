@@ -2,7 +2,7 @@
 
 ## 1. Current Focus
 
-The current focus is on enhancing the temperature chart visualization by incorporating day/night indicators and maintaining a clean and efficient codebase. Additionally, setting up CI/CD with GitHub Actions for automated testing.
+The current focus is on enhancing the temperature chart visualization by incorporating day/night indicators and maintaining a clean and efficient codebase. Additionally, setting up CI/CD with GitHub Actions for automated testing. The immediate task is to integrate additional hourly weather variables into the API and display them in the chart tooltip, and then resolve any resulting test failures.
 
 ## 2. Recent Changes
 
@@ -24,10 +24,19 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **Tooltip Shading**: Removed `cursor={false}` from `ChartTooltip` in `src/components/temperature-chart.tsx` to enable hover-activated shading on the bar chart.
 - **CI/CD Setup**: Created `.github/workflows/ci.yml` to run tests on push and pull requests to the `main` branch.
 - **Test Dependency Fix**: Added `ts-node` to `devDependencies` in `package.json` and ran `npm install` to resolve CI test failures.
+- **Hourly Variable Integration**:
+    - Modified `src/lib/weather.ts` to include `relative_humidity_2m`, `apparent_temperature`, `precipitation_probability`, and `weather_code` in the Open-Meteo API request and updated the `ForecastData` interface.
+    - Updated `src/components/temperature-chart.tsx` to display these new data points in the chart's tooltip, including a `getWeatherDescription` helper function.
+    - Refactored `getWeatherDescription` to use `function functionName() {}` syntax.
+    - Enhanced tooltip aesthetics in `src/components/temperature-chart.tsx` with `lucide-react` icons, improved layout, and bolded key-value pairs.
+- **Test Fixes (Complete)**:
+    - Removed the hour display from the tooltip content in `src/components/temperature-chart.tsx`.
+    - Updated `src/lib/weather.test.ts` to include new hourly variables in mock API responses, resolving `TypeError` issues.
+    - Updated `src/components/temperature-chart.test.tsx` to no longer assert the presence of the hour in the tooltip.
 
 ## 3. Next Steps
 
-- Await further instructions from the user.
+- None. All identified test failures have been resolved.
 
 ## 4. Key Decisions & Insights
 
@@ -42,3 +51,4 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **Visual Clarity**: The addition of day/night visual distinction in the chart significantly improves the readability and contextual understanding of the temperature forecast.
 - **Enhanced Interactivity**: Enabling the tooltip cursor provides a more interactive and informative user experience when hovering over chart elements.
 - **Automated Testing**: Implemented CI with GitHub Actions to ensure code quality and prevent regressions.
+- **Testing Challenges**: Mocking complex UI components like tooltips requires careful attention to the rendered DOM structure and flexible querying strategies. The resolution involved aligning the component's rendering with the test's expectations by explicitly including the hour in the tooltip, and then removing it as per user feedback, updating the test accordingly.

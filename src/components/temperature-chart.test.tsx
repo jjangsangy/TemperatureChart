@@ -25,37 +25,46 @@ jest.mock('@/components/ui/chart', () => ({
   ChartTooltip: ({ content }: { content: React.ReactNode }) => <div data-testid="chart-tooltip">{content}</div>,
   ChartTooltipContent: ({ formatter }: { formatter: any }) => (
     <div data-testid="chart-tooltip-content">
-      {formatter && formatter(20, 'temperature', { payload: { hour: '1 PM', temperature: 20 } })}
+      {formatter && formatter(20, 'temperature', { 
+        payload: { 
+          hour: '1 PM', 
+          temperature: 20,
+          relativeHumidity: 50,
+          apparentTemperature: 21,
+          precipitationProbability: 10,
+          weatherCode: 0,
+        } 
+      })}
     </div>
   ),
 }));
 
 describe('TemperatureChart', () => {
   const mockData = [
-    { time: '2025-07-24T00:00:00Z', temperature: 15 },
-    { time: '2025-07-24T01:00:00Z', temperature: 14 },
-    { time: '2025-07-24T02:00:00Z', temperature: 13 },
-    { time: '2025-07-24T03:00:00Z', temperature: 12 },
-    { time: '2025-07-24T04:00:00Z', temperature: 11 },
-    { time: '2025-07-24T05:00:00Z', temperature: 10 }, // Sunrise hour
-    { time: '2025-07-24T06:00:00Z', temperature: 16 },
-    { time: '2025-07-24T07:00:00Z', temperature: 18 },
-    { time: '2025-07-24T08:00:00Z', temperature: 20 },
-    { time: '2025-07-24T09:00:00Z', temperature: 22 },
-    { time: '2025-07-24T10:00:00Z', temperature: 24 },
-    { time: '2025-07-24T11:00:00Z', temperature: 25 },
-    { time: '2025-07-24T12:00:00Z', temperature: 26 },
-    { time: '2025-07-24T13:00:00Z', temperature: 27 },
-    { time: '2025-07-24T14:00:00Z', temperature: 28 },
-    { time: '2025-07-24T15:00:00Z', temperature: 27 },
-    { time: '2025-07-24T16:00:00Z', temperature: 26 },
-    { time: '2025-07-24T17:00:00Z', temperature: 25 },
-    { time: '2025-07-24T18:00:00Z', temperature: 24 },
-    { time: '2025-07-24T19:00:00Z', temperature: 23 },
-    { time: '2025-07-24T20:00:00Z', temperature: 22 }, // Sunset hour
-    { time: '2025-07-24T21:00:00Z', temperature: 20 },
-    { time: '2025-07-24T22:00:00Z', temperature: 18 },
-    { time: '2025-07-24T23:00:00Z', temperature: 16 },
+    { time: '2025-07-24T00:00:00Z', temperature: 15, relativeHumidity: 70, apparentTemperature: 14, precipitationProbability: 10, weatherCode: 0 },
+    { time: '2025-07-24T01:00:00Z', temperature: 14, relativeHumidity: 72, apparentTemperature: 13, precipitationProbability: 10, weatherCode: 0 },
+    { time: '2025-07-24T02:00:00Z', temperature: 13, relativeHumidity: 75, apparentTemperature: 12, precipitationProbability: 10, weatherCode: 0 },
+    { time: '2025-07-24T03:00:00Z', temperature: 12, relativeHumidity: 78, apparentTemperature: 11, precipitationProbability: 10, weatherCode: 0 },
+    { time: '2025-07-24T04:00:00Z', temperature: 11, relativeHumidity: 80, apparentTemperature: 10, precipitationProbability: 10, weatherCode: 0 },
+    { time: '2025-07-24T05:00:00Z', temperature: 10, relativeHumidity: 82, apparentTemperature: 9, precipitationProbability: 10, weatherCode: 0 }, // Sunrise hour
+    { time: '2025-07-24T06:00:00Z', temperature: 16, relativeHumidity: 65, apparentTemperature: 15, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T07:00:00Z', temperature: 18, relativeHumidity: 60, apparentTemperature: 17, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T08:00:00Z', temperature: 20, relativeHumidity: 55, apparentTemperature: 19, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T09:00:00Z', temperature: 22, relativeHumidity: 50, apparentTemperature: 21, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T10:00:00Z', temperature: 24, relativeHumidity: 45, apparentTemperature: 23, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T11:00:00Z', temperature: 25, relativeHumidity: 40, apparentTemperature: 24, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T12:00:00Z', temperature: 26, relativeHumidity: 38, apparentTemperature: 25, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T13:00:00Z', temperature: 27, relativeHumidity: 35, apparentTemperature: 26, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T14:00:00Z', temperature: 28, relativeHumidity: 33, apparentTemperature: 27, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T15:00:00Z', temperature: 27, relativeHumidity: 36, apparentTemperature: 26, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T16:00:00Z', temperature: 26, relativeHumidity: 39, apparentTemperature: 25, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T17:00:00Z', temperature: 25, relativeHumidity: 42, apparentTemperature: 24, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T18:00:00Z', temperature: 24, relativeHumidity: 45, apparentTemperature: 23, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T19:00:00Z', temperature: 23, relativeHumidity: 48, apparentTemperature: 22, precipitationProbability: 5, weatherCode: 1 },
+    { time: '2025-07-24T20:00:00Z', temperature: 22, relativeHumidity: 50, apparentTemperature: 21, precipitationProbability: 5, weatherCode: 1 }, // Sunset hour
+    { time: '2025-07-24T21:00:00Z', temperature: 20, relativeHumidity: 55, apparentTemperature: 19, precipitationProbability: 10, weatherCode: 0 },
+    { time: '2025-07-24T22:00:00Z', temperature: 18, relativeHumidity: 60, apparentTemperature: 17, precipitationProbability: 10, weatherCode: 0 },
+    { time: '2025-07-24T23:00:00Z', temperature: 16, relativeHumidity: 65, apparentTemperature: 15, precipitationProbability: 10, weatherCode: 0 },
   ];
 
   const mockProps = {
@@ -114,10 +123,10 @@ describe('TemperatureChart', () => {
     // For now, we assume the logic within the component correctly assigns the fill property.
   });
 
-  it('tooltip content displays correct hour and temperature with unit', () => {
+  it('tooltip content displays correct temperature with unit', () => {
     render(<TemperatureChart {...mockProps} />);
     // Due to mocking, we directly check the ChartTooltipContent's output
-    expect(screen.getByText('1 PM')).toBeInTheDocument();
+    expect(screen.getByText('Temp:')).toBeInTheDocument();
     expect(screen.getByText('20°F')).toBeInTheDocument();
   });
 });
