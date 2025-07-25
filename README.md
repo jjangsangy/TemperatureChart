@@ -44,10 +44,6 @@ Follow these steps to set up and run the project locally:
     ```
     The application will be accessible at `http://localhost:9002`.
 
-## Live Demo
-
-You can access a live demo of the application here: [http://temperature.sanghan.xyz](http://temperature.sanghan.xyz)
-
 ## Project Structure
 
 *   `src/app`: Contains the main application pages, layouts, and global styles.
