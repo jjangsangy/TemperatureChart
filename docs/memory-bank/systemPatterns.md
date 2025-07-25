@@ -24,3 +24,4 @@ The application follows a component-based architecture, typical of Next.js/React
 
 - **Component-Based UI**: The UI is broken down into smaller, reusable components, promoting modularity and maintainability.
 - **Provider Pattern**: The `theme-provider.tsx` suggests the use of the Provider pattern for managing global state like themes.
+- **Responsive Design**: The application uses responsive design principles, such as the header layout adjusting for different screen sizes, to ensure a good user experience on all devices.

@@ -36,6 +36,7 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
     - `src/app/page.tsx`: Added `timeFormat` state with `localStorage` integration, a UI toggle button, and passed the `timeFormat` to `TemperatureChart`.
     - `src/components/temperature-chart.tsx`: Updated to accept `timeFormat` prop and format chart x-axis labels accordingly using a new `formatTime` helper function.
+- **Responsive Header Layout**: Updated the header in `src/app/page.tsx` to be more responsive. The unit toggle, time format toggle, and theme toggle buttons are now positioned inline with the main title on larger screens for a cleaner and more integrated look.
 
 ## 3. Next Steps
 

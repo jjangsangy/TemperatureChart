@@ -14,6 +14,7 @@
 - **Hourly Variable Integration**: The REST API for Open-Meteo now includes Relative Humidity, Apparent Temperature, Precipitation Probability, and Weather Code. These data points are displayed on the tooltip with improved aesthetics, including icons and bolded key-value pairs. The `getWeatherDescription` helper function has been refactored to use consistent function definitions.
 - **Temperature Unit Toggle**: Implemented a toggle for Fahrenheit/Celsius conversion with `localStorage` persistence.
 - **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
+- **Responsive Header Layout**: The header is now fully responsive, with toggle buttons positioned inline with the main title on larger screens for a cleaner UI.
 
 ## 2. What's Left to Build
 
@@ -64,3 +65,4 @@ The project has undergone significant cleanup and core functionality enhancement
 - **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
     - `src/app/page.tsx`: Added `timeFormat` state with `localStorage` integration, a UI toggle button, and passed the `timeFormat` to `TemperatureChart`.
     - `src/components/temperature-chart.tsx`: Updated to accept `timeFormat` prop and format chart x-axis labels accordingly using a new `formatTime` helper function.
+- **Responsive Header Layout**: Updated the header in `src/app/page.tsx` to be more responsive, with toggle buttons positioned inline with the main title on larger screens.

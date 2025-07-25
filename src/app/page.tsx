@@ -117,29 +117,31 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-background font-body">
       <main className="flex-grow flex flex-col items-center p-4 sm:p-8 md:p-12 lg:p-24">
-        <div className="absolute top-4 right-4 flex items-center space-x-2">
-          <Button 
-              variant="ghost" 
-              onClick={handleUnitToggle} 
-              disabled={loading}
-              className="text-lg px-2 py-1 h-auto" // Adjust padding and height for smaller button
-          >
-              {unit === 'f' ? '°C' : '°F'}
-          </Button>
-          <Button 
-              variant="ghost" 
-              onClick={handleTimeFormatToggle} 
-              disabled={loading}
-              className="text-lg px-2 py-1 h-auto" // Adjust padding and height for smaller button
-          >
-              {timeFormat === 'ampm' ? '24H' : 'AM/PM'}
-          </Button>
-          <ThemeToggle />
-        </div>
         <div className="z-10 w-full max-w-7xl items-center justify-center text-center">
-          <h1 className="text-4xl md:text-5xl font-bold font-headline mb-4 text-foreground/90">
-            TemperatureChart
-          </h1>
+          <div className="relative flex flex-col md:flex-row md:items-center md:justify-center mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold font-headline text-foreground/90 mb-4 md:mb-0 md:text-center md:flex-grow">
+                TemperatureChart
+            </h1>
+            <div className="flex items-center space-x-2 justify-center md:absolute md:right-0 md:top-0">
+                <Button 
+                    variant="ghost" 
+                    onClick={handleUnitToggle} 
+                    disabled={loading}
+                    className="text-lg px-2 py-1 h-auto" // Adjust padding and height for smaller button
+                >
+                    {unit === 'f' ? '°C' : '°F'}
+                </Button>
+                <Button 
+                    variant="ghost" 
+                    onClick={handleTimeFormatToggle} 
+                    disabled={loading}
+                    className="text-lg px-2 py-1 h-auto" // Adjust padding and height for smaller button
+                >
+                    {timeFormat === 'ampm' ? '24H' : 'AM/PM'}
+                </Button>
+                <ThemeToggle />
+            </div>
+          </div>
           <p className="text-lg text-muted-foreground mb-8">
             Enter a US zip code to see the 24-hour temperature forecast.
           </p>
