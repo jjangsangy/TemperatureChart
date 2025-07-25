@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import { getWeatherDataByZip, ForecastData } from '@/lib/weather';
@@ -63,7 +63,7 @@ export default function Home() {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("An unknown error occurred.");
+        setError('An unknown error occurred.');
       }
     } finally {
       setLoading(false);
@@ -88,16 +88,16 @@ export default function Home() {
   useEffect(() => {
     if (celsiusData) {
       if (unit === 'f') {
-        const fahrenheitForecast = celsiusData.forecast.map(item => ({
+        const fahrenheitForecast = celsiusData.forecast.map((item) => ({
           ...item,
-          temperature: Math.round((item.temperature * 9/5) + 32),
-          apparentTemperature: Math.round((item.apparentTemperature * 9/5) + 32),
+          temperature: Math.round((item.temperature * 9) / 5 + 32),
+          apparentTemperature: Math.round((item.apparentTemperature * 9) / 5 + 32),
         }));
         setData({
           ...celsiusData,
           forecast: fahrenheitForecast,
-          temperatureMax: Math.round((celsiusData.temperatureMax * 9/5) + 32),
-          temperatureMin: Math.round((celsiusData.temperatureMin * 9/5) + 32),
+          temperatureMax: Math.round((celsiusData.temperatureMax * 9) / 5 + 32),
+          temperatureMin: Math.round((celsiusData.temperatureMin * 9) / 5 + 32),
         });
       } else {
         setData(celsiusData);
@@ -106,11 +106,11 @@ export default function Home() {
   }, [celsiusData, unit]);
 
   const handleUnitToggle = () => {
-    setUnit(prevUnit => (prevUnit === 'f' ? 'c' : 'f'));
+    setUnit((prevUnit) => (prevUnit === 'f' ? 'c' : 'f'));
   };
 
   const handleTimeFormatToggle = () => {
-    setTimeFormat(prevFormat => (prevFormat === 'ampm' ? 'military' : 'ampm'));
+    setTimeFormat((prevFormat) => (prevFormat === 'ampm' ? 'military' : 'ampm'));
   };
 
   return (
@@ -119,39 +119,42 @@ export default function Home() {
         <div className="z-10 w-full max-w-7xl items-center justify-center text-center">
           <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-center mb-4">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-foreground/90 mb-4 lg:mb-0 lg:text-center lg:flex-grow">
-                TemperatureChart
+              TemperatureChart
             </h1>
             <div className="flex items-center space-x-2 justify-center lg:absolute lg:right-0 lg:top-0">
-                <Button 
-                    variant="outline" 
-                    onClick={handleUnitToggle} 
-                    disabled={loading}
-                    className="text-lg px-2 py-1 h-auto"
-                >
-                    {unit === 'f' ? '°C' : '°F'}
-                </Button>
-                <Button 
-                    variant="outline" 
-                    onClick={handleTimeFormatToggle} 
-                    disabled={loading}
-                    className="text-lg px-2 py-1 h-auto"
-                >
-                    {timeFormat === 'ampm' ? '24H' : 'AM/PM'}
-                </Button>
-                <ThemeToggle />
+              <Button
+                variant="outline"
+                onClick={handleUnitToggle}
+                disabled={loading}
+                className="text-lg px-2 py-1 h-auto"
+              >
+                {unit === 'f' ? '°C' : '°F'}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleTimeFormatToggle}
+                disabled={loading}
+                className="text-lg px-2 py-1 h-auto"
+              >
+                {timeFormat === 'ampm' ? '24H' : 'AM/PM'}
+              </Button>
+              <ThemeToggle />
             </div>
           </div>
           <p className="text-base sm:text-lg text-muted-foreground mb-8">
             Enter a US zip code to see the 24-hour temperature forecast.
           </p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row w-full max-w-sm mx-auto items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-12">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col sm:flex-row w-full max-w-sm mx-auto items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-12"
+          >
             <div className="flex w-full space-x-2">
-              <Input 
-                type="text" 
-                name="zipcode" 
-                placeholder="Enter 5-digit zip code" 
-                required 
+              <Input
+                type="text"
+                name="zipcode"
+                placeholder="Enter 5-digit zip code"
+                required
                 pattern="\d{5}"
                 maxLength={5}
                 value={zipCode}
@@ -166,14 +169,14 @@ export default function Home() {
             <Popover>
               <PopoverTrigger asChild>
                 <Button
-                  variant={"outline"}
+                  variant={'outline'}
                   className={cn(
-                    "w-full sm:w-[180px] justify-start text-left font-normal",
-                    !date && "text-muted-foreground"
+                    'w-full sm:w-[180px] justify-start text-left font-normal',
+                    !date && 'text-muted-foreground',
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? format(date, "PPP") : <span>Pick a date</span>}
+                  {date ? format(date, 'PPP') : <span>Pick a date</span>}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
@@ -197,11 +200,11 @@ export default function Home() {
             )}
             {data && !loading && (
               <>
-                <TemperatureChart 
-                  data={data.forecast} 
-                  location={data.location} 
-                  unit={unit} 
-                  sunrise={data.sunrise} 
+                <TemperatureChart
+                  data={data.forecast}
+                  location={data.location}
+                  unit={unit}
+                  sunrise={data.sunrise}
                   sunset={data.sunset}
                   timeFormat={timeFormat}
                   selectedDate={date}
@@ -219,14 +222,14 @@ export default function Home() {
             )}
             {!data && !loading && !zipCode && (
               <Card className="w-full mx-auto animate-in fade-in-0 duration-500">
-                  <CardHeader>
-                      <CardTitle>Welcome!</CardTitle>
-                      <CardDescription>Your 24-hour forecast will appear here.</CardDescription>
-                  </CardHeader>
-                  <CardContent className="flex flex-col items-center justify-center h-96">
-                      <ThermometerSun className="w-24 h-24 text-primary mb-4" />
-                      <p className="text-muted-foreground">Enter a zip code above to get started.</p>
-                  </CardContent>
+                <CardHeader>
+                  <CardTitle>Welcome!</CardTitle>
+                  <CardDescription>Your 24-hour forecast will appear here.</CardDescription>
+                </CardHeader>
+                <CardContent className="flex flex-col items-center justify-center h-96">
+                  <ThermometerSun className="w-24 h-24 text-primary mb-4" />
+                  <p className="text-muted-foreground">Enter a zip code above to get started.</p>
+                </CardContent>
               </Card>
             )}
           </div>

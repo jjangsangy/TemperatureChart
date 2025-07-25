@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sun, Moon, CloudRain, Thermometer, Clock } from "lucide-react";
-import { format } from "date-fns";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Sun, Moon, CloudRain, Thermometer, Clock } from 'lucide-react';
+import { format } from 'date-fns';
 
 interface MetadataProps {
   temperatureMax: number;
@@ -21,9 +21,8 @@ export function Metadata({
   daylightDuration,
   unit,
 }: MetadataProps) {
-
   const formatTime = (isoString: string) => {
-    return format(new Date(isoString), "h:mm a");
+    return format(new Date(isoString), 'h:mm a');
   };
 
   const formatDuration = (seconds: number) => {
@@ -40,11 +39,15 @@ export function Metadata({
       <CardContent className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         <div className="flex items-center space-x-2 text-xs sm:text-sm">
           <Thermometer data-testid="max-temp-icon" className="h-4 w-4 text-muted-foreground" />
-          <span>Max Temp: {Math.round(temperatureMax)}°{unit === 'fahrenheit' ? 'F' : 'C'}</span>
+          <span>
+            Max Temp: {Math.round(temperatureMax)}°{unit === 'fahrenheit' ? 'F' : 'C'}
+          </span>
         </div>
         <div className="flex items-center space-x-2 text-xs sm:text-sm">
           <Thermometer data-testid="min-temp-icon" className="h-4 w-4 text-muted-foreground" />
-          <span>Min Temp: {Math.round(temperatureMin)}°{unit === 'fahrenheit' ? 'F' : 'C'}</span>
+          <span>
+            Min Temp: {Math.round(temperatureMin)}°{unit === 'fahrenheit' ? 'F' : 'C'}
+          </span>
         </div>
         <div className="flex items-center space-x-2 text-xs sm:text-sm">
           <Sun data-testid="sunrise-icon" className="h-4 w-4 text-muted-foreground" />

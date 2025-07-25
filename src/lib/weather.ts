@@ -1,50 +1,50 @@
 import { z } from 'zod';
 import { format } from 'date-fns';
 
-const zipCodeSchema = z.string().regex(/^\d{5}$/, { message: "Invalid ZIP code format." });
+const zipCodeSchema = z.string().regex(/^\d{5}$/, { message: 'Invalid ZIP code format.' });
 
 export interface ForecastData {
-    location: string;
-    forecast: {
-        time: string;
-        temperature: number;
-        relativeHumidity: number;
-        apparentTemperature: number;
-        precipitationProbability: number;
-        weatherCode: number;
-    }[];
-    sunrise: string;
-    sunset: string;
-    temperatureMax: number;
-    temperatureMin: number;
-    precipitationProbabilityMax: number;
-    daylightDuration: number;
+  location: string;
+  forecast: {
+    time: string;
+    temperature: number;
+    relativeHumidity: number;
+    apparentTemperature: number;
+    precipitationProbability: number;
+    weatherCode: number;
+  }[];
+  sunrise: string;
+  sunset: string;
+  temperatureMax: number;
+  temperatureMin: number;
+  precipitationProbabilityMax: number;
+  daylightDuration: number;
 }
 
 export async function getWeatherDataByZip(zipCode: string, date: Date | undefined): Promise<ForecastData> {
   const validation = zipCodeSchema.safeParse(zipCode);
   if (!validation.success) {
-    throw new Error("Please enter a valid 5-digit US zip code.");
+    throw new Error('Please enter a valid 5-digit US zip code.');
   }
   const validZip = validation.data;
 
   // Using a different, potentially more reliable geocoding API for US zip codes
   const geoUrl = `https://api.zippopotam.us/us/${validZip}`;
   const geoResponse = await fetch(geoUrl);
-  
+
   if (!geoResponse.ok) {
-      if (geoResponse.status === 404) {
-           throw new Error(`Could not find location for ZIP code ${validZip}. Please double-check the number.`);
-      }
-      console.error("Geocoding API error:", geoResponse.statusText);
-      throw new Error("Failed to fetch location data.");
+    if (geoResponse.status === 404) {
+      throw new Error(`Could not find location for ZIP code ${validZip}. Please double-check the number.`);
+    }
+    console.error('Geocoding API error:', geoResponse.statusText);
+    throw new Error('Failed to fetch location data.');
   }
 
   const geoData = await geoResponse.json();
   if (!geoData || !geoData.places || geoData.places.length === 0) {
     throw new Error(`Could not find location for ZIP code ${validZip}.`);
   }
-  
+
   const place = geoData.places[0];
   const latitude = parseFloat(place.latitude);
   const longitude = parseFloat(place.longitude);
@@ -54,9 +54,9 @@ export async function getWeatherDataByZip(zipCode: string, date: Date | undefine
 
   const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&timezone=auto&start_date=${formattedDate}&end_date=${formattedDate}`;
   const weatherResponse = await fetch(weatherUrl);
-   if (!weatherResponse.ok) {
-      console.error("Weather API error:", weatherResponse.statusText);
-      throw new Error("Failed to fetch weather data.");
+  if (!weatherResponse.ok) {
+    console.error('Weather API error:', weatherResponse.statusText);
+    throw new Error('Failed to fetch weather data.');
   }
   const weatherData = await weatherResponse.json();
   const hourlyData = weatherData.hourly;
@@ -78,5 +78,14 @@ export async function getWeatherDataByZip(zipCode: string, date: Date | undefine
   const precipitationProbabilityMax = dailyData.precipitation_probability_max[0];
   const daylightDuration = dailyData.daylight_duration[0];
 
-  return { location, forecast, sunrise, sunset, temperatureMax, temperatureMin, precipitationProbabilityMax, daylightDuration };
+  return {
+    location,
+    forecast,
+    sunrise,
+    sunset,
+    temperatureMax,
+    temperatureMin,
+    precipitationProbabilityMax,
+    daylightDuration,
+  };
 }

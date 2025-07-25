@@ -33,8 +33,8 @@ describe('Metadata', () => {
 
   it('renders sunrise and sunset times correctly', () => {
     render(<Metadata {...mockProps} />);
-    const formattedSunrise = format(new Date(mockProps.sunrise), "h:mm a");
-    const formattedSunset = format(new Date(mockProps.sunset), "h:mm a");
+    const formattedSunrise = format(new Date(mockProps.sunrise), 'h:mm a');
+    const formattedSunset = format(new Date(mockProps.sunset), 'h:mm a');
     expect(screen.getByText(`Sunrise: ${formattedSunrise}`)).toBeInTheDocument();
     expect(screen.getByText(`Sunset: ${formattedSunset}`)).toBeInTheDocument();
   });
