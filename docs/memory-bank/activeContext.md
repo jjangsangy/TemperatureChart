@@ -39,10 +39,16 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **Responsive Header Layout**: Updated the header in `src/app/page.tsx` to adjust its layout at the `lg` breakpoint instead of `md`, ensuring better responsiveness on tablet-sized screens and preventing text overlap. The unit toggle, time format toggle, and theme toggle buttons are now positioned inline with the main title on larger screens for a cleaner and more integrated look.
 - **Responsive Text Sizes**: Implemented responsive text size adjustments across `src/app/page.tsx`, `src/components/temperature-chart.tsx`, and `src/components/metadata.tsx` to ensure optimal readability on mobile devices while maintaining aesthetics on larger screens.
 - **Daily Overview Layout**: Adjusted the `Metadata` component (`src/components/metadata.tsx`) to display daily overview items in a 2-column grid on mobile, improving layout and readability.
+- **Date Selection Feature**: Added a "Change Day" button with a calendar dropdown to allow users to select a specific date for the weather forecast. The `getWeatherDataByZip` function was updated to accept and use this date for API calls.
+- **Bug Fix**: Corrected the geocoding API URL in `src/lib/weather.ts` from `api.zippopot.us` to `api.zippopotam.us` to resolve `ERR_NAME_NOT_RESOLVED` errors.
+- **Bug Fix**: Removed `forecast_days=1` parameter from Open-Meteo API call in `src/lib/weather.ts` to resolve conflict with `start_date` and `end_date` parameters.
+- **Type and Test Issues Fixed**:
+    - Updated `src/lib/weather.test.ts` to pass the `date` argument to `getWeatherDataByZip` in all test calls.
+    - Corrected the mocked Open-Meteo API URL assertion in `src/lib/weather.test.ts` to use `start_date` and `end_date` parameters instead of `forecast_days=1`.
 
 ## 3. Next Steps
 
-- None. All identified test failures have been resolved.
+- None.
 
 ## 4. Key Decisions & Insights
 

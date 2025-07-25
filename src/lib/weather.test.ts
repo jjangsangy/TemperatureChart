@@ -8,39 +8,45 @@ describe('getWeatherDataByZip', () => {
   });
 
   it('throws an error for invalid zip code format', async () => {
-    await expect(getWeatherDataByZip('123')).rejects.toThrow("Please enter a valid 5-digit US zip code.");
-    await expect(getWeatherDataByZip('abcde')).rejects.toThrow("Please enter a valid 5-digit US zip code.");
-    await expect(getWeatherDataByZip('123456')).rejects.toThrow("Please enter a valid 5-digit US zip code.");
+    const mockDate = new Date('2025-07-24T12:00:00Z');
+    await expect(getWeatherDataByZip('123', mockDate)).rejects.toThrow("Please enter a valid 5-digit US zip code.");
+    await expect(getWeatherDataByZip('abcde', mockDate)).rejects.toThrow("Please enter a valid 5-digit US zip code.");
+    await expect(getWeatherDataByZip('123456', mockDate)).rejects.toThrow("Please enter a valid 5-digit US zip code.");
   });
 
   it('throws an error if geocoding API returns 404', async () => {
+    const mockDate = new Date('2025-07-24T12:00:00Z');
     fetchMock.mockResponseOnce(JSON.stringify({}), { status: 404 });
 
-    await expect(getWeatherDataByZip('99999')).rejects.toThrow("Could not find location for ZIP code 99999. Please double-check the number.");
+    await expect(getWeatherDataByZip('99999', mockDate)).rejects.toThrow("Could not find location for ZIP code 99999. Please double-check the number.");
   });
 
   it('throws an error if geocoding API fails for other reasons', async () => {
+    const mockDate = new Date('2025-07-24T12:00:00Z');
     fetchMock.mockResponseOnce(JSON.stringify({}), { status: 500, statusText: 'Internal Server Error' });
 
-    await expect(getWeatherDataByZip('12345')).rejects.toThrow("Failed to fetch location data.");
+    await expect(getWeatherDataByZip('12345', mockDate)).rejects.toThrow("Failed to fetch location data.");
   });
 
   it('throws an error if geocoding API returns no places', async () => {
+    const mockDate = new Date('2025-07-24T12:00:00Z');
     fetchMock.mockResponseOnce(JSON.stringify({ places: [] }), { status: 200 });
 
-    await expect(getWeatherDataByZip('12345')).rejects.toThrow("Could not find location for ZIP code 12345.");
+    await expect(getWeatherDataByZip('12345', mockDate)).rejects.toThrow("Could not find location for ZIP code 12345.");
   });
 
   it('throws an error if weather API fails', async () => {
+    const mockDate = new Date('2025-07-24T12:00:00Z');
     fetchMock.mockResponses(
       [JSON.stringify({ places: [{ latitude: '34.05', longitude: '-118.25', 'place name': 'Los Angeles', 'state abbreviation': 'CA' }] }), { status: 200 }],
       [JSON.stringify({}), { status: 500, statusText: 'Internal Server Error' }]
     );
 
-    await expect(getWeatherDataByZip('90210')).rejects.toThrow("Failed to fetch weather data.");
+    await expect(getWeatherDataByZip('90210', mockDate)).rejects.toThrow("Failed to fetch weather data.");
   });
 
   it('returns formatted weather data for a valid zip code', async () => {
+    const mockDate = new Date('2025-07-24T12:00:00Z');
     const mockGeoData = {
       places: [{ latitude: '34.05', longitude: '-118.25', 'place name': 'Los Angeles', 'state abbreviation': 'CA' }],
     };
@@ -68,7 +74,7 @@ describe('getWeatherDataByZip', () => {
       [JSON.stringify(mockWeatherData), { status: 200 }]
     );
 
-    const result = await getWeatherDataByZip('90210');
+    const result = await getWeatherDataByZip('90210', mockDate);
 
     expect(result).toEqual({
       location: 'Los Angeles, CA',
@@ -87,7 +93,7 @@ describe('getWeatherDataByZip', () => {
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(fetchMock).toHaveBeenCalledWith('https://api.zippopotam.us/us/90210');
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://api.open-meteo.com/v1/forecast?latitude=34.05&longitude=-118.25&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&forecast_days=1&timezone=auto'
+      'https://api.open-meteo.com/v1/forecast?latitude=34.05&longitude=-118.25&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&timezone=auto&start_date=2025-07-24&end_date=2025-07-24'
     );
   });
 });

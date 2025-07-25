@@ -17,6 +17,7 @@
 - **Responsive Header Layout**: The header is now fully responsive, with toggle buttons positioned inline with the main title on larger screens for a cleaner UI. The breakpoint for rearrangement has been adjusted to `lg` for better tablet responsiveness.
 - **Responsive Text Sizes**: Implemented responsive text size adjustments across `src/app/page.tsx`, `src/components/temperature-chart.tsx`, and `src/components/metadata.tsx` to ensure optimal readability on mobile devices while maintaining aesthetics on larger screens.
 - **Daily Overview Layout**: Adjusted the `Metadata` component (`src/components/metadata.tsx`) to display daily overview items in a 2-column grid on mobile, improving layout and readability.
+- **Type and Test Issues Fixed**: All type errors and test failures in `src/lib/weather.test.ts` have been resolved by updating `getWeatherDataByZip` calls with the `date` argument and correcting the mock API URL assertion.
 
 ## 2. What's Left to Build
 
@@ -72,3 +73,9 @@ The project has undergone significant cleanup and core functionality enhancement
 - **Date Selection Feature**: Added a "Change Day" button with a calendar dropdown to allow users to select a specific date for the weather forecast. The `getWeatherDataByZip` function was updated to accept and use this date for API calls.
 - **Bug Fix**: Corrected the geocoding API URL in `src/lib/weather.ts` from `api.zippopot.us` to `api.zippopotam.us` to resolve `ERR_NAME_NOT_RESOLVED` errors.
 - **Bug Fix**: Removed `forecast_days=1` parameter from Open-Meteo API call in `src/lib/weather.ts` to resolve conflict with `start_date` and `end_date` parameters.
+- **Type and Test Issues Identified**:
+    - `npm run typecheck` reported 8 errors in `src/lib/weather.test.ts`, all related to `getWeatherDataByZip` being called with 1 argument instead of the expected 2 (missing `date` argument).
+    - `npm run test` showed 1 failed test suite (`src/lib/weather.test.ts`) and 1 failed test. The failure is due to `getWeatherDataByZip` being called with incorrect arguments in the tests, and the mock API URL for Open-Meteo still containing `forecast_days=1` and missing `start_date`/`end_date` parameters.
+- **Type and Test Issues Fixed**:
+    - Updated `src/lib/weather.test.ts` to pass the `date` argument to `getWeatherDataByZip` in all test calls.
+    - Corrected the mocked Open-Meteo API URL assertion in `src/lib/weather.test.ts` to use `start_date` and `end_date` parameters instead of `forecast_days=1`.
