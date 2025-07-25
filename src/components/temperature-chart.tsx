@@ -168,7 +168,6 @@ export function TemperatureChart({
   });
 
   const maxTemp = Math.max(...chartData.map((d) => d.temperature));
-  // Adjust top tick calculation for Celsius if needed, or keep it dynamic
   const topTick = Math.ceil((maxTemp + 10) / 10) * 10;
   const yAxisTicks = Array.from({ length: Math.floor(topTick / 10) + 1 }, (_, i) => i * 10);
 
@@ -190,7 +189,7 @@ export function TemperatureChart({
               tickMargin={10}
               axisLine={false}
               tickFormatter={(value) => value}
-              style={{ fontSize: '0.75rem' }} // text-xs
+              style={{ fontSize: '0.75rem' }}
             />
             <YAxis
               dataKey="temperature"
@@ -200,7 +199,7 @@ export function TemperatureChart({
               tickFormatter={(value) => `${value}${unitSymbol}`}
               domain={[0, yAxisTicks[yAxisTicks.length - 1]]}
               ticks={yAxisTicks}
-              style={{ fontSize: '0.75rem' }} // text-xs
+              style={{ fontSize: '0.75rem' }}
             />
             <ChartTooltip
               content={

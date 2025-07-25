@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { TemperatureChart } from './temperature-chart';
-import { format } from 'date-fns';
 
 // Mock recharts components to simplify testing and avoid complex SVG rendering issues
 jest.mock('recharts', () => ({
