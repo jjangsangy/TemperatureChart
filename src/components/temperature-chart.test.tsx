@@ -74,6 +74,7 @@ describe('TemperatureChart', () => {
     sunrise: '2025-07-24T05:00:00Z',
     sunset: '2025-07-24T20:00:00Z',
     timeFormat: 'ampm' as 'ampm' | 'military', // Explicitly cast to the literal type
+    selectedDate: new Date('2025-07-24T10:00:00Z'), // Add selectedDate prop
   };
 
   beforeAll(() => {
