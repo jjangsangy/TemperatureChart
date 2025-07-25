@@ -33,6 +33,9 @@ The current focus is on enhancing the temperature chart visualization by incorpo
     - Removed the hour display from the tooltip content in `src/components/temperature-chart.tsx`.
     - Updated `src/lib/weather.test.ts` to include new hourly variables in mock API responses, resolving `TypeError` issues.
     - Updated `src/components/temperature-chart.test.tsx` to no longer assert the presence of the hour in the tooltip.
+- **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
+    - `src/app/page.tsx`: Added `timeFormat` state with `localStorage` integration, a UI toggle button, and passed the `timeFormat` to `TemperatureChart`.
+    - `src/components/temperature-chart.tsx`: Updated to accept `timeFormat` prop and format chart x-axis labels accordingly using a new `formatTime` helper function.
 
 ## 3. Next Steps
 
@@ -52,3 +55,4 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **Enhanced Interactivity**: Enabling the tooltip cursor provides a more interactive and informative user experience when hovering over chart elements.
 - **Automated Testing**: Implemented CI with GitHub Actions to ensure code quality and prevent regressions.
 - **Testing Challenges**: Mocking complex UI components like tooltips requires careful attention to the rendered DOM structure and flexible querying strategies. The resolution involved aligning the component's rendering with the test's expectations by explicitly including the hour in the tooltip, and then removing it as per user feedback, updating the test accordingly.
+- **Time Format Customization**: Added a time format toggle (AM/PM vs. 24H) with `localStorage` persistence, providing more user customization options.

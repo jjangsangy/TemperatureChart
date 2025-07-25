@@ -12,6 +12,8 @@
 - **CI/CD Setup**: GitHub Actions workflow for running tests has been created and configured.
 - **Test Dependency Fix**: `ts-node` has been added and installed to resolve CI test failures.
 - **Hourly Variable Integration**: The REST API for Open-Meteo now includes Relative Humidity, Apparent Temperature, Precipitation Probability, and Weather Code. These data points are displayed on the tooltip with improved aesthetics, including icons and bolded key-value pairs. The `getWeatherDescription` helper function has been refactored to use consistent function definitions.
+- **Temperature Unit Toggle**: Implemented a toggle for Fahrenheit/Celsius conversion with `localStorage` persistence.
+- **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
 
 ## 2. What's Left to Build
 
@@ -21,7 +23,7 @@
 
 ## 3. Current Status
 
-The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators and enhanced tooltips. Automated testing has been set up in CI, and all tests are now passing.
+The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators and enhanced tooltips. Automated testing has been set up in CI, and all tests are now passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence.
 
 ## 4. Known Issues
 
@@ -58,5 +60,7 @@ The project has undergone significant cleanup and core functionality enhancement
     - Refactored `getWeatherDescription` to use `function functionName() {}` syntax.
     - Enhanced tooltip aesthetics in `src/components/temperature-chart.tsx` with `lucide-react` icons, improved layout, and bolded key-value pairs.
 - **Test Fixes (Partial)**:
-    - Updated `src/lib/weather.test.ts` to include new hourly variables in mock API responses, resolving `TypeError` issues.
     - Updated `src/components/temperature-chart.test.tsx` to adjust tooltip content mock and use a more flexible text matcher for the hour, and added a null check for the element.
+- **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
+    - `src/app/page.tsx`: Added `timeFormat` state with `localStorage` integration, a UI toggle button, and passed the `timeFormat` to `TemperatureChart`.
+    - `src/components/temperature-chart.tsx`: Updated to accept `timeFormat` prop and format chart x-axis labels accordingly using a new `formatTime` helper function.

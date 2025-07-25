@@ -32,6 +32,7 @@ interface TemperatureChartProps {
   unit: 'f' | 'c'; // 'f' for Fahrenheit, 'c' for Celsius
   sunrise: string;
   sunset: string;
+  timeFormat: 'ampm' | 'military';
 }
 
 const chartConfig = {
@@ -74,7 +75,16 @@ function getWeatherDescription(code: number): string {
     }
 }
 
-export function TemperatureChart({ data, location, unit, sunrise, sunset }: TemperatureChartProps) {
+function formatTime(dateString: string, format: 'ampm' | 'military'): string {
+    const date = new Date(dateString);
+    if (format === 'military') {
+        return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+    } else {
+        return date.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true }).replace(' ', '');
+    }
+}
+
+export function TemperatureChart({ data, location, unit, sunrise, sunset, timeFormat }: TemperatureChartProps) {
     const [currentHour, setCurrentHour] = useState<number | null>(null);
     const [currentDay, setCurrentDay] = useState<string | null>(null);
 
@@ -101,7 +111,7 @@ export function TemperatureChart({ data, location, unit, sunrise, sunset }: Temp
         }
 
         return {
-            hour: date.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true }).replace(' ', ''),
+            hour: formatTime(item.time, timeFormat),
             temperature: item.temperature,
             relativeHumidity: item.relativeHumidity,
             apparentTemperature: item.apparentTemperature,

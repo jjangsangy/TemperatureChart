@@ -73,6 +73,7 @@ describe('TemperatureChart', () => {
     unit: 'f' as 'f' | 'c',
     sunrise: '2025-07-24T05:00:00Z',
     sunset: '2025-07-24T20:00:00Z',
+    timeFormat: 'ampm' as 'ampm' | 'military', // Explicitly cast to the literal type
   };
 
   beforeAll(() => {

@@ -26,10 +26,23 @@ export default function Home() {
     return 'f';
   });
 
+  const [timeFormat, setTimeFormat] = useState<'ampm' | 'military'>(() => {
+    if (typeof window !== 'undefined') {
+      const savedTimeFormat = localStorage.getItem('timeFormat');
+      return savedTimeFormat === 'military' ? 'military' : 'ampm';
+    }
+    return 'ampm';
+  });
+
   // Save unit to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('temperatureUnit', unit);
   }, [unit]);
+
+  // Save timeFormat to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('timeFormat', timeFormat);
+  }, [timeFormat]);
 
   const handleFetchWeather = useCallback(async (zip: string, currentUnit: 'f' | 'c') => {
     setLoading(true);
@@ -72,6 +85,10 @@ export default function Home() {
     setUnit(prevUnit => (prevUnit === 'f' ? 'c' : 'f'));
   };
 
+  const handleTimeFormatToggle = () => {
+    setTimeFormat(prevFormat => (prevFormat === 'ampm' ? 'military' : 'ampm'));
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-background font-body">
       <main className="flex-grow flex flex-col items-center p-4 sm:p-8 md:p-12 lg:p-24">
@@ -83,6 +100,14 @@ export default function Home() {
               className="text-lg px-2 py-1 h-auto" // Adjust padding and height for smaller button
           >
               {unit === 'f' ? '°C' : '°F'}
+          </Button>
+          <Button 
+              variant="ghost" 
+              onClick={handleTimeFormatToggle} 
+              disabled={loading}
+              className="text-lg px-2 py-1 h-auto" // Adjust padding and height for smaller button
+          >
+              {timeFormat === 'ampm' ? '24H' : 'AM/PM'}
           </Button>
           <ThemeToggle />
         </div>
@@ -127,7 +152,8 @@ export default function Home() {
                   location={data.location} 
                   unit={unit} 
                   sunrise={data.sunrise} 
-                  sunset={data.sunset} 
+                  sunset={data.sunset}
+                  timeFormat={timeFormat}
                 />
                 <Metadata
                   temperatureMax={data.temperatureMax}
