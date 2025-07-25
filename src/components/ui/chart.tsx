@@ -16,6 +16,7 @@ interface Payload<V extends ValueType, N extends NameType> {
   color?: string;
   fill?: string;
   stroke?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any;
 }
 
@@ -152,7 +153,11 @@ const ChartTooltipContent = React.forwardRef<
           : itemConfig?.label;
 
       if (labelFormatter) {
-        return <div className={cn('font-medium', labelClassName)}>{labelFormatter(value, payload)}</div>;
+        return (
+          <div className={cn('font-medium', labelClassName)}>
+            {labelFormatter(value, payload as readonly Payload<ValueType, NameType>[])}
+          </div>
+        );
       }
 
       if (!value) {
@@ -181,7 +186,8 @@ const ChartTooltipContent = React.forwardRef<
           {payload.map((item: Payload<ValueType, NameType>, index: number) => {
             const key = `${nameKey || item.name || item.dataKey || 'value'}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
-            const indicatorColor = color || item.payload.fill || item.color;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const indicatorColor = color || (item.payload as Record<string, any>)?.fill || item.color;
 
             return (
               <div
@@ -301,7 +307,8 @@ function getPayloadConfigFromPayload(config: ChartConfig, payload: Payload<Value
 
   const payloadPayload =
     'payload' in payload && typeof payload.payload === 'object' && payload.payload !== null
-      ? payload.payload
+      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (payload.payload as Record<string, any>)
       : undefined;
 
   let configLabelKey: string = key;
