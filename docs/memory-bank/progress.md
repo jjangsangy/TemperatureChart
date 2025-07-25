@@ -79,3 +79,4 @@ The project has undergone significant cleanup and core functionality enhancement
     - Corrected the mocked Open-Meteo API URL assertion in `src/lib/weather.test.ts` to use `start_date` and `end_date` parameters instead of `forecast_days=1`.
 - **Missing Dependency Type Errors Fixed**:
     - Installed `react-day-picker` and `@radix-ui/react-popover` to resolve "Cannot find module" and "implicitly has an 'any' type" errors.
+- **Mobile Layout Adjustment**: Modified `src/app/page.tsx` to adjust the layout for mobile devices, ensuring the date picker appears below the zip code input and submit button, while the latter two remain on the same row.

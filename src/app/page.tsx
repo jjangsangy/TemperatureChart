@@ -145,28 +145,30 @@ export default function Home() {
             Enter a US zip code to see the 24-hour temperature forecast.
           </p>
 
-          <form onSubmit={handleSubmit} className="flex w-full max-w-sm mx-auto items-center space-x-2 mb-12">
-            <Input 
-              type="text" 
-              name="zipcode" 
-              placeholder="Enter 5-digit zip code" 
-              required 
-              pattern="\d{5}"
-              maxLength={5}
-              value={zipCode}
-              onChange={(e) => setZipCode(e.target.value)}
-              className="text-sm sm:text-base"
-            />
-            <Button type="submit" disabled={loading} className="font-semibold">
-              {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              Get Weather
-            </Button>
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row w-full max-w-sm mx-auto items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-12">
+            <div className="flex w-full space-x-2">
+              <Input 
+                type="text" 
+                name="zipcode" 
+                placeholder="Enter 5-digit zip code" 
+                required 
+                pattern="\d{5}"
+                maxLength={5}
+                value={zipCode}
+                onChange={(e) => setZipCode(e.target.value)}
+                className="text-sm sm:text-base"
+              />
+              <Button type="submit" disabled={loading} className="font-semibold">
+                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                Get Weather
+              </Button>
+            </div>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant={"outline"}
                   className={cn(
-                    "w-[180px] justify-start text-left font-normal",
+                    "w-full sm:w-[180px] justify-start text-left font-normal",
                     !date && "text-muted-foreground"
                   )}
                 >
