@@ -9,6 +9,8 @@
 - **Dependency Optimization**: Unnecessary dependencies have been identified and removed, streamlining the project. `next-themes` and `lucide-react` were re-added as they are in use. `@radix-ui/react-dropdown-menu`, `@radix-ui/react-slot`, `class-variance-authority`, `recharts`, `tailwind-merge`, and `zod` were also re-added by the user, indicating their necessity.
 - **API Enhancement**: The weather API call now includes sunrise and sunset data.
 - **Chart Visualization**: The temperature chart now visually distinguishes between day and night hours.
+- **CI/CD Setup**: GitHub Actions workflow for running tests has been created and configured.
+- **Test Dependency Fix**: `ts-node` has been added and installed to resolve CI test failures.
 
 ## 2. What's Left to Build
 
@@ -18,7 +20,7 @@
 
 ## 3. Current Status
 
-The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators. The immediate next steps involve refining error handling and ensuring all styling and animations are complete.
+The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators. Automated testing has been set up in CI. The immediate next steps involve refining error handling and ensuring all styling and animations are complete.
 
 ## 4. Known Issues
 
@@ -43,6 +45,9 @@ The project has undergone significant cleanup and core functionality enhancement
     - `src/components/metadata.tsx`: Created a new component to display these daily metadata points.
     - `src/app/page.tsx`: Integrated the `Metadata` component between the zip code input and the temperature chart, passing the new data.
     - **Dependency Added**: Installed `date-fns` for date and time formatting.
+- **CI/CD Setup**: Configured GitHub Actions to run tests automatically.
+    - `.github/workflows/ci.yml`: Created the workflow file.
+    - `package.json`: Added `ts-node` to `devDependencies` and ran `npm install` to fix CI test failures.
 
 ## 4. Known Issues
 
