@@ -25,17 +25,17 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **CI/CD Setup**: Created `.github/workflows/ci.yml` to run tests on push and pull requests to the `main` branch.
 - **Test Dependency Fix**: Added `ts-node` to `devDependencies` in `package.json` and ran `npm install` to resolve CI test failures.
 - **Hourly Variable Integration**:
-    - Modified `src/lib/weather.ts` to include `relative_humidity_2m`, `apparent_temperature`, `precipitation_probability`, and `weather_code` in the Open-Meteo API request and updated the `ForecastData` interface.
-    - Updated `src/components/temperature-chart.tsx` to display these new data points in the chart's tooltip, including a `getWeatherDescription` helper function.
-    - Refactored `getWeatherDescription` to use `function functionName() {}` syntax.
-    - Enhanced tooltip aesthetics in `src/components/temperature-chart.tsx` with `lucide-react` icons, improved layout, and bolded key-value pairs.
+  - Modified `src/lib/weather.ts` to include `relative_humidity_2m`, `apparent_temperature`, `precipitation_probability`, and `weather_code` in the Open-Meteo API request and updated the `ForecastData` interface.
+  - Updated `src/components/temperature-chart.tsx` to display these new data points in the chart's tooltip, including a `getWeatherDescription` helper function.
+  - Refactored `getWeatherDescription` to use `function functionName() {}` syntax.
+  - Enhanced tooltip aesthetics in `src/components/temperature-chart.tsx` with `lucide-react` icons, improved layout, and bolded key-value pairs.
 - **Test Fixes (Complete)**:
-    - Removed the hour display from the tooltip content in `src/components/temperature-chart.tsx`.
-    - Updated `src/lib/weather.test.ts` to include new hourly variables in mock API responses, resolving `TypeError` issues.
-    - Updated `src/components/temperature-chart.test.tsx` to no longer assert the presence of the hour in the tooltip.
+  - Removed the hour display from the tooltip content in `src/components/temperature-chart.tsx`.
+  - Updated `src/lib/weather.test.ts` to include new hourly variables in mock API responses, resolving `TypeError` issues.
+  - Updated `src/components/temperature-chart.test.tsx` to no longer assert the presence of the hour in the tooltip.
 - **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
-    - `src/app/page.tsx`: Added `timeFormat` state with `localStorage` integration, a UI toggle button, and passed the `timeFormat` to `TemperatureChart`.
-    - `src/components/temperature-chart.tsx`: Updated to accept `timeFormat` prop and format chart x-axis labels accordingly using a new `formatTime` helper function.
+  - `src/app/page.tsx`: Added `timeFormat` state with `localStorage` integration, a UI toggle button, and passed the `timeFormat` to `TemperatureChart`.
+  - `src/components/temperature-chart.tsx`: Updated to accept `timeFormat` prop and format chart x-axis labels accordingly using a new `formatTime` helper function.
 - **Responsive Header Layout**: Updated the header in `src/app/page.tsx` to adjust its layout at the `lg` breakpoint instead of `md`, ensuring better responsiveness on tablet-sized screens and preventing text overlap. The unit toggle, time format toggle, and theme toggle buttons are now positioned inline with the main title on larger screens for a cleaner and more integrated look.
 - **Responsive Text Sizes**: Implemented responsive text size adjustments across `src/app/page.tsx`, `src/components/temperature-chart.tsx`, and `src/components/metadata.tsx` to ensure optimal readability on mobile devices while maintaining aesthetics on larger screens.
 - **Daily Overview Layout**: Adjusted the `Metadata` component (`src/components/metadata.tsx`) to display daily overview items in a 2-column grid on mobile, improving layout and readability.
@@ -43,8 +43,8 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **Bug Fix**: Corrected the geocoding API URL in `src/lib/weather.ts` from `api.zippopot.us` to `api.zippopotam.us` to resolve `ERR_NAME_NOT_RESOLVED` errors.
 - **Bug Fix**: Removed `forecast_days=1` parameter from Open-Meteo API call in `src/lib/weather.ts` to resolve conflict with `start_date` and `end_date` parameters.
 - **Type and Test Issues Fixed**:
-    - Updated `src/lib/weather.test.ts` to pass the `date` argument to `getWeatherDataByZip` in all test calls.
-    - Corrected the mocked Open-Meteo API URL assertion in `src/lib/weather.test.ts` to use `start_date` and `end_date` parameters instead of `forecast_days=1`.
+  - Updated `src/lib/weather.test.ts` to pass the `date` argument to `getWeatherDataByZip` in all test calls.
+  - Corrected the mocked Open-Meteo API URL assertion in `src/lib/weather.test.ts` to use `start_date` and `end_date` parameters instead of `forecast_days=1`.
 - **Mobile Layout Adjustment**: Modified `src/app/page.tsx` to adjust the layout for mobile devices, ensuring the date picker appears below the zip code input and submit button, while the latter two remain on the same row.
 
 ## 3. Next Steps

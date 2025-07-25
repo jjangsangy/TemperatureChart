@@ -6,10 +6,11 @@ The application follows a component-based architecture, typical of Next.js/React
 
 - **`src/app`**: Contains the main application pages, layouts, and global styles. `page.tsx` serves as the entry point.
 - **`src/components`**: Houses reusable UI components.
-    - **`src/components/ui`**: Contains the base UI components from Shadcn/UI.
-    - **`src/components/temperature-chart.tsx`**: A dedicated component for the main data visualization feature.
+  - **`src/components/ui`**: Contains the base UI components from Shadcn/UI.
+  - **`src/components/temperature-chart.tsx`**: A dedicated component for the main data visualization feature.
 - **`src/components/metadata.tsx`**: A new component for displaying daily weather metadata.
 - **`src/lib`**: For utility functions and external service integrations (e.g., `weather.ts`).
+
 ## 2. Data Flow
 
 1.  **User Input**: The user enters a zip code in a component likely located in `src/app/page.tsx`.

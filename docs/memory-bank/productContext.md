@@ -7,6 +7,7 @@ Users often need a quick and simple way to view the upcoming temperature forecas
 ## 2. Target Audience
 
 The primary audience for TemperatureChart is anyone in the US who needs a quick, no-frills look at the next 24 hours of temperature. This includes:
+
 - People planning their day's activities.
 - Commuters checking weather conditions.
 - Anyone who prefers a minimalist and data-focused interface.

@@ -38,46 +38,46 @@ The project has undergone significant cleanup and core functionality enhancement
 ## 5. Completed Tasks
 
 - **Fixed Failing Tests**:
-    - Removed the hour display from the tooltip content in `src/components/temperature-chart.tsx`.
-    - Updated `src/components/temperature-chart.test.tsx` to no longer assert the presence of the hour in the tooltip.
+  - Removed the hour display from the tooltip content in `src/components/temperature-chart.tsx`.
+  - Updated `src/components/temperature-chart.test.tsx` to no longer assert the presence of the hour in the tooltip.
 - **Temperature Unit Toggle**: Implemented a toggle for Fahrenheit/Celsius conversion with `localStorage` persistence.
-    - `src/lib/weather.ts`: Modified `getWeatherDataByZip` to always fetch data in Celsius.
-    - `src/app/page.tsx`: Added `celsiusData` state to store original Celsius data, and a `useEffect` hook to convert to Fahrenheit when the unit is toggled.
-    - `src/components/temperature-chart.tsx`: Updated to accept `unit` prop and dynamically update chart labels and tooltips.
-    - **UI Refinement**: Modified the temperature unit toggle button in `src/app/page.tsx` to be smaller, use "°C" / "°F" symbols, and be positioned next to the theme toggle.
+  - `src/lib/weather.ts`: Modified `getWeatherDataByZip` to always fetch data in Celsius.
+  - `src/app/page.tsx`: Added `celsiusData` state to store original Celsius data, and a `useEffect` hook to convert to Fahrenheit when the unit is toggled.
+  - `src/components/temperature-chart.tsx`: Updated to accept `unit` prop and dynamically update chart labels and tooltips.
+  - **UI Refinement**: Modified the temperature unit toggle button in `src/app/page.tsx` to be smaller, use "°C" / "°F" symbols, and be positioned next to the theme toggle.
 - **Day/Night Chart Visualization**: Implemented visual distinction for day and night in the temperature chart.
-    - `src/lib/weather.ts`: Updated `getWeatherDataByZip` to fetch `daily=sunrise,sunset` data.
-    - `src/components/temperature-chart.tsx`: Modified to use `sunrise` and `sunset` props to determine day/night and adjust bar `fill` color accordingly (dim for night, bright for day, accent for current hour).
-    - `src/app/page.tsx`: Updated to pass `sunrise` and `sunset` data from the API response to the `TemperatureChart` component.
+  - `src/lib/weather.ts`: Updated `getWeatherDataByZip` to fetch `daily=sunrise,sunset` data.
+  - `src/components/temperature-chart.tsx`: Modified to use `sunrise` and `sunset` props to determine day/night and adjust bar `fill` color accordingly (dim for night, bright for day, accent for current hour).
+  - `src/app/page.tsx`: Updated to pass `sunrise` and `sunset` data from the API response to the `TemperatureChart` component.
 - **Footer Implementation**: Added a footer component with a link to the GitHub repository and author acknowledgment, including the current year.
-    - `src/components/footer.tsx`: Created a new component for the footer and added the current year.
-    - `src/app/page.tsx`: Integrated the `Footer` component into the main page.
+  - `src/components/footer.tsx`: Created a new component for the footer and added the current year.
+  - `src/app/page.tsx`: Integrated the `Footer` component into the main page.
 - **Metadata Component**: Added a new component to display daily weather metadata.
-    - `src/lib/weather.ts`: Modified `getWeatherDataByZip` to fetch `temperature_2m_max`, `temperature_2m_min`, `precipitation_probability_max`, and `daylight_duration`.
-    - `src/components/metadata.tsx`: Created a new component to display these daily metadata points.
-    - `src/app/page.tsx`: Integrated the `Metadata` component between the zip code input and the temperature chart, passing the new data.
-    - **Dependency Added**: Installed `date-fns` for date and time formatting.
+  - `src/lib/weather.ts`: Modified `getWeatherDataByZip` to fetch `temperature_2m_max`, `temperature_2m_min`, `precipitation_probability_max`, and `daylight_duration`.
+  - `src/components/metadata.tsx`: Created a new component to display these daily metadata points.
+  - `src/app/page.tsx`: Integrated the `Metadata` component between the zip code input and the temperature chart, passing the new data.
+  - **Dependency Added**: Installed `date-fns` for date and time formatting.
 - **CI/CD Setup**: Configured GitHub Actions to run tests automatically.
-    - `.github/workflows/ci.yml`: Created the workflow file.
-    - `package.json`: Added `ts-node` to `devDependencies` and ran `npm install` to fix CI test failures.
+  - `.github/workflows/ci.yml`: Created the workflow file.
+  - `package.json`: Added `ts-node` to `devDependencies` and ran `npm install` to fix CI test failures.
 - **Hourly Variable Integration**:
-    - Modified `src/lib/weather.ts` to include `relative_humidity_2m`, `apparent_temperature`, `precipitation_probability`, and `weather_code` in the Open-Meteo API request and updated the `ForecastData` interface.
-    - Updated `src/components/temperature-chart.tsx` to display these new data points in the chart's tooltip, including a `getWeatherDescription` helper function.
-    - Refactored `getWeatherDescription` to use `function functionName() {}` syntax.
-    - Enhanced tooltip aesthetics in `src/components/temperature-chart.tsx` with `lucide-react` icons, improved layout, and bolded key-value pairs.
+  - Modified `src/lib/weather.ts` to include `relative_humidity_2m`, `apparent_temperature`, `precipitation_probability`, and `weather_code` in the Open-Meteo API request and updated the `ForecastData` interface.
+  - Updated `src/components/temperature-chart.tsx` to display these new data points in the chart's tooltip, including a `getWeatherDescription` helper function.
+  - Refactored `getWeatherDescription` to use `function functionName() {}` syntax.
+  - Enhanced tooltip aesthetics in `src/components/temperature-chart.tsx` with `lucide-react` icons, improved layout, and bolded key-value pairs.
 - **Test Fixes (Complete)**:
-    - Updated `src/lib/weather.test.ts` to remove the `unit` parameter from `getWeatherDataByZip` calls, update the `fetchMock` assertion to expect `celsius`, and remove the redundant test case.
+  - Updated `src/lib/weather.test.ts` to remove the `unit` parameter from `getWeatherDataByZip` calls, update the `fetchMock` assertion to expect `celsius`, and remove the redundant test case.
 - **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
-    - `src/app/page.tsx`: Added `timeFormat` state with `localStorage` integration, a UI toggle button, and passed the `timeFormat` to `TemperatureChart`.
-    - `src/components/temperature-chart.tsx`: Updated to accept `timeFormat` prop and format chart x-axis labels accordingly using a new `formatTime` helper function.
+  - `src/app/page.tsx`: Added `timeFormat` state with `localStorage` integration, a UI toggle button, and passed the `timeFormat` to `TemperatureChart`.
+  - `src/components/temperature-chart.tsx`: Updated to accept `timeFormat` prop and format chart x-axis labels accordingly using a new `formatTime` helper function.
 - **Responsive Header Layout**: Updated the header in `src/app/page.tsx` to be more responsive, with toggle buttons positioned inline with the main title on larger screens. The breakpoint for rearrangement has been adjusted to `lg`.
 - **Responsive Text Sizes**: Implemented responsive text size adjustments across `src/app/page.tsx`, `src/components/temperature-chart.tsx`, and `src/components/metadata.tsx` to ensure optimal readability on mobile devices while maintaining aesthetics on larger screens.
 - **Date Selection Feature**: Added a "Change Day" button with a calendar dropdown to allow users to select a specific date for the weather forecast. The `getWeatherDataByZip` function was updated to accept and use this date for API calls.
 - **Bug Fix**: Corrected the geocoding API URL in `src/lib/weather.ts` from `api.zippopot.us` to `api.zippopotam.us` to resolve `ERR_NAME_NOT_RESOLVED` errors.
 - **Bug Fix**: Removed `forecast_days=1` parameter from Open-Meteo API call in `src/lib/weather.ts` to resolve conflict with `start_date` and `end_date` parameters.
 - **Type and Test Issues Fixed**:
-    - Updated `src/lib/weather.test.ts` to pass the `date` argument to `getWeatherDataByZip` in all test calls.
-    - Corrected the mocked Open-Meteo API URL assertion in `src/lib/weather.test.ts` to use `start_date` and `end_date` parameters instead of `forecast_days=1`.
+  - Updated `src/lib/weather.test.ts` to pass the `date` argument to `getWeatherDataByZip` in all test calls.
+  - Corrected the mocked Open-Meteo API URL assertion in `src/lib/weather.test.ts` to use `start_date` and `end_date` parameters instead of `forecast_days=1`.
 - **Missing Dependency Type Errors Fixed**:
-    - Installed `react-day-picker` and `@radix-ui/react-popover` to resolve "Cannot find module" and "implicitly has an 'any' type" errors.
+  - Installed `react-day-picker` and `@radix-ui/react-popover` to resolve "Cannot find module" and "implicitly has an 'any' type" errors.
 - **Mobile Layout Adjustment**: Modified `src/app/page.tsx` to adjust the layout for mobile devices, ensuring the date picker appears below the zip code input and submit button, while the latter two remain on the same row.
