@@ -31,6 +31,8 @@ The project has undergone significant cleanup and core functionality enhancement
 
 ## 5. Completed Tasks
 
+## 6. New Features
+
 - **Fixed Failing Tests**:
     - Removed the hour display from the tooltip content in `src/components/temperature-chart.tsx`.
     - Updated `src/components/temperature-chart.test.tsx` to no longer assert the presence of the hour in the tooltip.
@@ -64,3 +66,8 @@ The project has undergone significant cleanup and core functionality enhancement
 - **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
     - `src/app/page.tsx`: Added `timeFormat` state with `localStorage` integration, a UI toggle button, and passed the `timeFormat` to `TemperatureChart`.
     - `src/components/temperature-chart.tsx`: Updated to accept `timeFormat` prop and format chart x-axis labels accordingly using a new `formatTime` helper function.
+- **Mobile Theme Toggle**: Implemented a mobile-friendly theme toggle using a drawer component.
+    - Re-created the `src/hooks/use-mobile.tsx` hook to detect mobile screen sizes.
+    - Installed the `vaul` library for the drawer component.
+    - Updated `src/components/theme-toggle.tsx` to conditionally render a `Drawer` (mobile) or `DropdownMenu` (desktop).
+    - Created `src/components/ui/drawer.tsx` for the `vaul` drawer implementation.
