@@ -132,8 +132,8 @@ export function TemperatureChart({ data, location, unit, sunrise, sunset, timeFo
   return (
     <Card className="w-full mb-4 animate-in fade-in-0 duration-500 shadow-lg border-primary/20">
       <CardHeader>
-        <CardTitle>24-Hour Forecast for {currentDay}</CardTitle>
-        <CardDescription>{location}</CardDescription>
+        <CardTitle className="text-xl sm:text-2xl">24-Hour Forecast for {currentDay}</CardTitle>
+        <CardDescription className="text-xs sm:text-sm">{location}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[550px] w-full">
@@ -145,6 +145,7 @@ export function TemperatureChart({ data, location, unit, sunrise, sunset, timeFo
               tickMargin={10}
               axisLine={false}
               tickFormatter={(value) => value}
+              style={{ fontSize: '0.75rem' }} // text-xs
             />
             <YAxis 
                 dataKey="temperature"
@@ -154,16 +155,17 @@ export function TemperatureChart({ data, location, unit, sunrise, sunset, timeFo
                 tickFormatter={(value) => `${value}${unitSymbol}`}
                 domain={[0, yAxisTicks[yAxisTicks.length - 1]]}
                 ticks={yAxisTicks}
+                style={{ fontSize: '0.75rem' }} // text-xs
             />
             <ChartTooltip
               content={<ChartTooltipContent 
                 labelFormatter={(value) => (
-                    <div className="text-lg font-bold text-foreground">
+                    <div className="text-base sm:text-lg font-bold text-foreground">
                         {value}
                     </div>
                 )}
                 formatter={(value, name, props) => (
-                    <div className="flex flex-col text-sm p-2">
+                    <div className="flex flex-col text-xs sm:text-sm p-2">
                         <div className="flex items-center space-x-2 mb-1">
                             <Thermometer className="h-4 w-4 text-muted-foreground" />
                             <span className="text-muted-foreground"><span className="font-bold">Temp:</span> {`${props.payload.temperature}${unitSymbol}`}</span>

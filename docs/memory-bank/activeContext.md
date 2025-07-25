@@ -36,7 +36,8 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
     - `src/app/page.tsx`: Added `timeFormat` state with `localStorage` integration, a UI toggle button, and passed the `timeFormat` to `TemperatureChart`.
     - `src/components/temperature-chart.tsx`: Updated to accept `timeFormat` prop and format chart x-axis labels accordingly using a new `formatTime` helper function.
-- **Responsive Header Layout**: Updated the header in `src/app/page.tsx` to be more responsive. The unit toggle, time format toggle, and theme toggle buttons are now positioned inline with the main title on larger screens for a cleaner and more integrated look.
+- **Responsive Header Layout**: Updated the header in `src/app/page.tsx` to adjust its layout at the `lg` breakpoint instead of `md`, ensuring better responsiveness on tablet-sized screens and preventing text overlap. The unit toggle, time format toggle, and theme toggle buttons are now positioned inline with the main title on larger screens for a cleaner and more integrated look.
+- **Responsive Text Sizes**: Implemented responsive text size adjustments across `src/app/page.tsx`, `src/components/temperature-chart.tsx`, and `src/components/metadata.tsx` to ensure optimal readability on mobile devices while maintaining aesthetics on larger screens.
 
 ## 3. Next Steps
 
@@ -57,3 +58,4 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **Automated Testing**: Implemented CI with GitHub Actions to ensure code quality and prevent regressions.
 - **Testing Challenges**: Mocking complex UI components like tooltips requires careful attention to the rendered DOM structure and flexible querying strategies. The resolution involved aligning the component's rendering with the test's expectations by explicitly including the hour in the tooltip, and then removing it as per user feedback, updating the test accordingly.
 - **Time Format Customization**: Added a time format toggle (AM/PM vs. 24H) with `localStorage` persistence, providing more user customization options.
+- **Improved Responsiveness**: The application now features improved responsiveness, particularly with text sizes, ensuring a better user experience across various device sizes.

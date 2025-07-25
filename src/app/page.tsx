@@ -118,11 +118,11 @@ export default function Home() {
     <div className="flex min-h-screen flex-col bg-background font-body">
       <main className="flex-grow flex flex-col items-center p-4 sm:p-8 md:p-12 lg:p-24">
         <div className="z-10 w-full max-w-7xl items-center justify-center text-center">
-          <div className="relative flex flex-col md:flex-row md:items-center md:justify-center mb-4">
-            <h1 className="text-4xl md:text-5xl font-bold font-headline text-foreground/90 mb-4 md:mb-0 md:text-center md:flex-grow">
+          <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-center mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-foreground/90 mb-4 lg:mb-0 lg:text-center lg:flex-grow">
                 TemperatureChart
             </h1>
-            <div className="flex items-center space-x-2 justify-center md:absolute md:right-0 md:top-0">
+            <div className="flex items-center space-x-2 justify-center lg:absolute lg:right-0 lg:top-0">
                 <Button 
                     variant="ghost" 
                     onClick={handleUnitToggle} 
@@ -142,7 +142,7 @@ export default function Home() {
                 <ThemeToggle />
             </div>
           </div>
-          <p className="text-lg text-muted-foreground mb-8">
+          <p className="text-base sm:text-lg text-muted-foreground mb-8">
             Enter a US zip code to see the 24-hour temperature forecast.
           </p>
 
@@ -156,7 +156,7 @@ export default function Home() {
               maxLength={5}
               value={zipCode}
               onChange={(e) => setZipCode(e.target.value)}
-              className="text-base"
+              className="text-sm sm:text-base"
             />
             <Button type="submit" disabled={loading} className="font-semibold">
               {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
