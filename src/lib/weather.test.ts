@@ -174,7 +174,7 @@ describe('getWeatherDataByCoords', () => {
     const result = await getWeatherDataByCoords(34.05, -118.25, mockDate);
 
     expect(result).toEqual({
-      location: '34.05, -118.25',
+      location: '(34.0500, -118.2500)',
       forecast: [
         {
           time: '2025-07-24T00:00',

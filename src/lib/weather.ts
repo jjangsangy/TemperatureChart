@@ -55,7 +55,7 @@ export async function getWeatherDataByCoords(
   const precipitationProbabilityMax = dailyData.precipitation_probability_max[0];
   const daylightDuration = dailyData.daylight_duration[0];
 
-  const location = locationName || `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
+  const location = locationName || `(${latitude.toFixed(4)}, ${longitude.toFixed(4)})`;
 
   return {
     location,

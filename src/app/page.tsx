@@ -202,7 +202,7 @@ export default function Home() {
                 onClick={handleGeolocation}
                 disabled={loading}
                 variant="outline"
-                className="font-semibold px-3"
+                className="font-semibold px-3 bg-accent text-accent-foreground hover:bg-accent/90"
                 title="Get weather by current location"
               >
                 <MapPin className="h-4 w-4" />
