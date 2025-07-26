@@ -46,6 +46,12 @@ The current focus is on enhancing the temperature chart visualization by incorpo
   - Updated `src/lib/weather.test.ts` to pass the `date` argument to `getWeatherDataByZip` in all test calls.
   - Corrected the mocked Open-Meteo API URL assertion in `src/lib/weather.test.ts` to use `start_date` and `end_date` parameters instead of `forecast_days=1`.
 - **Mobile Layout Adjustment**: Modified `src/app/page.tsx` to adjust the layout for mobile devices, ensuring the date picker appears below the zip code input and submit button, while the latter two remain on the same row.
+- **Geolocation Feature**: Implemented a geolocation button in `src/app/page.tsx` that uses the browser's `navigator.geolocation.getCurrentPosition` API to fetch latitude and longitude.
+  - When geolocation is used, the stored zip code in `localStorage` is cleared, and the fetched coordinates are saved.
+  - Refactored `src/lib/weather.ts` to include a new `getWeatherDataByCoords` function and modified `handleFetchWeather` in `src/app/page.tsx` to use either zip code or coordinates for fetching weather data.
+  - Added tests for `getWeatherDataByCoords` in `src/lib/weather.test.ts`.
+- **Input Field Layout Fix**: Adjusted the layout of the input fields and buttons in `src/app/page.tsx` to ensure the calendar selector is always below the zip code input and "Get Weather" button, providing more space for the zip code input.
+- **Location Display Logic**: Modified `src/lib/weather.ts` to display the actual location name (city, state) when using a zip code, and latitude/longitude when using the geolocation feature. Updated `src/lib/weather.test.ts` to reflect this change in expected output.
 
 ## 3. Next Steps
 

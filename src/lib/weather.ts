@@ -21,35 +21,12 @@ export interface ForecastData {
   daylightDuration: number;
 }
 
-export async function getWeatherDataByZip(zipCode: string, date: Date | undefined): Promise<ForecastData> {
-  const validation = zipCodeSchema.safeParse(zipCode);
-  if (!validation.success) {
-    throw new Error('Please enter a valid 5-digit US zip code.');
-  }
-  const validZip = validation.data;
-
-  // Using a different, potentially more reliable geocoding API for US zip codes
-  const geoUrl = `https://api.zippopotam.us/us/${validZip}`;
-  const geoResponse = await fetch(geoUrl);
-
-  if (!geoResponse.ok) {
-    if (geoResponse.status === 404) {
-      throw new Error(`Could not find location for ZIP code ${validZip}. Please double-check the number.`);
-    }
-    console.error('Geocoding API error:', geoResponse.statusText);
-    throw new Error('Failed to fetch location data.');
-  }
-
-  const geoData = await geoResponse.json();
-  if (!geoData || !geoData.places || geoData.places.length === 0) {
-    throw new Error(`Could not find location for ZIP code ${validZip}.`);
-  }
-
-  const place = geoData.places[0];
-  const latitude = parseFloat(place.latitude);
-  const longitude = parseFloat(place.longitude);
-  const location = `${place['place name']}, ${place['state abbreviation']}`;
-
+export async function getWeatherDataByCoords(
+  latitude: number,
+  longitude: number,
+  date: Date | undefined,
+  locationName?: string, // Add optional locationName parameter
+): Promise<ForecastData> {
   const formattedDate = date ? format(date, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd');
 
   const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&timezone=auto&start_date=${formattedDate}&end_date=${formattedDate}`;
@@ -78,6 +55,8 @@ export async function getWeatherDataByZip(zipCode: string, date: Date | undefine
   const precipitationProbabilityMax = dailyData.precipitation_probability_max[0];
   const daylightDuration = dailyData.daylight_duration[0];
 
+  const location = locationName || `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
+
   return {
     location,
     forecast,
@@ -88,4 +67,35 @@ export async function getWeatherDataByZip(zipCode: string, date: Date | undefine
     precipitationProbabilityMax,
     daylightDuration,
   };
+}
+
+export async function getWeatherDataByZip(zipCode: string, date: Date | undefined): Promise<ForecastData> {
+  const validation = zipCodeSchema.safeParse(zipCode);
+  if (!validation.success) {
+    throw new Error('Please enter a valid 5-digit US zip code.');
+  }
+  const validZip = validation.data;
+
+  const geoUrl = `https://api.zippopotam.us/us/${validZip}`;
+  const geoResponse = await fetch(geoUrl);
+
+  if (!geoResponse.ok) {
+    if (geoResponse.status === 404) {
+      throw new Error(`Could not find location for ZIP code ${validZip}. Please double-check the number.`);
+    }
+    console.error('Geocoding API error:', geoResponse.statusText);
+    throw new Error('Failed to fetch location data.');
+  }
+
+  const geoData = await geoResponse.json();
+  if (!geoData || !geoData.places || geoData.places.length === 0) {
+    throw new Error(`Could not find location for ZIP code ${validZip}.`);
+  }
+
+  const place = geoData.places[0];
+  const latitude = parseFloat(place.latitude);
+  const longitude = parseFloat(place.longitude);
+  const locationName = `${place['place name']}, ${place['state abbreviation']}`;
+
+  return getWeatherDataByCoords(latitude, longitude, date, locationName);
 }

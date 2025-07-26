@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { getWeatherDataByZip, ForecastData } from '@/lib/weather';
+import { getWeatherDataByZip, getWeatherDataByCoords, ForecastData } from '@/lib/weather';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { TemperatureChart } from '@/components/temperature-chart';
 import { Metadata } from '@/components/metadata';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, ThermometerSun, CalendarIcon } from 'lucide-react';
+import { Loader2, ThermometerSun, CalendarIcon, MapPin } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Footer } from '@/components/footer';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -49,34 +49,74 @@ export default function Home() {
     localStorage.setItem('timeFormat', timeFormat);
   }, [timeFormat]);
 
-  const handleFetchWeather = useCallback(async (zip: string, selectedDate: Date | undefined) => {
-    setLoading(true);
-    setData(null);
-    setCelsiusData(null);
-    try {
-      const weatherData = await getWeatherDataByZip(zip, selectedDate); // Pass selectedDate
-      setCelsiusData(weatherData);
-      localStorage.setItem('lastZipCode', zip);
-    } catch (err) {
-      // Error is not currently displayed to the user, so we just log it.
-      console.error('Error fetching weather data:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const handleFetchWeather = useCallback(
+    async (zip: string | null, lat: number | null, lon: number | null, selectedDate: Date | undefined) => {
+      setLoading(true);
+      setData(null);
+      setCelsiusData(null);
+      try {
+        let weatherData;
+        if (zip) {
+          weatherData = await getWeatherDataByZip(zip, selectedDate);
+          localStorage.setItem('lastZipCode', zip);
+          localStorage.removeItem('lastLatitude');
+          localStorage.removeItem('lastLongitude');
+        } else if (lat !== null && lon !== null) {
+          // Assuming getWeatherDataByCoords exists or will be created in weather.ts
+          weatherData = await getWeatherDataByCoords(lat, lon, selectedDate);
+          localStorage.setItem('lastLatitude', lat.toString());
+          localStorage.setItem('lastLongitude', lon.toString());
+          localStorage.removeItem('lastZipCode');
+        } else {
+          throw new Error('No location information provided.');
+        }
+        setCelsiusData(weatherData);
+      } catch (err) {
+        console.error('Error fetching weather data:', err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     const savedZipCode = localStorage.getItem('lastZipCode');
+    const savedLatitude = localStorage.getItem('lastLatitude');
+    const savedLongitude = localStorage.getItem('lastLongitude');
+
     if (savedZipCode) {
       setZipCode(savedZipCode);
-      handleFetchWeather(savedZipCode, date); // Pass date to initial fetch
+      handleFetchWeather(savedZipCode, null, null, date);
+    } else if (savedLatitude && savedLongitude) {
+      const lat = parseFloat(savedLatitude);
+      const lon = parseFloat(savedLongitude);
+      handleFetchWeather(null, lat, lon, date);
     }
   }, [handleFetchWeather, date]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (zipCode) {
-      handleFetchWeather(zipCode, date); // Pass date to submit fetch
+      handleFetchWeather(zipCode, null, null, date);
+    }
+  };
+
+  const handleGeolocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setZipCode(''); // Clear zip code when using geolocation
+          handleFetchWeather(null, latitude, longitude, date);
+        },
+        (error) => {
+          console.error('Error getting geolocation:', error);
+          alert('Unable to retrieve your location. Please ensure location services are enabled.');
+        },
+      );
+    } else {
+      alert('Geolocation is not supported by your browser.');
     }
   };
 
@@ -140,10 +180,7 @@ export default function Home() {
             Enter a US zip code to see the 24-hour temperature forecast.
           </p>
 
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col sm:flex-row w-full max-w-sm mx-auto items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-12"
-          >
+          <form onSubmit={handleSubmit} className="flex flex-col w-full max-w-sm mx-auto items-center space-y-2 mb-12">
             <div className="flex w-full space-x-2">
               <Input
                 type="text"
@@ -154,21 +191,28 @@ export default function Home() {
                 maxLength={5}
                 value={zipCode}
                 onChange={(e) => setZipCode(e.target.value)}
-                className="text-sm sm:text-base"
+                className="text-sm sm:text-base flex-grow"
               />
               <Button type="submit" disabled={loading} className="font-semibold">
                 {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                 Get Weather
+              </Button>
+              <Button
+                type="button"
+                onClick={handleGeolocation}
+                disabled={loading}
+                variant="outline"
+                className="font-semibold px-3"
+                title="Get weather by current location"
+              >
+                <MapPin className="h-4 w-4" />
               </Button>
             </div>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant={'outline'}
-                  className={cn(
-                    'w-full sm:w-[180px] justify-start text-left font-normal',
-                    !date && 'text-muted-foreground',
-                  )}
+                  className={cn('w-full justify-start text-left font-normal', !date && 'text-muted-foreground')}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {date ? format(date, 'PPP') : <span>Pick a date</span>}
