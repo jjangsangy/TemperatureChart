@@ -1,10 +1,27 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
-import { Thermometer, ThermometerSun, Droplets, CloudRain, Cloud } from 'lucide-react';
+import {
+  Thermometer,
+  ThermometerSun,
+  Droplets,
+  CloudRain,
+  Cloud,
+  Sun,
+  Moon,
+  Cloudy,
+  CloudLightning,
+  CloudSnow,
+  CloudDrizzle,
+  CloudFog,
+  Snowflake,
+  CloudSun,
+  CloudMoon,
+  CloudHail, // Added CloudHail icon
+} from 'lucide-react';
 
 interface Forecast {
   time: string;
@@ -94,6 +111,123 @@ function getWeatherDescription(code: number): string {
   }
 }
 
+function getWeatherIcon(code: number, hour: number, sunriseHour: number, sunsetHour: number) {
+  const isDay = hour >= sunriseHour && hour < sunsetHour;
+  const baseIconClass = 'h-6 w-6';
+
+  let iconComponent;
+  let colorClass = 'text-muted-foreground'; // Default color
+
+  switch (code) {
+    case 0: // Clear sky
+      iconComponent = isDay ? <Sun /> : <Moon />;
+      colorClass = isDay ? 'text-yellow-500' : 'text-gray-400'; // Bright yellow for day, light gray for night
+      break;
+    case 1: // Mainly clear
+      iconComponent = isDay ? <CloudSun /> : <CloudMoon />;
+      colorClass = isDay ? 'text-yellow-400' : 'text-gray-300'; // Slightly less bright for day, lighter gray for night
+      break;
+    case 2: // Partly cloudy
+      iconComponent = <Cloudy />;
+      colorClass = 'text-gray-500'; // Medium gray
+      break;
+    case 3: // Overcast
+      iconComponent = <Cloud />;
+      colorClass = 'text-gray-600'; // Darker gray
+      break;
+    case 45: // Fog
+      iconComponent = <CloudFog />;
+      colorClass = 'text-gray-400'; // Light gray for fog
+      break;
+    case 48: // Depositing rime fog
+      iconComponent = <CloudFog />;
+      colorClass = 'text-gray-500'; // Darker, icy gray for rime fog
+      break;
+    case 51: // Light drizzle
+      iconComponent = <CloudDrizzle />;
+      colorClass = 'text-blue-300'; // Light blue
+      break;
+    case 53: // Moderate drizzle
+      iconComponent = <CloudDrizzle />;
+      colorClass = 'text-blue-500'; // Medium blue
+      break;
+    case 55: // Dense drizzle
+      iconComponent = <CloudDrizzle />;
+      colorClass = 'text-blue-700'; // Dark blue
+      break;
+    case 56: // Light freezing drizzle
+      iconComponent = <CloudDrizzle />;
+      colorClass = 'text-cyan-300'; // Light cyan for freezing
+      break;
+    case 57: // Dense freezing drizzle
+      iconComponent = <CloudDrizzle />;
+      colorClass = 'text-cyan-700'; // Dark cyan for freezing
+      break;
+    case 61: // Slight rain
+    case 80: // Slight rain showers
+      iconComponent = <CloudRain />;
+      colorClass = 'text-blue-300'; // Light blue
+      break;
+    case 63: // Moderate rain
+    case 81: // Moderate rain showers
+      iconComponent = <CloudRain />;
+      colorClass = 'text-blue-500'; // Medium blue
+      break;
+    case 65: // Heavy rain
+    case 82: // Violent rain showers
+      iconComponent = <CloudRain />;
+      colorClass = 'text-blue-700'; // Dark blue
+      break;
+    case 66: // Light freezing rain
+      iconComponent = <CloudRain />;
+      colorClass = 'text-cyan-300'; // Light cyan for freezing
+      break;
+    case 67: // Heavy freezing rain
+      iconComponent = <CloudRain />;
+      colorClass = 'text-cyan-700'; // Dark cyan for freezing
+      break;
+    case 71: // Slight snowfall
+    case 85: // Slight snow showers
+      iconComponent = <CloudSnow />;
+      colorClass = 'text-indigo-300'; // Light indigo
+      break;
+    case 73: // Moderate snowfall
+    case 86: // Heavy snow showers
+      iconComponent = <CloudSnow />;
+      colorClass = 'text-indigo-500'; // Medium indigo
+      break;
+    case 75: // Heavy snowfall
+      iconComponent = <CloudSnow />;
+      colorClass = 'text-indigo-700'; // Dark indigo
+      break;
+    case 77: // Snow grains
+      iconComponent = <Snowflake />;
+      colorClass = 'text-indigo-500'; // Medium indigo
+      break;
+    case 95: // Thunderstorm
+      iconComponent = <CloudLightning />;
+      colorClass = 'text-yellow-500'; // Bright yellow
+      break;
+    case 96: // Thunderstorm with slight hail
+      iconComponent = <CloudHail />;
+      colorClass = 'text-blue-400'; // Icy light blue
+      break;
+    case 99: // Thunderstorm with heavy hail
+      iconComponent = <CloudHail />;
+      colorClass = 'text-blue-600'; // Deeper icy blue
+      break;
+    default:
+      iconComponent = <Cloud />; // Default icon for unknown codes
+      colorClass = 'text-muted-foreground';
+      break;
+  }
+
+  return React.cloneElement(iconComponent, {
+    className: `${baseIconClass} ${colorClass}`,
+    stroke: 'currentColor',
+  });
+}
+
 function formatTime(dateString: string, format: 'ampm' | 'military'): string {
   const date = new Date(dateString);
   if (format === 'military') {
@@ -173,6 +307,36 @@ export function TemperatureChart({
 
   const unitSymbol = unit === 'f' ? '°F' : '°C';
 
+  interface CustomXAxisTickProps {
+    x?: number;
+    y?: number;
+    payload?: {
+      value: string;
+      offset: number;
+    };
+  }
+
+  const CustomXAxisTick = ({ x, y, payload }: CustomXAxisTickProps) => {
+    const item = chartData.find((d) => d.hour === payload?.value);
+    const hour = new Date(data.find((d) => formatTime(d.time, timeFormat) === payload?.value)?.time || '').getHours();
+
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <text x={0} y={0} dy={10} textAnchor="middle" fill="hsl(var(--foreground))" style={{ fontSize: '0.75rem' }}>
+          {payload?.value}
+        </text>
+        {item && (
+          <g transform={`translate(-12, 25)`}>
+            {' '}
+            {/* Adjust translate to center the icon (24px wide) */}
+            {/* Render the icon directly as an SVG element */}
+            {getWeatherIcon(item.weatherCode, hour, sunriseHour, sunsetHour)}
+          </g>
+        )}
+      </g>
+    );
+  };
+
   return (
     <Card className="w-full mb-4 animate-in fade-in-0 duration-500 shadow-lg border-primary/20">
       <CardHeader>
@@ -180,15 +344,15 @@ export function TemperatureChart({
         <CardDescription className="text-xs sm:text-sm">{location}</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-[550px] w-full">
-          <BarChart accessibilityLayer data={chartData} margin={{ top: 20, right: 20, bottom: 20, left: -10 }}>
+        <ChartContainer config={chartConfig} className="h-[600px] w-full">
+          <BarChart accessibilityLayer data={chartData} margin={{ top: 20, right: 20, bottom: 60, left: -10 }}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="hour"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value}
+              tick={CustomXAxisTick}
               style={{ fontSize: '0.75rem' }}
             />
             <YAxis

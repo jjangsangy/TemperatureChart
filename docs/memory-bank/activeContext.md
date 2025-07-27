@@ -52,6 +52,7 @@ The current focus is on enhancing the temperature chart visualization by incorpo
   - Added tests for `getWeatherDataByCoords` in `src/lib/weather.test.ts`.
 - **Input Field Layout Fix**: Adjusted the layout of the input fields and buttons in `src/app/page.tsx` to ensure the calendar selector is always below the zip code input and "Get Weather" button, providing more space for the zip code input.
 - **Location Display Logic**: Modified `src/lib/weather.ts` to display the actual location name (city, state) when using a zip code, and latitude/longitude when using the geolocation feature. Updated `src/lib/weather.test.ts` to reflect this change in expected output.
+- **Weather Icons and Color Coding**: Implemented a comprehensive system for displaying weather icons at the base of the chart bars, with specific icons and color variations for all WMO weather codes, including distinctions for day/night and precipitation intensity (light, moderate, heavy). This involved adding `CloudHail` and refining the `getWeatherIcon` function in `src/components/temperature-chart.tsx`.
 
 ## 3. Next Steps
 

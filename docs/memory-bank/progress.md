@@ -20,6 +20,7 @@
 - **Type and Test Issues Fixed**: All type errors and test failures in `src/lib/weather.test.ts` have been resolved by updating `getWeatherDataByZip` calls with the `date` argument and correcting the mock API URL assertion.
 - **Missing Dependency Type Errors Fixed**: Installed `react-day-picker` and `@radix-ui/react-popover` to resolve "Cannot find module" and "implicitly has an 'any' type" errors in `src/components/ui/calendar.tsx` and `src/components/ui/popover.tsx`.
 - **Current Hour Highlighting**: The bar corresponding to the current hour is highlighted, but now only when the selected day is the current day.
+- **Weather Icons and Color Coding**: Implemented a comprehensive system for displaying weather icons at the base of the chart bars, with specific icons and color variations for all WMO weather codes, including distinctions for day/night and precipitation intensity (light, moderate, heavy). This involved adding `CloudHail` and refining the `getWeatherIcon` function in `src/components/temperature-chart.tsx`.
 
 ## 2. What's Left to Build
 
@@ -29,7 +30,7 @@
 
 ## 3. Current Status
 
-The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators and enhanced tooltips. Automated testing has been set up in CI, and all tests are now passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved.
+The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators and enhanced tooltips. Automated testing has been set up in CI, and all tests are now passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved. All WMO weather codes are now covered with appropriate icons and color coding for intensity.
 
 ## 4. Known Issues
 
@@ -86,8 +87,5 @@ The project has undergone significant cleanup and core functionality enhancement
   - Refactored `src/lib/weather.ts` to include a new `getWeatherDataByCoords` function and modified `handleFetchWeather` in `src/app/page.tsx` to use either zip code or coordinates for fetching weather data.
   - Added tests for `getWeatherDataByCoords` in `src/lib/weather.test.ts`.
 - **Input Field Layout Fix**: Adjusted the layout of the input fields and buttons in `src/app/page.tsx` to ensure the calendar selector is always below the zip code input and "Get Weather" button, providing more space for the zip code input.
-- **Geolocation Feature**: Implemented a geolocation button in `src/app/page.tsx` that uses the browser's `navigator.geolocation.getCurrentPosition` API to fetch latitude and longitude.
-  - When geolocation is used, the stored zip code in `localStorage` is cleared, and the fetched coordinates are saved.
-  - Refactored `src/lib/weather.ts` to include a new `getWeatherDataByCoords` function and modified `handleFetchWeather` in `src/app/page.tsx` to use either zip code or coordinates for fetching weather data.
-  - Added tests for `getWeatherDataByCoords` in `src/lib/weather.test.ts`.
 - **Location Display Logic**: Modified `src/lib/weather.ts` to display the actual location name (city, state) when using a zip code, and latitude/longitude when using the geolocation feature. Updated `src/lib/weather.test.ts` to reflect this change in expected output.
+- **Weather Icons and Color Coding**: Implemented a comprehensive system for displaying weather icons at the base of the chart bars, with specific icons and color variations for all WMO weather codes, including distinctions for day/night and precipitation intensity (light, moderate, heavy). This involved adding `CloudHail` and refining the `getWeatherIcon` function in `src/components/temperature-chart.tsx`.
