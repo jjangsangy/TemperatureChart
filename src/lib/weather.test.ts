@@ -30,7 +30,9 @@ describe('getWeatherDataByZip', () => {
       statusText: 'Internal Server Error',
     });
 
-    await expect(getWeatherDataByZip('12345', mockDate)).rejects.toThrow('Failed to fetch location data.');
+    await expect(getWeatherDataByZip('12345', mockDate)).rejects.toThrow(
+      'Failed to fetch location data from Zippopotam.us.',
+    );
   });
 
   it('throws an error if geocoding API returns no places', async () => {

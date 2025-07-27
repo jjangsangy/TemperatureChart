@@ -33,6 +33,7 @@ The current focus is on implementing a feature to allow users to select differen
   - Removed the hour display from the tooltip content in `src/components/temperature-chart.tsx`.
   - Updated `src/lib/weather.test.ts` to include new hourly variables in mock API responses, resolving `TypeError` issues.
   - Updated `src/components/temperature-chart.test.tsx` to no longer assert the presence of the hour in the tooltip.
+  - Corrected the expected error message in `src/lib/weather.test.ts` for geocoding API failures.
 - **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
   - `src/app/page.tsx`: Added `timeFormat` state with `localStorage` integration, a UI toggle button, and passed the `timeFormat` to `TemperatureChart`.
   - `src/components/temperature-chart.tsx`: Updated to accept `timeFormat` prop and format chart x-axis labels accordingly using a new `formatTime` helper function.
@@ -69,7 +70,7 @@ The current focus is on implementing a feature to allow users to select differen
 
 ## 3. Next Steps
 
-- Investigate why tests are still reported as failing despite local `npm test` showing success. This might be an environment-specific issue or a misunderstanding of the test runner's output.
+- None. All known issues resolved.
 
 ## 4. Key Decisions & Insights
 

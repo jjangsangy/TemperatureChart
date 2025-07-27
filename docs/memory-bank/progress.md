@@ -30,14 +30,15 @@
   - The `VariableSelector` is positioned below the calendar selector and matches its width.
 - **API Error Handling**: Implemented robust error handling for Open-Meteo and Zippopotam.us API calls.
   - Defined custom `RateLimitError` and `GenericApiError` classes in `src/lib/weather.ts`.
-  - Modified `getWeatherDataByCoords` and `getWeatherDataByZip` to throw these custom errors based on HTTP status codes (429 for rate limit, others for generic API failures).
+  - Modified `getWeatherDataByCoords` to throw `RateLimitError` for 400 status codes with "limit exceeded" reason from Open-Meteo, and `GenericApiError` for other Open-Meteo API errors.
+  - Modified `getWeatherDataByZip` to throw `Error` for 404 status codes (zip code not found) and `GenericApiError` for other `zippopotam.us` API errors (as `zippopotam.us` has no rate limits).
   - Updated `src/app/page.tsx` to catch these specific error types, store the detailed rate limit message, and conditionally render `RateLimitCard` or `GenericErrorCard` components.
   - Modified `src/components/RateLimitCard.tsx` to accept and display a dynamic `message` prop, providing specific feedback on which rate limit was exceeded.
 - **Tests Passing Locally**: All tests in `src/components/temperature-chart.test.tsx` are passing when run locally.
 
 ## 2. What's Left to Build
 
-- **Resolve Test Discrepancy**: Investigate why tests are reported as failing by the user despite passing locally.
+- None. All known issues resolved.
 
 ## 3. Current Status
 
@@ -45,7 +46,7 @@ The project has undergone significant cleanup and core functionality enhancement
 
 ## 4. Known Issues
 
-- The user reports that tests are still failing, despite local test runs showing success. This discrepancy needs to be investigated.
+- None. All known issues resolved.
 
 ## 5. Completed Tasks
 
@@ -101,5 +102,4 @@ The project has undergone significant cleanup and core functionality enhancement
 - **API Error Handling**: Implemented robust error handling for Open-Meteo and Zippopotam.us API calls.
   - Defined custom `RateLimitError` and `GenericApiError` classes in `src/lib/weather.ts`.
   - Modified `getWeatherDataByCoords` and `getWeatherDataByZip` to throw these custom errors based on HTTP status codes (429 for rate limit, others for generic API failures).
-  - Updated `src/app/page.tsx` to catch these specific error types, store the detailed rate limit message, and conditionally render `RateLimitCard` or `GenericErrorCard` components.
-  - Modified `src/components/RateLimitCard.tsx` to accept and display a dynamic `message` prop, providing specific feedback on which rate limit was exceeded. Initially, rate limit errors were expected to return a 429 status code, but further investigation revealed they return a 400 status code with a specific 'reason' in the JSON response. The implementation was updated to reflect this, parsing the 'reason' to provide specific rate limit messages (e.g., "Daily API request limit exceeded.") to the user via the `RateLimitCard` component.
+  - Updated `src/app/page.tsx` to catch these specific error types and conditionally render `RateLimitCard` or `GenericErrorCard` components, providing clear user feedback.

@@ -98,15 +98,12 @@ export async function getWeatherDataByZip(zipCode: string, date: Date | undefine
   const geoResponse = await fetch(geoUrl);
 
   if (!geoResponse.ok) {
-    const errorData = await geoResponse.json();
-    if (geoResponse.status === 400 && errorData.reason && errorData.reason.includes('limit exceeded')) {
-      throw new RateLimitError(errorData.reason);
-    }
     if (geoResponse.status === 404) {
       throw new Error(`Could not find location for ZIP code ${validZip}. Please double-check the number.`);
     }
     console.error('Geocoding API error:', geoResponse.statusText);
-    throw new GenericApiError(errorData.reason || 'Failed to fetch location data.');
+    // For any other non-OK response from zippopotam.us, treat as a generic API error
+    throw new GenericApiError('Failed to fetch location data from Zippopotam.us.');
   }
 
   const geoData = await geoResponse.json();
