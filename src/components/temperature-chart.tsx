@@ -25,11 +25,21 @@ import {
 
 interface Forecast {
   time: string;
-  temperature: number;
-  relativeHumidity: number;
-  apparentTemperature: number;
-  precipitationProbability: number;
+  temperature_2m: number;
+  relative_humidity_2m: number;
+  apparent_temperature: number;
+  precipitation_probability: number;
   weatherCode: number;
+}
+
+interface ChartDataItem {
+  hour: string;
+  temperature_2m: number;
+  relative_humidity_2m: number;
+  apparent_temperature: number;
+  precipitation_probability: number;
+  weatherCode: number;
+  fill: string;
 }
 
 interface TemperatureChartProps {
@@ -40,11 +50,21 @@ interface TemperatureChartProps {
   sunset: string;
   timeFormat: 'ampm' | 'military';
   selectedDate: Date;
+  selectedHourlyVariable: string;
 }
 
 const chartConfig = {
-  temperature: {
+  temperature_2m: {
     label: 'Temperature',
+  },
+  relative_humidity_2m: {
+    label: 'Relative Humidity',
+  },
+  apparent_temperature: {
+    label: 'Apparent Temperature',
+  },
+  precipitation_probability: {
+    label: 'Precipitation Probability',
   },
 } satisfies ChartConfig;
 
@@ -249,6 +269,7 @@ export function TemperatureChart({
   sunset,
   timeFormat,
   selectedDate,
+  selectedHourlyVariable,
 }: TemperatureChartProps) {
   const [currentHour, setCurrentHour] = useState<number | null>(null);
   const [currentDay, setCurrentDay] = useState<string | null>(null);
@@ -277,7 +298,7 @@ export function TemperatureChart({
   const sunriseHour = new Date(sunrise).getHours();
   const sunsetHour = new Date(sunset).getHours();
 
-  const chartData = data.map((item) => {
+  const chartData: ChartDataItem[] = data.map((item) => {
     const date = new Date(item.time);
     const hour = date.getHours();
 
@@ -292,20 +313,42 @@ export function TemperatureChart({
 
     return {
       hour: formatTime(item.time, timeFormat),
-      temperature: item.temperature,
-      relativeHumidity: item.relativeHumidity,
-      apparentTemperature: item.apparentTemperature,
-      precipitationProbability: item.precipitationProbability,
+      temperature_2m: item.temperature_2m,
+      relative_humidity_2m: item.relative_humidity_2m,
+      apparent_temperature: item.apparent_temperature,
+      precipitation_probability: item.precipitation_probability,
       weatherCode: item.weatherCode,
       fill: fill,
     };
   });
 
-  const maxTemp = Math.max(...chartData.map((d) => d.temperature));
-  const topTick = Math.ceil((maxTemp + 10) / 10) * 10;
+  const getVariableValue = (item: ChartDataItem, variable: string) => {
+    if (variable === 'temperature_2m') return item.temperature_2m;
+    if (variable === 'relative_humidity_2m') return item.relative_humidity_2m;
+    if (variable === 'apparent_temperature') return item.apparent_temperature;
+    if (variable === 'precipitation_probability') return item.precipitation_probability;
+    return 0; // Default or error case
+  };
+
+  const getVariableUnit = (variable: string) => {
+    if (variable === 'temperature_2m' || variable === 'apparent_temperature') {
+      return unit === 'f' ? '°F' : '°C';
+    }
+    if (variable === 'relative_humidity_2m' || variable === 'precipitation_probability') {
+      return '%';
+    }
+    return '';
+  };
+
+  const getVariableLabel = (variable: string) => {
+    return chartConfig[variable as keyof typeof chartConfig]?.label || '';
+  };
+
+  const maxVariableValue = Math.max(...chartData.map((d) => getVariableValue(d, selectedHourlyVariable)));
+  const topTick = Math.ceil((maxVariableValue + 10) / 10) * 10;
   const yAxisTicks = Array.from({ length: Math.floor(topTick / 10) + 1 }, (_, i) => i * 10);
 
-  const unitSymbol = unit === 'f' ? '°F' : '°C';
+  const unitSymbol = getVariableUnit(selectedHourlyVariable);
 
   interface CustomXAxisTickProps {
     x?: number;
@@ -340,7 +383,9 @@ export function TemperatureChart({
   return (
     <Card className="w-full mb-4 animate-in fade-in-0 duration-500 shadow-lg border-primary/20">
       <CardHeader>
-        <CardTitle className="text-xl sm:text-2xl">24-Hour Forecast for {currentDay}</CardTitle>
+        <CardTitle className="text-xl sm:text-2xl">
+          {getVariableLabel(selectedHourlyVariable)} Forecast for {currentDay}
+        </CardTitle>
         <CardDescription className="text-xs sm:text-sm">{location}</CardDescription>
       </CardHeader>
       <CardContent>
@@ -356,7 +401,7 @@ export function TemperatureChart({
               style={{ fontSize: '0.75rem' }}
             />
             <YAxis
-              dataKey="temperature"
+              dataKey={selectedHourlyVariable}
               tickLine={false}
               axisLine={false}
               tickMargin={10}
@@ -364,6 +409,13 @@ export function TemperatureChart({
               domain={[0, yAxisTicks[yAxisTicks.length - 1]]}
               ticks={yAxisTicks}
               style={{ fontSize: '0.75rem' }}
+              label={{
+                value: getVariableLabel(selectedHourlyVariable),
+                angle: -90,
+                position: 'insideLeft',
+                fill: 'hsl(var(--foreground))',
+                style: { fontSize: '0.85rem' },
+              }}
             />
             <ChartTooltip
               content={
@@ -376,27 +428,28 @@ export function TemperatureChart({
                       <div className="flex items-center space-x-2 mb-1">
                         <Thermometer className="h-4 w-4 text-muted-foreground" />
                         <span className="text-muted-foreground">
-                          <span className="font-bold">Temp:</span> {`${props.payload.temperature}${unitSymbol}`}
+                          <span className="font-bold">Temp:</span>{' '}
+                          {`${props.payload.temperature_2m}${getVariableUnit('temperature_2m')}`}
                         </span>
                       </div>
                       <div className="flex items-center space-x-2 mb-1">
                         <ThermometerSun className="h-4 w-4 text-muted-foreground" />
                         <span className="text-muted-foreground">
                           <span className="font-bold">Feels Like:</span>{' '}
-                          {`${props.payload.apparentTemperature}${unitSymbol}`}
+                          {`${props.payload.apparent_temperature}${getVariableUnit('apparent_temperature')}`}
                         </span>
                       </div>
                       <div className="flex items-center space-x-2 mb-1">
                         <Droplets className="h-4 w-4 text-muted-foreground" />
                         <span className="text-muted-foreground">
-                          <span className="font-bold">Humidity:</span> {`${props.payload.relativeHumidity}%`}
+                          <span className="font-bold">Humidity:</span> {`${props.payload.relative_humidity_2m}%`}
                         </span>
                       </div>
                       <div className="flex items-center space-x-2 mb-1">
                         <CloudRain className="h-4 w-4 text-muted-foreground" />
                         <span className="text-muted-foreground">
                           <span className="font-bold">Precipitation:</span>{' '}
-                          {`${props.payload.precipitationProbability}%`}
+                          {`${props.payload.precipitation_probability}%`}
                         </span>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -411,7 +464,7 @@ export function TemperatureChart({
                 />
               }
             />
-            <Bar dataKey="temperature" radius={8} />
+            <Bar dataKey={selectedHourlyVariable} radius={8} />
           </BarChart>
         </ChartContainer>
       </CardContent>

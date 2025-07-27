@@ -14,6 +14,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { VariableSelector } from '@/components/variable-selector';
 
 export default function Home() {
   const [data, setData] = useState<ForecastData | null>(null);
@@ -21,6 +22,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [zipCode, setZipCode] = useState<string>('');
   const [date, setDate] = useState<Date>(new Date());
+  const [selectedHourlyVariable, setSelectedHourlyVariable] = useState<string>('temperature_2m');
 
   const [unit, setUnit] = useState<'f' | 'c'>('f');
 
@@ -125,8 +127,8 @@ export default function Home() {
       if (unit === 'f') {
         const fahrenheitForecast = celsiusData.forecast.map((item) => ({
           ...item,
-          temperature: Math.round((item.temperature * 9) / 5 + 32),
-          apparentTemperature: Math.round((item.apparentTemperature * 9) / 5 + 32),
+          temperature_2m: Math.round((item.temperature_2m * 9) / 5 + 32),
+          apparent_temperature: Math.round((item.apparent_temperature * 9) / 5 + 32),
         }));
         setData({
           ...celsiusData,
@@ -146,6 +148,10 @@ export default function Home() {
 
   const handleTimeFormatToggle = () => {
     setTimeFormat((prevFormat) => (prevFormat === 'ampm' ? 'military' : 'ampm'));
+  };
+
+  const handleHourlyVariableChange = (variable: string) => {
+    setSelectedHourlyVariable(variable);
   };
 
   return (
@@ -227,6 +233,7 @@ export default function Home() {
                 />
               </PopoverContent>
             </Popover>
+            <VariableSelector selectedVariable={selectedHourlyVariable} onVariableChange={handleHourlyVariableChange} />
           </form>
 
           <div>
@@ -247,6 +254,7 @@ export default function Home() {
                   sunset={data.sunset}
                   timeFormat={timeFormat}
                   selectedDate={date}
+                  selectedHourlyVariable={selectedHourlyVariable}
                 />
                 <Metadata
                   temperatureMax={data.temperatureMax}

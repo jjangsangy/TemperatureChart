@@ -7,10 +7,10 @@ export interface ForecastData {
   location: string;
   forecast: {
     time: string;
-    temperature: number;
-    relativeHumidity: number;
-    apparentTemperature: number;
-    precipitationProbability: number;
+    temperature_2m: number;
+    relative_humidity_2m: number;
+    apparent_temperature: number;
+    precipitation_probability: number;
     weatherCode: number;
   }[];
   sunrise: string;
@@ -41,10 +41,10 @@ export async function getWeatherDataByCoords(
 
   const forecast = hourlyData.time.map((t: string, index: number) => ({
     time: t,
-    temperature: Math.round(hourlyData.temperature_2m[index]),
-    relativeHumidity: Math.round(hourlyData.relative_humidity_2m[index]),
-    apparentTemperature: Math.round(hourlyData.apparent_temperature[index]),
-    precipitationProbability: Math.round(hourlyData.precipitation_probability[index]),
+    temperature_2m: Math.round(hourlyData.temperature_2m[index]),
+    relative_humidity_2m: Math.round(hourlyData.relative_humidity_2m[index]),
+    apparent_temperature: Math.round(hourlyData.apparent_temperature[index]),
+    precipitation_probability: Math.round(hourlyData.precipitation_probability[index]),
     weatherCode: hourlyData.weather_code[index],
   }));
 
