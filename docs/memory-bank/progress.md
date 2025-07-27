@@ -21,20 +21,26 @@
 - **Missing Dependency Type Errors Fixed**: Installed `react-day-picker` and `@radix-ui/react-popover` to resolve "Cannot find module" and "implicitly has an 'any' type" errors in `src/components/ui/calendar.tsx` and `src/components/ui/popover.tsx`.
 - **Current Hour Highlighting**: The bar corresponding to the current hour is highlighted, but now only when the selected day is the current day.
 - **Weather Icons and Color Coding**: Implemented a comprehensive system for displaying weather icons at the base of the chart bars, with specific icons and color variations for all WMO weather codes, including distinctions for day/night and precipitation intensity (light, moderate, heavy). This involved adding `CloudHail` and refining the `getWeatherIcon` function in `src/components/temperature-chart.tsx`.
+- **Hourly Variable Selection Feature**: The feature to select different hourly variables for the chart is implemented. This includes:
+  - A new `VariableSelector` component (`src/components/variable-selector.tsx`) with a dropdown, card, and radio buttons.
+  - Integration into `src/app/page.tsx` with state management for the selected variable.
+  - Dynamic chart updates in `src/components/temperature-chart.tsx` based on the selected variable (Y-axis data key, label, and chart title).
+  - Consistent data structures (`Forecast` and `ChartDataItem` interfaces) across `src/lib/weather.ts` and `src/components/temperature-chart.tsx`.
+  - The `VariableSelector` dropdown button displays the selected variable's name with a corresponding Lucide icon and is left-aligned.
+  - The `VariableSelector` is positioned below the calendar selector and matches its width.
+- **Tests Passing Locally**: All tests in `src/components/temperature-chart.test.tsx` are passing when run locally.
 
 ## 2. What's Left to Build
 
-- **Complete UI Implementation**: The main page needs to be fully assembled using the available components. (This is largely done, but keeping it here as a general placeholder for any remaining minor UI assembly).
-- **Error Handling**: Robust error handling and user notifications need to be implemented.
-- **Styling and Animations**: The final styling and animations need to be applied according to the guidelines.
+- **Resolve Test Discrepancy**: Investigate why tests are reported as failing by the user despite passing locally.
 
 ## 3. Current Status
 
-The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators and enhanced tooltips. Automated testing has been set up in CI, and all tests are now passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved. All WMO weather codes are now covered with appropriate icons and color coding for intensity.
+The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators, enhanced tooltips, and dynamic hourly variable selection. Automated testing has been set up in CI, and all local tests are passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved. All WMO weather codes are now covered with appropriate icons and color coding for intensity.
 
 ## 4. Known Issues
 
-- None.
+- The user reports that tests are still failing, despite local test runs showing success. This discrepancy needs to be investigated.
 
 ## 5. Completed Tasks
 
@@ -79,8 +85,6 @@ The project has undergone significant cleanup and core functionality enhancement
 - **Type and Test Issues Fixed**:
   - Updated `src/lib/weather.test.ts` to pass the `date` argument to `getWeatherDataByZip` in all test calls.
   - Corrected the mocked Open-Meteo API URL assertion in `src/lib/weather.test.ts` to use `start_date` and `end_date` parameters instead of `forecast_days=1`.
-- **Missing Dependency Type Errors Fixed**:
-  - Installed `react-day-picker` and `@radix-ui/react-popover` to resolve "Cannot find module" and "implicitly has an 'any' type" errors.
 - **Mobile Layout Adjustment**: Modified `src/app/page.tsx` to adjust the layout for mobile devices, ensuring the date picker appears below the zip code input and submit button, while the latter two remain on the same row.
 - **Geolocation Feature**: Implemented a geolocation button in `src/app/page.tsx` that uses the browser's `navigator.geolocation.getCurrentPosition` API to fetch latitude and longitude.
   - When geolocation is used, the stored zip code in `localStorage` is cleared, and the fetched coordinates are saved.

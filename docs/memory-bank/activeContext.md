@@ -2,7 +2,7 @@
 
 ## 1. Current Focus
 
-The current focus is on enhancing the temperature chart visualization by incorporating day/night indicators and maintaining a clean and efficient codebase. Additionally, setting up CI/CD with GitHub Actions for automated testing. The immediate task is to integrate additional hourly weather variables into the API and display them in the chart tooltip, and then resolve any resulting test failures.
+The current focus is on implementing a feature to allow users to select different hourly weather variables for display on the chart. This involves creating a new UI component for variable selection, integrating it with the main application page and the chart component, and ensuring all related tests are passing.
 
 ## 2. Recent Changes
 
@@ -14,7 +14,7 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **Dependency Optimization**: Unnecessary dependencies have been identified and removed, streamlining the project.
 - **Fixed `tailwindcss-animate` reference**: Removed the `tailwindcss-animate` reference from `tailwind.config.ts` after uninstalling the package.
 - **Re-added `next-themes` and `lucide-react`**: These dependencies were found to be in use and were reinstalled to resolve module not found errors.
-- **User Re-added Dependencies**: The user re-added `@radix-ui/react-dropdown-menu`, `@radix-ui/react-slot`, `class-variance-authority`, `recharts`, `tailwind-merge`, and `zod`, indicating they are necessary.
+- **User Re-added Dependencies**: The user re-added `@radix-ui/react-dropdown-menu`, `@radix-ui/react-slot`, `class-variance-authority`, `recharts`, `tailwind-merge`, and `zod`, indicating their necessity.
 - **API Enhancement**: Modified `src/lib/weather.ts` to include `daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration` in the Open Meteo API call, fetching additional daily metadata.
 - **New Component Added**: Created `src/components/metadata.tsx` to display daily weather metadata.
 - **Chart Visualization Enhancement**: Updated `src/components/temperature-chart.tsx` to use the fetched sunrise and sunset data to visually distinguish between day and night hours by dimming the bar color for night and brightening it for day. The current hour highlighting remains.
@@ -53,10 +53,18 @@ The current focus is on enhancing the temperature chart visualization by incorpo
 - **Input Field Layout Fix**: Adjusted the layout of the input fields and buttons in `src/app/page.tsx` to ensure the calendar selector is always below the zip code input and "Get Weather" button, providing more space for the zip code input.
 - **Location Display Logic**: Modified `src/lib/weather.ts` to display the actual location name (city, state) when using a zip code, and latitude/longitude when using the geolocation feature. Updated `src/lib/weather.test.ts` to reflect this change in expected output.
 - **Weather Icons and Color Coding**: Implemented a comprehensive system for displaying weather icons at the base of the chart bars, with specific icons and color variations for all WMO weather codes, including distinctions for day/night and precipitation intensity (light, moderate, heavy). This involved adding `CloudHail` and refining the `getWeatherIcon` function in `src/components/temperature-chart.tsx`.
+- **Hourly Variable Selection Feature**:
+  - Created `src/components/variable-selector.tsx` for variable selection.
+  - Integrated `VariableSelector` into `src/app/page.tsx`, managing `selectedHourlyVariable` state and passing it to `TemperatureChart`.
+  - Updated `src/components/temperature-chart.tsx` to dynamically render chart based on `selectedHourlyVariable`, including `YAxis` and `CardTitle` updates.
+  - Refactored `Forecast` and introduced `ChartDataItem` interfaces for type consistency across `src/lib/weather.ts` and `src/components/temperature-chart.tsx`.
+  - Adjusted `VariableSelector` dropdown styling (`w-full`, `z-50`) and moved its placement in `src/app/page.tsx` to align with the calendar selector.
+  - Added Lucide icons to the `VariableSelector` button and dropdown menu items, and ensured left-alignment of text.
+  - Updated `src/components/temperature-chart.test.tsx` to reflect new data structures and test dynamic chart title and tooltip content for different hourly variables.
 
 ## 3. Next Steps
 
-- None.
+- Investigate why tests are still reported as failing despite local `npm test` showing success. This might be an environment-specific issue or a misunderstanding of the test runner's output.
 
 ## 4. Key Decisions & Insights
 
