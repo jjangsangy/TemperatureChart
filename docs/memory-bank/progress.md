@@ -32,9 +32,8 @@
   - Defined custom `RateLimitError` and `GenericApiError` classes in `src/lib/weather.ts`.
   - Modified `getWeatherDataByCoords` to throw `RateLimitError` for 400 status codes with "limit exceeded" reason from Open-Meteo, and `GenericApiError` for other Open-Meteo API errors.
   - Modified `getWeatherDataByZip` to throw `Error` for 404 status codes (zip code not found) and `GenericApiError` for other `zippopotam.us` API errors (as `zippopotam.us` has no rate limits).
-  - Updated `src/app/page.tsx` to catch these specific error types, store the detailed rate limit message, and conditionally render `RateLimitCard` or `GenericErrorCard` components.
-  - Modified `src/components/RateLimitCard.tsx` to accept and display a dynamic `message` prop, providing specific feedback on which rate limit was exceeded.
-- **Tests Passing Locally**: All tests in `src/components/temperature-chart.test.tsx` are passing when run locally.
+  - Updated `src/app/page.tsx` to catch these specific error types and conditionally render `RateLimitCard` or `GenericErrorCard` components, providing clear user feedback.
+- **HTTP Request Caching**: Implemented caching for weather data API calls using `lru-cache` with a 30-minute TTL. Cache keys are generated based on a combination of location data (latitude/longitude or zip code) and the selected date, ensuring unique and type-specific cache hits. The `src/lib/cache.ts` file was created and configured for this purpose, and `src/lib/weather.ts` was updated to integrate the caching logic. Tests in `src/lib/weather.test.ts` were also updated to verify the caching behavior.
 
 ## 2. What's Left to Build
 
@@ -42,7 +41,7 @@
 
 ## 3. Current Status
 
-The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators, enhanced tooltips, and dynamic hourly variable selection. Automated testing has been set up in CI, and all local tests are passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved. All WMO weather codes are now covered with appropriate icons and color coding for intensity. Robust API error handling has been implemented, providing specific feedback for rate limit issues and generic errors.
+The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators, enhanced tooltips, and dynamic hourly variable selection. Automated testing has been set up in CI, and all local tests are passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved. All WMO weather codes are now covered with appropriate icons and color coding for intensity. Robust API error handling has been implemented, providing specific feedback for rate limit issues and generic errors. HTTP request caching has been successfully integrated, improving performance and reducing API calls.
 
 ## 4. Known Issues
 
@@ -103,3 +102,4 @@ The project has undergone significant cleanup and core functionality enhancement
   - Defined custom `RateLimitError` and `GenericApiError` classes in `src/lib/weather.ts`.
   - Modified `getWeatherDataByCoords` and `getWeatherDataByZip` to throw these custom errors based on HTTP status codes (429 for rate limit, others for generic API failures).
   - Updated `src/app/page.tsx` to catch these specific error types and conditionally render `RateLimitCard` or `GenericErrorCard` components, providing clear user feedback.
+- **HTTP Request Caching**: Implemented caching for weather data API calls using `lru-cache` with a 30-minute TTL. Cache keys are generated based on a combination of location data (latitude/longitude or zip code) and the selected date, ensuring unique and type-specific cache hits. The `src/lib/cache.ts` file was created and configured for this purpose, and `src/lib/weather.ts` was updated to integrate the caching logic. Tests in `src/lib/weather.test.ts` were also updated to verify the caching behavior.

@@ -36,3 +36,4 @@
 - **`@radix-ui/react-dropdown-menu`**: For dropdown menu functionality.
 - **`@radix-ui/react-slot`**: For flexible component composition.
 - **`ts-node`**: Used in `devDependencies` for running TypeScript tests in CI.
+- **`lru-cache`**: Used for in-memory caching of HTTP requests to improve performance and reduce API calls.

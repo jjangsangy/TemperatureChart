@@ -33,3 +33,4 @@ The application follows a component-based architecture, typical of Next.js/React
 - **Responsive Design**: The application uses responsive design principles, such as the header layout adjusting for different screen sizes and text size adjustments, to ensure a good user experience on all devices.
 - **Client-Side Data Transformation**: Temperature data is fetched in Celsius and converted to Fahrenheit on the client-side to avoid multiple API calls.
 - **Local Storage Persistence**: User preferences like temperature unit and time format are persisted using `localStorage`.
+- **Caching**: HTTP requests for weather data are cached using `lru-cache` to improve performance and reduce API calls. Cache keys are generated based on location data (latitude/longitude or zip code) and date.

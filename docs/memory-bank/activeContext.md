@@ -67,6 +67,12 @@ The current focus is on implementing a feature to allow users to select differen
   - Modified `getWeatherDataByCoords` and `getWeatherDataByZip` to throw these custom errors based on HTTP status codes (429 for rate limit, others for generic API failures).
   - Updated `src/app/page.tsx` to catch these specific error types, store the detailed rate limit message, and conditionally render `RateLimitCard` or `GenericErrorCard` components.
   - Modified `src/components/RateLimitCard.tsx` to accept and display a dynamic `message` prop, providing specific feedback on which rate limit was exceeded. Initially, rate limit errors were expected to return a 429 status code, but further investigation revealed they return a 400 status code with a specific 'reason' in the JSON response. The implementation was updated to reflect this, parsing the 'reason' to provide specific rate limit messages (e.g., "Daily API request limit exceeded.") to the user via the `RateLimitCard` component.
+- **HTTP Request Caching**: Implemented caching for weather data API calls using `lru-cache`.
+  - Installed `lru-cache` dependency.
+  - Created `src/lib/cache.ts` to initialize and export an `LRUCache` instance with a 30-minute TTL and `ForecastData` type for type safety.
+  - Integrated caching logic into `src/lib/weather.ts`'s `getWeatherDataByCoords` and `getWeatherDataByZip` functions.
+  - Cache keys are generated based on a combination of location data (latitude/longitude or zip code) and the selected date, ensuring unique and type-specific cache hits.
+  - Updated `src/lib/weather.test.ts` to include tests for caching behavior, verifying that API calls are skipped on cache hits.
 
 ## 3. Next Steps
 
@@ -92,3 +98,4 @@ The current focus is on implementing a feature to allow users to select differen
 - **Bug Fix**: Corrected the geocoding API URL in `src/lib/weather.ts` from `api.zippopot.us` to `api.zippopotam.us` to resolve `ERR_NAME_NOT_RESOLVED` errors.
 - **Bug Fix**: Removed `forecast_days=1` parameter from Open-Meteo API call in `src/lib/weather.ts` to resolve conflict with `start_date` and `end_date` parameters.
 - **Robust Error Handling**: Implemented custom error classes (`RateLimitError`, `GenericApiError`) for API calls, allowing for precise error differentiation and user feedback. This improves the application's resilience and user experience during API failures, now including specific rate limit messages.
+- **Performance Enhancement**: Implemented `lru-cache` for HTTP request caching, significantly reducing redundant API calls and improving application responsiveness. The cache uses a 30-minute TTL and generates unique keys based on location (latitude/longitude or zip code) and date, ensuring efficient and accurate cache hits.
