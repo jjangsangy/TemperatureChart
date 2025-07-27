@@ -4,25 +4,44 @@
 
 ## Overview
 
-TemperatureChart is a minimalist web application designed to provide users with a clear and concise 24-hour temperature forecast for any specified US zip code. It focuses on delivering essential weather data without clutter, presenting hourly temperatures in an intuitive bar chart format. New features include visual day/night indicators, a toggle for Fahrenheit/Celsius units, and a toggle for AM/PM or 24-hour time format.
+TemperatureChart is a minimalist web application designed to provide users with a clear and concise 24-hour temperature forecast. It focuses on delivering essential weather data without clutter, presenting hourly temperatures in an intuitive bar chart format. You can get data by providing a US zip code or by using your browser's geolocation.
 
 ## Features
 
-- **Zip Code Input**: Easily enter a US zip code to get local weather data.
-- **24-Hour Temperature Forecast**: View hourly temperature predictions for the next 24 hours.
-- **Current Hour Highlighting**: The current hour's temperature bar is visually highlighted for quick reference.
-- **Day/Night Highlighting**: The chart visually distinguishes between day and night hours.
-- **Location Display**: See the city and state corresponding to the entered zip code.
-- **Fahrenheit/Celsius Toggle**: Switch between Fahrenheit and Celsius temperature units.
-- **AM/PM and 24-hour Time Format Toggle**: Choose between 12-hour (AM/PM) and 24-hour (military) time formats.
+- **Flexible Location Input**: Get weather data by either entering a US zip code or using your device's geolocation.
+- **Date Selection**: View the forecast for the current day or select a different date using the calendar.
+- **24-Hour Temperature Forecast**: View hourly temperature predictions in a clean bar chart.
+- **Current Hour Highlighting**: The current hour's temperature bar is visually highlighted for the current day's forecast.
+- **Day/Night Visualization**: The chart visually distinguishes between day and night hours.
+- **Weather Icons**: At the base of each hour's bar, an icon represents the weather conditions (e.g., sunny, cloudy, rainy), with colors indicating intensity.
 - **Detailed Tooltip**: Hover over chart bars to see detailed hourly data including temperature, apparent temperature, relative humidity, and precipitation probability.
-- **Responsive Design**: A clean, modern, and responsive user interface.
+- **Daily Overview**: A dedicated section displays daily metadata, including max/min temperatures, sunrise/sunset times, precipitation probability, and daylight duration.
+- **Unit and Format Toggles**:
+  - Switch between Fahrenheit and Celsius.
+  - Choose between 12-hour (AM/PM) and 24-hour (military) time formats.
+- **Responsive Design**: A clean, modern, and responsive user interface that works great on all devices.
+
+## Usage
+
+1.  **Provide a Location**:
+    - Enter a 5-digit US zip code into the input field and click "Get Weather".
+    - Alternatively, click the "Use My Location" button to allow the browser to use your current location.
+2.  **Change the Date**:
+    - Click the date button to open a calendar and select a different date for the forecast.
+3.  **View the Forecast**:
+    - The bar chart will display the hourly temperature forecast for the selected location and date.
+    - Hover over any bar to see a detailed tooltip with more weather information for that hour.
+4.  **Customize Units**:
+    - Use the toggle buttons in the header to switch between °F/°C and 12/24-hour time formats. Your preferences will be saved in your browser.
 
 ## Technologies Used
 
 - **Frontend**: Next.js, React, TypeScript
 - **Styling**: Tailwind CSS, Shadcn/UI
-- **API**: Open Meteo API (for weather data)
+- **Charting**: Recharts
+- **APIs**:
+  - Open Meteo API (for weather data)
+  - Zippopotam.us API (for geocoding)
 - **Package Management**: npm
 
 ## Getting Started
@@ -42,11 +61,14 @@ Follow these steps to set up and run the project locally:
     ```bash
     npm run dev
     ```
-    The application will be accessible at `http://localhost:9002`.
+    The application will be accessible at `http://localhost:9002`
 
 ## Project Structure
 
 - `src/app`: Contains the main application pages, layouts, and global styles.
-- `src/components`: Houses reusable UI components, including `src/components/ui` for Shadcn/UI components, `src/components/temperature-chart.tsx` for the main chart, `src/components/metadata.tsx` for daily weather metadata, and `src/components/footer.tsx` for the application footer.
+- `src/components`: Houses reusable UI components, including:
+  - `src/components/ui`: Base components from Shadcn/UI.
+  - `src/components/temperature-chart.tsx`: The main chart component.
+  - `src/components/metadata.tsx`: The daily weather metadata component.
+  - `src/components/footer.tsx`: The application footer.
 - `src/lib`: Contains utility functions and external service integrations, such as `weather.ts` for API calls.
-- `src/hooks`: For custom React hooks.
