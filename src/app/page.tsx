@@ -1,13 +1,21 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { getWeatherDataByZip, getWeatherDataByCoords, ForecastData } from '@/lib/weather';
+import {
+  getWeatherDataByZip,
+  getWeatherDataByCoords,
+  ForecastData,
+  RateLimitError,
+  GenericApiError,
+} from '@/lib/weather';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { TemperatureChart } from '@/components/temperature-chart';
 import { Metadata } from '@/components/metadata';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, ThermometerSun, CalendarIcon, MapPin } from 'lucide-react';
+import { RateLimitCard } from '@/components/RateLimitCard';
+import { GenericErrorCard } from '@/components/GenericErrorCard';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Footer } from '@/components/footer';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -23,6 +31,8 @@ export default function Home() {
   const [zipCode, setZipCode] = useState<string>('');
   const [date, setDate] = useState<Date>(new Date());
   const [selectedHourlyVariable, setSelectedHourlyVariable] = useState<string>('temperature_2m');
+  const [errorType, setErrorType] = useState<'rate-limit' | 'generic' | null>(null);
+  const [rateLimitMessage, setRateLimitMessage] = useState<string | null>(null);
 
   const [unit, setUnit] = useState<'f' | 'c'>('f');
 
@@ -56,6 +66,8 @@ export default function Home() {
       setLoading(true);
       setData(null);
       setCelsiusData(null);
+      setErrorType(null); // Reset error state at the beginning of a new fetch
+      setRateLimitMessage(null); // Reset rate limit message
       try {
         let weatherData;
         if (zip) {
@@ -64,7 +76,6 @@ export default function Home() {
           localStorage.removeItem('lastLatitude');
           localStorage.removeItem('lastLongitude');
         } else if (lat !== null && lon !== null) {
-          // Assuming getWeatherDataByCoords exists or will be created in weather.ts
           weatherData = await getWeatherDataByCoords(lat, lon, selectedDate);
           localStorage.setItem('lastLatitude', lat.toString());
           localStorage.setItem('lastLongitude', lon.toString());
@@ -73,8 +84,17 @@ export default function Home() {
           throw new Error('No location information provided.');
         }
         setCelsiusData(weatherData);
-      } catch (err) {
+      } catch (err: unknown) {
         console.error('Error fetching weather data:', err);
+        if (err instanceof RateLimitError) {
+          setErrorType('rate-limit');
+          setRateLimitMessage(err.message);
+        } else if (err instanceof GenericApiError || err instanceof Error) {
+          setErrorType('generic');
+        } else {
+          // Fallback for unexpected error types
+          setErrorType('generic');
+        }
       } finally {
         setLoading(false);
       }
@@ -244,7 +264,9 @@ export default function Home() {
                 </CardContent>
               </Card>
             )}
-            {data && !loading && (
+            {errorType === 'rate-limit' && !loading && <RateLimitCard message={rateLimitMessage || undefined} />}
+            {errorType === 'generic' && !loading && <GenericErrorCard />}
+            {data && !loading && !errorType && (
               <>
                 <TemperatureChart
                   data={data.forecast}
@@ -267,7 +289,7 @@ export default function Home() {
                 />
               </>
             )}
-            {!data && !loading && !zipCode && (
+            {!data && !loading && !zipCode && !errorType && (
               <Card className="w-full mx-auto animate-in fade-in-0 duration-500">
                 <CardHeader>
                   <CardTitle>Welcome!</CardTitle>

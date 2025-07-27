@@ -1,6 +1,20 @@
 import { z } from 'zod';
 import { format } from 'date-fns';
 
+export class RateLimitError extends Error {
+  constructor(message = 'Rate limit exceeded.') {
+    super(message);
+    this.name = 'RateLimitError';
+  }
+}
+
+export class GenericApiError extends Error {
+  constructor(message = 'Failed to fetch data from API.') {
+    super(message);
+    this.name = 'GenericApiError';
+  }
+}
+
 const zipCodeSchema = z.string().regex(/^\d{5}$/, { message: 'Invalid ZIP code format.' });
 
 export interface ForecastData {
@@ -32,8 +46,12 @@ export async function getWeatherDataByCoords(
   const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&timezone=auto&start_date=${formattedDate}&end_date=${formattedDate}`;
   const weatherResponse = await fetch(weatherUrl);
   if (!weatherResponse.ok) {
+    const errorData = await weatherResponse.json();
+    if (errorData.reason && errorData.reason.includes('limit exceeded')) {
+      throw new RateLimitError(errorData.reason);
+    }
     console.error('Weather API error:', weatherResponse.statusText);
-    throw new Error('Failed to fetch weather data.');
+    throw new GenericApiError(errorData.reason || 'Failed to fetch weather data.');
   }
   const weatherData = await weatherResponse.json();
   const hourlyData = weatherData.hourly;
@@ -80,11 +98,15 @@ export async function getWeatherDataByZip(zipCode: string, date: Date | undefine
   const geoResponse = await fetch(geoUrl);
 
   if (!geoResponse.ok) {
+    const errorData = await geoResponse.json();
+    if (geoResponse.status === 400 && errorData.reason && errorData.reason.includes('limit exceeded')) {
+      throw new RateLimitError(errorData.reason);
+    }
     if (geoResponse.status === 404) {
       throw new Error(`Could not find location for ZIP code ${validZip}. Please double-check the number.`);
     }
     console.error('Geocoding API error:', geoResponse.statusText);
-    throw new Error('Failed to fetch location data.');
+    throw new GenericApiError(errorData.reason || 'Failed to fetch location data.');
   }
 
   const geoData = await geoResponse.json();

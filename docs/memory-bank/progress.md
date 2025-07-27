@@ -28,6 +28,11 @@
   - Consistent data structures (`Forecast` and `ChartDataItem` interfaces) across `src/lib/weather.ts` and `src/components/temperature-chart.tsx`.
   - The `VariableSelector` dropdown button displays the selected variable's name with a corresponding Lucide icon and is left-aligned.
   - The `VariableSelector` is positioned below the calendar selector and matches its width.
+- **API Error Handling**: Implemented robust error handling for Open-Meteo and Zippopotam.us API calls.
+  - Defined custom `RateLimitError` and `GenericApiError` classes in `src/lib/weather.ts`.
+  - Modified `getWeatherDataByCoords` and `getWeatherDataByZip` to throw these custom errors based on HTTP status codes (429 for rate limit, others for generic API failures).
+  - Updated `src/app/page.tsx` to catch these specific error types, store the detailed rate limit message, and conditionally render `RateLimitCard` or `GenericErrorCard` components.
+  - Modified `src/components/RateLimitCard.tsx` to accept and display a dynamic `message` prop, providing specific feedback on which rate limit was exceeded.
 - **Tests Passing Locally**: All tests in `src/components/temperature-chart.test.tsx` are passing when run locally.
 
 ## 2. What's Left to Build
@@ -36,7 +41,7 @@
 
 ## 3. Current Status
 
-The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators, enhanced tooltips, and dynamic hourly variable selection. Automated testing has been set up in CI, and all local tests are passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved. All WMO weather codes are now covered with appropriate icons and color coding for intensity.
+The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators, enhanced tooltips, and dynamic hourly variable selection. Automated testing has been set up in CI, and all local tests are passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved. All WMO weather codes are now covered with appropriate icons and color coding for intensity. Robust API error handling has been implemented, providing specific feedback for rate limit issues and generic errors.
 
 ## 4. Known Issues
 
@@ -93,3 +98,8 @@ The project has undergone significant cleanup and core functionality enhancement
 - **Input Field Layout Fix**: Adjusted the layout of the input fields and buttons in `src/app/page.tsx` to ensure the calendar selector is always below the zip code input and "Get Weather" button, providing more space for the zip code input.
 - **Location Display Logic**: Modified `src/lib/weather.ts` to display the actual location name (city, state) when using a zip code, and latitude/longitude when using the geolocation feature. Updated `src/lib/weather.test.ts` to reflect this change in expected output.
 - **Weather Icons and Color Coding**: Implemented a comprehensive system for displaying weather icons at the base of the chart bars, with specific icons and color variations for all WMO weather codes, including distinctions for day/night and precipitation intensity (light, moderate, heavy). This involved adding `CloudHail` and refining the `getWeatherIcon` function in `src/components/temperature-chart.tsx`.
+- **API Error Handling**: Implemented robust error handling for Open-Meteo and Zippopotam.us API calls.
+  - Defined custom `RateLimitError` and `GenericApiError` classes in `src/lib/weather.ts`.
+  - Modified `getWeatherDataByCoords` and `getWeatherDataByZip` to throw these custom errors based on HTTP status codes (429 for rate limit, others for generic API failures).
+  - Updated `src/app/page.tsx` to catch these specific error types, store the detailed rate limit message, and conditionally render `RateLimitCard` or `GenericErrorCard` components.
+  - Modified `src/components/RateLimitCard.tsx` to accept and display a dynamic `message` prop, providing specific feedback on which rate limit was exceeded. Initially, rate limit errors were expected to return a 429 status code, but further investigation revealed they return a 400 status code with a specific 'reason' in the JSON response. The implementation was updated to reflect this, parsing the 'reason' to provide specific rate limit messages (e.g., "Daily API request limit exceeded.") to the user via the `RateLimitCard` component.

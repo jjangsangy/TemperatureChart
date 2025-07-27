@@ -61,6 +61,11 @@ The current focus is on implementing a feature to allow users to select differen
   - Adjusted `VariableSelector` dropdown styling (`w-full`, `z-50`) and moved its placement in `src/app/page.tsx` to align with the calendar selector.
   - Added Lucide icons to the `VariableSelector` button and dropdown menu items, and ensured left-alignment of text.
   - Updated `src/components/temperature-chart.test.tsx` to reflect new data structures and test dynamic chart title and tooltip content for different hourly variables.
+- **API Error Handling**: Implemented robust error handling for Open-Meteo and Zippopotam.us API calls.
+  - Defined custom `RateLimitError` and `GenericApiError` classes in `src/lib/weather.ts`.
+  - Modified `getWeatherDataByCoords` and `getWeatherDataByZip` to throw these custom errors based on HTTP status codes (429 for rate limit, others for generic API failures).
+  - Updated `src/app/page.tsx` to catch these specific error types, store the detailed rate limit message, and conditionally render `RateLimitCard` or `GenericErrorCard` components.
+  - Modified `src/components/RateLimitCard.tsx` to accept and display a dynamic `message` prop, providing specific feedback on which rate limit was exceeded. Initially, rate limit errors were expected to return a 429 status code, but further investigation revealed they return a 400 status code with a specific 'reason' in the JSON response. The implementation was updated to reflect this, parsing the 'reason' to provide specific rate limit messages (e.g., "Daily API request limit exceeded.") to the user via the `RateLimitCard` component.
 
 ## 3. Next Steps
 
@@ -85,3 +90,4 @@ The current focus is on implementing a feature to allow users to select differen
 - **Date Selection Feature**: Added a "Change Day" button with a calendar dropdown to allow users to select a specific date for the weather forecast. The `getWeatherDataByZip` function was updated to accept and use this date for API calls.
 - **Bug Fix**: Corrected the geocoding API URL in `src/lib/weather.ts` from `api.zippopot.us` to `api.zippopotam.us` to resolve `ERR_NAME_NOT_RESOLVED` errors.
 - **Bug Fix**: Removed `forecast_days=1` parameter from Open-Meteo API call in `src/lib/weather.ts` to resolve conflict with `start_date` and `end_date` parameters.
+- **Robust Error Handling**: Implemented custom error classes (`RateLimitError`, `GenericApiError`) for API calls, allowing for precise error differentiation and user feedback. This improves the application's resilience and user experience during API failures, now including specific rate limit messages.
