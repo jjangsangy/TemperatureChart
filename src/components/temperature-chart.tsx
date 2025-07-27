@@ -409,13 +409,6 @@ export function TemperatureChart({
               domain={[0, yAxisTicks[yAxisTicks.length - 1]]}
               ticks={yAxisTicks}
               style={{ fontSize: '0.75rem' }}
-              label={{
-                value: getVariableLabel(selectedHourlyVariable),
-                angle: -90,
-                position: 'insideLeft',
-                fill: 'hsl(var(--foreground))',
-                style: { fontSize: '0.85rem' },
-              }}
             />
             <ChartTooltip
               content={
