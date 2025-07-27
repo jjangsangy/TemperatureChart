@@ -1,10 +1,12 @@
 import { getWeatherDataByZip, getWeatherDataByCoords } from './weather';
+import cache from './cache'; // Import the cache instance
 
 import fetchMock from 'jest-fetch-mock';
 
 describe('getWeatherDataByZip', () => {
   beforeEach(() => {
     fetchMock.resetMocks(); // Reset mocks before each test
+    cache.clear(); // Clear the cache before each test
   });
 
   it('throws an error for invalid zip code format', async () => {
@@ -136,11 +138,59 @@ describe('getWeatherDataByZip', () => {
       'https://api.open-meteo.com/v1/forecast?latitude=34.05&longitude=-118.25&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&timezone=auto&start_date=2025-07-24&end_date=2025-07-24',
     );
   });
+
+  it('returns cached data on subsequent calls for the same zip code and date', async () => {
+    const mockDate = new Date('2025-07-24T12:00:00Z');
+    const mockGeoData = {
+      places: [
+        {
+          latitude: '34.05',
+          longitude: '-118.25',
+          'place name': 'Los Angeles',
+          'state abbreviation': 'CA',
+        },
+      ],
+    };
+    const mockWeatherData = {
+      hourly: {
+        time: ['2025-07-24T00:00', '2025-07-24T01:00'],
+        temperature_2m: [20, 19], // Celsius values
+        relative_humidity_2m: [70, 75],
+        apparent_temperature: [22, 20],
+        precipitation_probability: [10, 5],
+        weather_code: [0, 1],
+      },
+      daily: {
+        sunrise: ['2025-07-24T05:30'],
+        sunset: ['2025-07-24T20:00'],
+        temperature_2m_max: [25], // Celsius values
+        temperature_2m_min: [10], // Celsius values
+        precipitation_probability_max: [30],
+        daylight_duration: [54000],
+      },
+    };
+
+    fetchMock.mockResponses(
+      [JSON.stringify(mockGeoData), { status: 200 }],
+      [JSON.stringify(mockWeatherData), { status: 200 }],
+    );
+
+    // First call - should hit APIs
+    await getWeatherDataByZip('90210', mockDate);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+
+    fetchMock.resetMocks(); // Reset mocks to ensure no new API calls are made
+
+    // Second call - should hit cache
+    await getWeatherDataByZip('90210', mockDate);
+    expect(fetchMock).toHaveBeenCalledTimes(0); // No new API calls
+  });
 });
 
 describe('getWeatherDataByCoords', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
+    cache.clear(); // Clear the cache before each test
   });
 
   it('throws an error if weather API fails', async () => {
@@ -207,5 +257,39 @@ describe('getWeatherDataByCoords', () => {
     expect(fetchMock).toHaveBeenCalledWith(
       'https://api.open-meteo.com/v1/forecast?latitude=34.05&longitude=-118.25&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&timezone=auto&start_date=2025-07-24&end_date=2025-07-24',
     );
+  });
+
+  it('returns cached data on subsequent calls for the same coordinates and date', async () => {
+    const mockDate = new Date('2025-07-24T12:00:00Z');
+    const mockWeatherData = {
+      hourly: {
+        time: ['2025-07-24T00:00', '2025-07-24T01:00'],
+        temperature_2m: [20, 19], // Celsius values
+        relative_humidity_2m: [70, 75],
+        apparent_temperature: [22, 20],
+        precipitation_probability: [10, 5],
+        weather_code: [0, 1],
+      },
+      daily: {
+        sunrise: ['2025-07-24T05:30'],
+        sunset: ['2025-07-24T20:00'],
+        temperature_2m_max: [25], // Celsius values
+        temperature_2m_min: [10], // Celsius values
+        precipitation_probability_max: [30],
+        daylight_duration: [54000],
+      },
+    };
+
+    fetchMock.mockResponseOnce(JSON.stringify(mockWeatherData), { status: 200 });
+
+    // First call - should hit API
+    await getWeatherDataByCoords(34.05, -118.25, mockDate);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+
+    fetchMock.resetMocks(); // Reset mocks to ensure no new API calls are made
+
+    // Second call - should hit cache
+    await getWeatherDataByCoords(34.05, -118.25, mockDate);
+    expect(fetchMock).toHaveBeenCalledTimes(0); // No new API calls
   });
 });

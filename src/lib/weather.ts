@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { format } from 'date-fns';
+import cache from './cache'; // Import the cache instance
 
 export class RateLimitError extends Error {
   constructor(message = 'Rate limit exceeded.') {
@@ -42,6 +43,12 @@ export async function getWeatherDataByCoords(
   locationName?: string, // Add optional locationName parameter
 ): Promise<ForecastData> {
   const formattedDate = date ? format(date, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd');
+  const cacheKey = `coords-${latitude}-${longitude}-${formattedDate}`;
+
+  const cachedData = cache.get(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
 
   const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&timezone=auto&start_date=${formattedDate}&end_date=${formattedDate}`;
   const weatherResponse = await fetch(weatherUrl);
@@ -75,7 +82,7 @@ export async function getWeatherDataByCoords(
 
   const location = locationName || `(${latitude.toFixed(4)}, ${longitude.toFixed(4)})`;
 
-  return {
+  const result: ForecastData = {
     location,
     forecast,
     sunrise,
@@ -85,9 +92,20 @@ export async function getWeatherDataByCoords(
     precipitationProbabilityMax,
     daylightDuration,
   };
+
+  cache.set(cacheKey, result);
+  return result;
 }
 
 export async function getWeatherDataByZip(zipCode: string, date: Date | undefined): Promise<ForecastData> {
+  const formattedDate = date ? format(date, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd');
+  const cacheKey = `zip-${zipCode}-${formattedDate}`;
+
+  const cachedData = cache.get(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
+
   const validation = zipCodeSchema.safeParse(zipCode);
   if (!validation.success) {
     throw new Error('Please enter a valid 5-digit US zip code.');
@@ -116,5 +134,7 @@ export async function getWeatherDataByZip(zipCode: string, date: Date | undefine
   const longitude = parseFloat(place.longitude);
   const locationName = `${place['place name']}, ${place['state abbreviation']}`;
 
-  return getWeatherDataByCoords(latitude, longitude, date, locationName);
+  const result = await getWeatherDataByCoords(latitude, longitude, date, locationName);
+  cache.set(cacheKey, result); // Cache the result from getWeatherDataByCoords
+  return result;
 }
