@@ -62,6 +62,9 @@ The current focus is on implementing a feature to allow users to select differen
   - Adjusted `VariableSelector` dropdown styling (`w-full`, `z-50`) and moved its placement in `src/app/page.tsx` to align with the calendar selector.
   - Added Lucide icons to the `VariableSelector` button and dropdown menu items, and ensured left-alignment of text.
   - Updated `src/components/temperature-chart.test.tsx` to reflect new data structures and test dynamic chart title and tooltip content for different hourly variables.
+  - Modified `src/components/variable-selector.tsx` to accept a `className` prop, allowing for external styling adjustments.
+- **Zip Code Input Layout**: Modified `src/app/page.tsx` to make the zip code input box exactly half the width of its row, by wrapping it and the associated buttons in separate `w-1/2` divs within the flex container.
+- **Date and Variable Selector Layout**: Modified `src/app/page.tsx` to place the date selector and variable selector on the same row, each occupying half the width, by wrapping them in a new flex container.
 - **API Error Handling**: Implemented robust error handling for Open-Meteo and Zippopotam.us API calls.
   - Defined custom `RateLimitError` and `GenericApiError` classes in `src/lib/weather.ts`.
   - Modified `getWeatherDataByCoords` and `getWeatherDataByZip` to throw these custom errors based on HTTP status codes (429 for rate limit, others for generic API failures).

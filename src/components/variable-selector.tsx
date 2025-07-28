@@ -11,13 +11,15 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Thermometer, Droplets, ThermometerSun, CloudRain } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface VariableSelectorProps {
   selectedVariable: string;
   onVariableChange: (variable: string) => void;
+  className?: string;
 }
 
-export function VariableSelector({ selectedVariable, onVariableChange }: VariableSelectorProps) {
+export function VariableSelector({ selectedVariable, onVariableChange, className }: VariableSelectorProps) {
   const variables = [
     { value: 'temperature_2m', label: 'Temperature' },
     { value: 'relative_humidity_2m', label: 'Relative Humidity' },
@@ -43,7 +45,7 @@ export function VariableSelector({ selectedVariable, onVariableChange }: Variabl
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="w-full justify-start">
+        <Button variant="outline" className={cn('w-full justify-start', className)}>
           {getVariableIcon(selectedVariable)}
           {variables.find((v) => v.value === selectedVariable)?.label || 'Select Variable'}
         </Button>

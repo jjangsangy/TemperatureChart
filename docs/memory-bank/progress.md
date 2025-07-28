@@ -34,6 +34,8 @@
   - Modified `getWeatherDataByZip` to throw `Error` for 404 status codes (zip code not found) and `GenericApiError` for other `zippopotam.us` API errors (as `zippopotam.us` has no rate limits).
   - Updated `src/app/page.tsx` to catch these specific error types and conditionally render `RateLimitCard` or `GenericErrorCard` components, providing clear user feedback.
 - **HTTP Request Caching**: Implemented caching for weather data API calls using `lru-cache` with a 30-minute TTL. Cache keys are generated based on a combination of location data (latitude/longitude or zip code) and the selected date, ensuring unique and type-specific cache hits. The `src/lib/cache.ts` file was created and configured for this purpose, and `src/lib/weather.ts` was updated to integrate the caching logic. Tests in `src/lib/weather.test.ts` were also updated to verify the caching behavior.
+- **Zip Code Input Layout**: The zip code input box in `src/app/page.tsx` has been adjusted to be exactly half the width of its row, by wrapping it and the associated buttons in separate `w-1/2` divs within the flex container.
+- **Date and Variable Selector Layout**: The date selector and variable selector in `src/app/page.tsx` are now on the same row, each occupying half the width, by wrapping them in a new flex container. The `VariableSelector` component (`src/components/variable-selector.tsx`) was updated to accept a `className` prop to facilitate this layout change.
 
 ## 2. What's Left to Build
 

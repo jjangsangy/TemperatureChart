@@ -208,52 +208,62 @@ export default function Home() {
 
           <form onSubmit={handleSubmit} className="flex flex-col w-full max-w-sm mx-auto items-center space-y-2 mb-12">
             <div className="flex w-full space-x-2">
-              <Input
-                type="text"
-                name="zipcode"
-                placeholder="Enter 5-digit zip code"
-                required
-                pattern="\d{5}"
-                maxLength={5}
-                value={zipCode}
-                onChange={(e) => setZipCode(e.target.value)}
-                className="text-sm sm:text-base flex-grow"
-              />
-              <Button type="submit" disabled={loading} className="font-semibold">
-                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                Get Weather
-              </Button>
-              <Button
-                type="button"
-                onClick={handleGeolocation}
-                disabled={loading}
-                variant="outline"
-                className="font-semibold px-3 bg-accent text-accent-foreground hover:bg-accent/90"
-                title="Get weather by current location"
-              >
-                <MapPin className="h-4 w-4" />
-              </Button>
-            </div>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={'outline'}
-                  className={cn('w-full justify-start text-left font-normal', !date && 'text-muted-foreground')}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? format(date, 'PPP') : <span>Pick a date</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={(selectedDay) => setDate(selectedDay || new Date())} // Ensure date is always defined
-                  initialFocus
+              <div className="w-1/2">
+                <Input
+                  type="text"
+                  name="zipcode"
+                  placeholder="Enter 5-digit zip code"
+                  required
+                  pattern="\d{5}"
+                  maxLength={5}
+                  value={zipCode}
+                  onChange={(e) => setZipCode(e.target.value)}
+                  className="text-sm sm:text-base w-full"
                 />
-              </PopoverContent>
-            </Popover>
-            <VariableSelector selectedVariable={selectedHourlyVariable} onVariableChange={handleHourlyVariableChange} />
+              </div>
+              <div className="w-1/2 flex space-x-2">
+                <Button type="submit" disabled={loading} className="font-semibold flex-grow">
+                  {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                  Get Weather
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleGeolocation}
+                  disabled={loading}
+                  variant="outline"
+                  className="font-semibold px-3 bg-accent text-accent-foreground hover:bg-accent/90"
+                  title="Get weather by current location"
+                >
+                  <MapPin className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+            <div className="flex w-full space-x-2">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={'outline'}
+                    className={cn('w-1/2 justify-start text-left font-normal', !date && 'text-muted-foreground')}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={(selectedDay) => setDate(selectedDay || new Date())} // Ensure date is always defined
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              <VariableSelector
+                selectedVariable={selectedHourlyVariable}
+                onVariableChange={handleHourlyVariableChange}
+                className="w-1/2"
+              />
+            </div>
           </form>
 
           <div>
