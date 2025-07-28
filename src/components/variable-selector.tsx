@@ -22,9 +22,9 @@ interface VariableSelectorProps {
 export function VariableSelector({ selectedVariable, onVariableChange, className }: VariableSelectorProps) {
   const variables = [
     { value: 'temperature_2m', label: 'Temperature' },
-    { value: 'relative_humidity_2m', label: 'Relative Humidity' },
-    { value: 'apparent_temperature', label: 'Apparent Temperature' },
-    { value: 'precipitation_probability', label: 'Precipitation Probability' },
+    { value: 'apparent_temperature', label: 'Feels Like' },
+    { value: 'relative_humidity_2m', label: 'Humidity' },
+    { value: 'precipitation_probability', label: 'Precipitation' },
   ];
 
   const getVariableIcon = (variable: string) => {
