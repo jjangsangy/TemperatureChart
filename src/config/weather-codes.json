@@ -1,0 +1,147 @@
+{
+  "0": {
+    "description": "Clear sky",
+    "icon": { "day": "Sun", "night": "Moon" },
+    "color": { "day": "text-yellow-500", "night": "text-gray-400" }
+  },
+  "1": {
+    "description": "Mainly clear",
+    "icon": { "day": "CloudSun", "night": "CloudMoon" },
+    "color": { "day": "text-yellow-400", "night": "text-gray-300" }
+  },
+  "2": {
+    "description": "Partly cloudy",
+    "icon": { "day": "Cloudy", "night": "Cloudy" },
+    "color": { "day": "text-gray-500", "night": "text-gray-500" }
+  },
+  "3": {
+    "description": "Overcast",
+    "icon": { "day": "Cloud", "night": "Cloud" },
+    "color": { "day": "text-gray-600", "night": "text-gray-600" }
+  },
+  "45": {
+    "description": "Fog",
+    "icon": { "day": "CloudFog", "night": "CloudFog" },
+    "color": { "day": "text-gray-400", "night": "text-gray-400" }
+  },
+  "48": {
+    "description": "Depositing rime fog",
+    "icon": { "day": "CloudFog", "night": "CloudFog" },
+    "color": { "day": "text-gray-500", "night": "text-gray-500" }
+  },
+  "51": {
+    "description": "Light drizzle",
+    "icon": { "day": "CloudDrizzle", "night": "CloudDrizzle" },
+    "color": { "day": "text-blue-300", "night": "text-blue-300" }
+  },
+  "53": {
+    "description": "Moderate drizzle",
+    "icon": { "day": "CloudDrizzle", "night": "CloudDrizzle" },
+    "color": { "day": "text-blue-500", "night": "text-blue-500" }
+  },
+  "55": {
+    "description": "Dense drizzle",
+    "icon": { "day": "CloudDrizzle", "night": "CloudDrizzle" },
+    "color": { "day": "text-blue-700", "night": "text-blue-700" }
+  },
+  "56": {
+    "description": "Light freezing drizzle",
+    "icon": { "day": "CloudDrizzle", "night": "CloudDrizzle" },
+    "color": { "day": "text-cyan-300", "night": "text-cyan-300" }
+  },
+  "57": {
+    "description": "Dense freezing drizzle",
+    "icon": { "day": "CloudDrizzle", "night": "CloudDrizzle" },
+    "color": { "day": "text-cyan-700", "night": "text-cyan-700" }
+  },
+  "61": {
+    "description": "Slight rain",
+    "icon": { "day": "CloudRain", "night": "CloudRain" },
+    "color": { "day": "text-blue-300", "night": "text-blue-300" }
+  },
+  "63": {
+    "description": "Moderate rain",
+    "icon": { "day": "CloudRain", "night": "CloudRain" },
+    "color": { "day": "text-blue-500", "night": "text-blue-500" }
+  },
+  "65": {
+    "description": "Heavy rain",
+    "icon": { "day": "CloudRain", "night": "CloudRain" },
+    "color": { "day": "text-blue-700", "night": "text-blue-700" }
+  },
+  "66": {
+    "description": "Light freezing rain",
+    "icon": { "day": "CloudRain", "night": "CloudRain" },
+    "color": { "day": "text-cyan-300", "night": "text-cyan-300" }
+  },
+  "67": {
+    "description": "Heavy freezing rain",
+    "icon": { "day": "CloudRain", "night": "CloudRain" },
+    "color": { "day": "text-cyan-700", "night": "text-cyan-700" }
+  },
+  "71": {
+    "description": "Slight snowfall",
+    "icon": { "day": "CloudSnow", "night": "CloudSnow" },
+    "color": { "day": "text-indigo-300", "night": "text-indigo-300" }
+  },
+  "73": {
+    "description": "Moderate snowfall",
+    "icon": { "day": "CloudSnow", "night": "CloudSnow" },
+    "color": { "day": "text-indigo-500", "night": "text-indigo-500" }
+  },
+  "75": {
+    "description": "Heavy snowfall",
+    "icon": { "day": "CloudSnow", "night": "CloudSnow" },
+    "color": { "day": "text-indigo-700", "night": "text-indigo-700" }
+  },
+  "77": {
+    "description": "Snow grains",
+    "icon": { "day": "Snowflake", "night": "Snowflake" },
+    "color": { "day": "text-indigo-500", "night": "text-indigo-500" }
+  },
+  "80": {
+    "description": "Slight rain showers",
+    "icon": { "day": "CloudRain", "night": "CloudRain" },
+    "color": { "day": "text-blue-300", "night": "text-blue-300" }
+  },
+  "81": {
+    "description": "Moderate rain showers",
+    "icon": { "day": "CloudRain", "night": "CloudRain" },
+    "color": { "day": "text-blue-500", "night": "text-blue-500" }
+  },
+  "82": {
+    "description": "Violent rain showers",
+    "icon": { "day": "CloudRain", "night": "CloudRain" },
+    "color": { "day": "text-blue-700", "night": "text-blue-700" }
+  },
+  "85": {
+    "description": "Slight snow showers",
+    "icon": { "day": "CloudSnow", "night": "CloudSnow" },
+    "color": { "day": "text-indigo-300", "night": "text-indigo-300" }
+  },
+  "86": {
+    "description": "Heavy snow showers",
+    "icon": { "day": "CloudSnow", "night": "CloudSnow" },
+    "color": { "day": "text-indigo-500", "night": "text-indigo-500" }
+  },
+  "95": {
+    "description": "Thunderstorm",
+    "icon": { "day": "CloudLightning", "night": "CloudLightning" },
+    "color": { "day": "text-yellow-500", "night": "text-yellow-500" }
+  },
+  "96": {
+    "description": "Thunderstorm with slight hail",
+    "icon": { "day": "CloudHail", "night": "CloudHail" },
+    "color": { "day": "text-blue-400", "night": "text-blue-400" }
+  },
+  "99": {
+    "description": "Thunderstorm with heavy hail",
+    "icon": { "day": "CloudHail", "night": "CloudHail" },
+    "color": { "day": "text-blue-600", "night": "text-blue-600" }
+  },
+  "default": {
+    "description": "Unknown",
+    "icon": { "day": "Cloud", "night": "Cloud" },
+    "color": { "day": "text-muted-foreground", "night": "text-muted-foreground" }
+  }
+}
