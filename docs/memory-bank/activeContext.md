@@ -76,6 +76,7 @@ The current focus is on implementing a feature to allow users to select differen
   - Integrated caching logic into `src/lib/weather.ts`'s `getWeatherDataByCoords` and `getWeatherDataByZip` functions.
   - Cache keys are generated based on a combination of location data (latitude/longitude or zip code) and the selected date, ensuring unique and type-specific cache hits.
   - Updated `src/lib/weather.test.ts` to include tests for caching behavior, verifying that API calls are skipped on cache hits.
+- **Responsive Chart Height**: Implemented responsive height for the temperature chart using Tailwind CSS classes (`h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]`) in `src/components/temperature-chart.tsx`.
 
 ## 3. Next Steps
 
@@ -102,3 +103,4 @@ The current focus is on implementing a feature to allow users to select differen
 - **Bug Fix**: Removed `forecast_days=1` parameter from Open-Meteo API call in `src/lib/weather.ts` to resolve conflict with `start_date` and `end_date` parameters.
 - **Robust Error Handling**: Implemented custom error classes (`RateLimitError`, `GenericApiError`) for API calls, allowing for precise error differentiation and user feedback. This improves the application's resilience and user experience during API failures, now including specific rate limit messages.
 - **Performance Enhancement**: Implemented `lru-cache` for HTTP request caching, significantly reducing redundant API calls and improving application responsiveness. The cache uses a 30-minute TTL and generates unique keys based on location (latitude/longitude or zip code) and date, ensuring efficient and accurate cache hits.
+- **Chart Height Responsiveness**: The chart's height now dynamically adjusts based on screen size, improving adaptability for various devices.

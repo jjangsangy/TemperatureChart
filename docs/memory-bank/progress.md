@@ -36,6 +36,7 @@
 - **HTTP Request Caching**: Implemented caching for weather data API calls using `lru-cache` with a 30-minute TTL. Cache keys are generated based on a combination of location data (latitude/longitude or zip code) and the selected date, ensuring unique and type-specific cache hits. The `src/lib/cache.ts` file was created and configured for this purpose, and `src/lib/weather.ts` was updated to integrate the caching logic. Tests in `src/lib/weather.test.ts` were also updated to verify the caching behavior.
 - **Zip Code Input Layout**: The zip code input box in `src/app/page.tsx` has been adjusted to be exactly half the width of its row, by wrapping it and the associated buttons in separate `w-1/2` divs within the flex container.
 - **Date and Variable Selector Layout**: The date selector and variable selector in `src/app/page.tsx` are now on the same row, each occupying half the width, by wrapping them in a new flex container. The `VariableSelector` component (`src/components/variable-selector.tsx`) was updated to accept a `className` prop to facilitate this layout change.
+- **Responsive Chart Height**: The chart's height now dynamically adjusts based on screen size, improving adaptability for various devices.
 
 ## 2. What's Left to Build
 
@@ -43,7 +44,7 @@
 
 ## 3. Current Status
 
-The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators, enhanced tooltips, and dynamic hourly variable selection. Automated testing has been set up in CI, and all local tests are passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved. All WMO weather codes are now covered with appropriate icons and color coding for intensity. Robust API error handling has been implemented, providing specific feedback for rate limit issues and generic errors. HTTP request caching has been successfully integrated, improving performance and reducing API calls.
+The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators, enhanced tooltips, and dynamic hourly variable selection. Automated testing has been set up in CI, and all local tests are passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved. All WMO weather codes are now covered with appropriate icons and color coding for intensity. Robust API error handling has been implemented, providing specific feedback for rate limit issues and generic errors. HTTP request caching has been successfully integrated, improving performance and reducing API calls. The chart's height now dynamically adjusts based on screen size, improving adaptability for various devices.
 
 ## 4. Known Issues
 
@@ -105,3 +106,4 @@ The project has undergone significant cleanup and core functionality enhancement
   - Modified `getWeatherDataByCoords` and `getWeatherDataByZip` to throw these custom errors based on HTTP status codes (429 for rate limit, others for generic API failures).
   - Updated `src/app/page.tsx` to catch these specific error types and conditionally render `RateLimitCard` or `GenericErrorCard` components, providing clear user feedback.
 - **HTTP Request Caching**: Implemented caching for weather data API calls using `lru-cache` with a 30-minute TTL. Cache keys are generated based on a combination of location data (latitude/longitude or zip code) and the selected date, ensuring unique and type-specific cache hits. The `src/lib/cache.ts` file was created and configured for this purpose, and `src/lib/weather.ts` was updated to integrate the caching logic. Tests in `src/lib/weather.test.ts` were also updated to verify the caching behavior.
+- **Responsive Chart Height**: Implemented responsive height for the temperature chart using Tailwind CSS classes (`h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]`) in `src/components/temperature-chart.tsx`.

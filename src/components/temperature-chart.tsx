@@ -389,7 +389,7 @@ export function TemperatureChart({
         <CardDescription className="text-xs sm:text-sm">{location}</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-[600px] w-full">
+        <ChartContainer config={chartConfig} className="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] w-full">
           <BarChart accessibilityLayer data={chartData} margin={{ top: 20, right: 20, bottom: 60, left: -10 }}>
             <CartesianGrid vertical={false} />
             <XAxis
