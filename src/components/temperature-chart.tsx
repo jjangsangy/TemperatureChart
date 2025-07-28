@@ -383,10 +383,10 @@ export function TemperatureChart({
   return (
     <Card className="w-full mb-4 animate-in fade-in-0 duration-500 shadow-lg border-primary/20">
       <CardHeader>
-        <CardTitle className="text-xl sm:text-2xl">
+        <CardTitle className="text-base sm:text-xl md:text-2xl">
           {getVariableLabel(selectedHourlyVariable)} Forecast for {currentDay}
         </CardTitle>
-        <CardDescription className="text-xs sm:text-sm">{location}</CardDescription>
+        <CardDescription className="text-xs sm:text-sm md:text-base">{location}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] w-full">
@@ -398,7 +398,7 @@ export function TemperatureChart({
               tickMargin={10}
               axisLine={false}
               tick={CustomXAxisTick}
-              style={{ fontSize: '0.75rem' }}
+              style={{ fontSize: '0.5rem' }}
             />
             <YAxis
               dataKey={selectedHourlyVariable}
@@ -414,7 +414,7 @@ export function TemperatureChart({
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) => (
-                    <div className="text-base sm:text-lg font-bold text-foreground">{value}</div>
+                    <div className="text-xs sm:text-base font-bold text-foreground">{value}</div>
                   )}
                   formatter={(value, name, props) => (
                     <div className="flex flex-col text-xs sm:text-sm p-2">
