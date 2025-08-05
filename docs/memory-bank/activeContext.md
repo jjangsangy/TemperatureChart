@@ -84,6 +84,10 @@ The current focus is on implementing a feature to allow users to select differen
 
 ## 4. Key Decisions & Insights
 
+- Implemented keyboard hotkeys (ArrowLeft, ArrowRight) for navigating between days, and (ArrowUp, ArrowDown) for navigating between weeks, enhancing user experience.
+
+## 4. Key Decisions & Insights
+
 - The project is now streamlined, focusing solely on its core functionality of displaying temperature data.
 - The removal of unused code improves maintainability and reduces bundle size.
 - The Memory Bank has been updated to accurately reflect the current state of the project.

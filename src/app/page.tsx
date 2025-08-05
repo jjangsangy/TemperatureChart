@@ -20,9 +20,10 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Footer } from '@/components/footer';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { format, isToday } from 'date-fns';
+import { format, isToday, addDays, subDays, addWeeks, subWeeks } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { VariableSelector } from '@/components/variable-selector';
+import { useHotkeys } from '@/hooks/use-hotkeys';
 
 export default function Home() {
   const [data, setData] = useState<ForecastData | null>(null);
@@ -173,6 +174,21 @@ export default function Home() {
   const handleHourlyVariableChange = (variable: string) => {
     setSelectedHourlyVariable(variable);
   };
+
+  useHotkeys({
+    ArrowLeft: () => {
+      setDate((prevDate) => subDays(prevDate, 1));
+    },
+    ArrowRight: () => {
+      setDate((prevDate) => addDays(prevDate, 1));
+    },
+    ArrowUp: () => {
+      setDate((prevDate) => addWeeks(prevDate, 1));
+    },
+    ArrowDown: () => {
+      setDate((prevDate) => subWeeks(prevDate, 1));
+    },
+  });
 
   return (
     <div className="flex min-h-screen flex-col bg-background font-body">
