@@ -7,6 +7,7 @@ import {
   ForecastData,
   RateLimitError,
   GenericApiError,
+  DateRangeError,
 } from '@/lib/weather';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Loader2, ThermometerSun, CalendarIcon, MapPin } from 'lucide-react';
 import { RateLimitCard } from '@/components/RateLimitCard';
 import { GenericErrorCard } from '@/components/GenericErrorCard';
+import { DateRangeErrorCard } from '@/components/DateRangeErrorCard';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Footer } from '@/components/footer';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -32,7 +34,7 @@ export default function Home() {
   const [zipCode, setZipCode] = useState<string>('');
   const [date, setDate] = useState<Date>(new Date());
   const [selectedHourlyVariable, setSelectedHourlyVariable] = useState<string>('temperature_2m');
-  const [errorType, setErrorType] = useState<'rate-limit' | 'generic' | null>(null);
+  const [errorType, setErrorType] = useState<'rate-limit' | 'generic' | 'date-range' | null>(null);
   const [rateLimitMessage, setRateLimitMessage] = useState<string | null>(null);
 
   const [unit, setUnit] = useState<'f' | 'c'>('f');
@@ -90,6 +92,8 @@ export default function Home() {
         if (err instanceof RateLimitError) {
           setErrorType('rate-limit');
           setRateLimitMessage(err.message);
+        } else if (err instanceof DateRangeError) {
+          setErrorType('date-range');
         } else if (err instanceof GenericApiError || err instanceof Error) {
           setErrorType('generic');
         } else {
@@ -292,6 +296,7 @@ export default function Home() {
             )}
             {errorType === 'rate-limit' && !loading && <RateLimitCard message={rateLimitMessage || undefined} />}
             {errorType === 'generic' && !loading && <GenericErrorCard />}
+            {errorType === 'date-range' && !loading && <DateRangeErrorCard />}
             {data && !loading && !errorType && (
               <>
                 <TemperatureChart

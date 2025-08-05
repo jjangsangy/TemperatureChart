@@ -16,6 +16,13 @@ export class GenericApiError extends Error {
   }
 }
 
+export class DateRangeError extends Error {
+  constructor(message = 'The selected date is outside the allowed range.') {
+    super(message);
+    this.name = 'DateRangeError';
+  }
+}
+
 const zipCodeSchema = z.string().regex(/^\d{5}$/, { message: 'Invalid ZIP code format.' });
 
 export interface ForecastData {
@@ -56,6 +63,8 @@ export async function getWeatherDataByCoords(
     const errorData = await weatherResponse.json();
     if (errorData.reason && errorData.reason.includes('limit exceeded')) {
       throw new RateLimitError(errorData.reason);
+    } else if (errorData.reason && errorData.reason.includes('out of allowed range')) {
+      throw new DateRangeError(errorData.reason);
     }
     console.error('Weather API error:', weatherResponse.statusText);
     throw new GenericApiError(errorData.reason || 'Failed to fetch weather data.');
