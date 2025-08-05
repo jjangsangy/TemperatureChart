@@ -276,10 +276,9 @@ export function TemperatureChart({
   const [isCurrentDay, setIsCurrentDay] = useState<boolean>(false);
 
   useEffect(() => {
-    const now = new Date();
-    setCurrentHour(now.getHours());
+    // Always set currentDay based on selectedDate
     setCurrentDay(
-      now.toLocaleDateString('en-US', {
+      selectedDate.toLocaleDateString('en-US', {
         weekday: 'long',
         month: 'long',
         day: 'numeric',
@@ -287,12 +286,16 @@ export function TemperatureChart({
       }),
     );
 
+    // Determine if selectedDate is today for current hour highlighting
     const today = new Date();
     setIsCurrentDay(
       selectedDate.getDate() === today.getDate() &&
         selectedDate.getMonth() === today.getMonth() &&
         selectedDate.getFullYear() === today.getFullYear(),
     );
+
+    // Set currentHour based on actual current time for highlighting
+    setCurrentHour(today.getHours());
   }, [selectedDate]);
 
   const sunriseHour = new Date(sunrise).getHours();

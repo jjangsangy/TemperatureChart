@@ -34,9 +34,8 @@
   - Modified `getWeatherDataByZip` to throw `Error` for 404 status codes (zip code not found) and `GenericApiError` for other `zippopotam.us` API errors (as `zippopotam.us` has no rate limits).
   - Updated `src/app/page.tsx` to catch these specific error types and conditionally render `RateLimitCard` or `GenericErrorCard` components, providing clear user feedback.
 - **HTTP Request Caching**: Implemented caching for weather data API calls using `lru-cache` with a 30-minute TTL. Cache keys are generated based on a combination of location data (latitude/longitude or zip code) and the selected date, ensuring unique and type-specific cache hits. The `src/lib/cache.ts` file was created and configured for this purpose, and `src/lib/weather.ts` was updated to integrate the caching logic. Tests in `src/lib/weather.test.ts` were also updated to verify the caching behavior.
-- **Zip Code Input Layout**: The zip code input box in `src/app/page.tsx` has been adjusted to be exactly half the width of its row, by wrapping it and the associated buttons in separate `w-1/2` divs within the flex container.
-- **Date and Variable Selector Layout**: The date selector and variable selector in `src/app/page.tsx` are now on the same row, each occupying half the width, by wrapping them in a new flex container. The `VariableSelector` component (`src/components/variable-selector.tsx`) was updated to accept a `className` prop to facilitate this layout change.
 - **Responsive Chart Height**: The chart's height now dynamically adjusts based on screen size, improving adaptability for various devices.
+- **Bug Fix (Date Not Updating)**: The `useEffect` hook in `src/components/temperature-chart.tsx` now correctly uses the `selectedDate` prop for displaying the current day in the chart title, ensuring the chart's date updates correctly with user selection. Additionally, `src/app/page.tsx` was updated to include `date` in the `handleFetchWeather` `useCallback` dependency array, ensuring data refetches when the date changes.
 
 ## 2. What's Left to Build
 
@@ -44,7 +43,7 @@
 
 ## 3. Current Status
 
-The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators, enhanced tooltips, and dynamic hourly variable selection. Automated testing has been set up in CI, and all local tests are passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved. All WMO weather codes are now covered with appropriate icons and color coding for intensity. Robust API error handling has been implemented, providing specific feedback for rate limit issues and generic errors. HTTP request caching has been successfully integrated, improving performance and reducing API calls. The chart's height now dynamically adjusts based on screen size, improving adaptability for various devices. Keyboard hotkeys for date navigation (daily and weekly) have been implemented.
+The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators, enhanced tooltips, and dynamic hourly variable selection. Automated testing has been set up in CI, and all local tests are passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved. All WMO weather codes are now covered with appropriate icons and color coding for intensity. Robust API error handling has been implemented, providing specific feedback for rate limit issues and generic errors. HTTP request caching has been successfully integrated, improving performance and reducing API calls. The chart's height now dynamically adjusts based on screen size, improving adaptability for various devices. Keyboard hotkeys for date navigation (daily and weekly) have been implemented. The bug where the temperature chart's displayed date did not update when the user selected a new date has been fixed.
 
 ## 4. Known Issues
 
@@ -101,9 +100,16 @@ The project has undergone significant cleanup and core functionality enhancement
 - **Input Field Layout Fix**: Adjusted the layout of the input fields and buttons in `src/app/page.tsx` to ensure the calendar selector is always below the zip code input and "Get Weather" button, providing more space for the zip code input.
 - **Location Display Logic**: Modified `src/lib/weather.ts` to display the actual location name (city, state) when using a zip code, and latitude/longitude when using the geolocation feature. Updated `src/lib/weather.test.ts` to reflect this change in expected output.
 - **Weather Icons and Color Coding**: Implemented a comprehensive system for displaying weather icons at the base of the chart bars, with specific icons and color variations for all WMO weather codes, including distinctions for day/night and precipitation intensity (light, moderate, heavy). This involved adding `CloudHail` and refining the `getWeatherIcon` function in `src/components/temperature-chart.tsx`.
+- **Hourly Variable Selection Feature**:
+  - Created `src/components/variable-selector.tsx` for variable selection.
+  - Integrated `VariableSelector` into `src/app/page.tsx`, managing `selectedHourlyVariable` state and passing it to `TemperatureChart`.
+  - Updated `src/components/temperature-chart.tsx` to dynamically render chart based on `selectedHourlyVariable`, including `YAxis` and `CardTitle` updates.
+  - Refactored `Forecast` and introduced `ChartDataItem` interfaces for type consistency across `src/lib/weather.ts` and `src/components/temperature-chart.tsx`.
+  - The `VariableSelector` dropdown button displays the selected variable's name with a corresponding Lucide icon and is left-aligned.
+  - The `VariableSelector` is positioned below the calendar selector and matches its width.
 - **API Error Handling**: Implemented robust error handling for Open-Meteo and Zippopotam.us API calls.
   - Defined custom `RateLimitError` and `GenericApiError` classes in `src/lib/weather.ts`.
   - Modified `getWeatherDataByCoords` and `getWeatherDataByZip` to throw these custom errors based on HTTP status codes (429 for rate limit, others for generic API failures).
   - Updated `src/app/page.tsx` to catch these specific error types and conditionally render `RateLimitCard` or `GenericErrorCard` components, providing clear user feedback.
 - **HTTP Request Caching**: Implemented caching for weather data API calls using `lru-cache` with a 30-minute TTL. Cache keys are generated based on a combination of location data (latitude/longitude or zip code) and the selected date, ensuring unique and type-specific cache hits. The `src/lib/cache.ts` file was created and configured for this purpose, and `src/lib/weather.ts` was updated to integrate the caching logic. Tests in `src/lib/weather.test.ts` were also updated to verify the caching behavior.
-- **Responsive Chart Height**: Implemented responsive height for the temperature chart using Tailwind CSS classes (`h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]`) in `src/components/temperature-chart.tsx`.
+- **Responsive Chart Height**: The chart's height now dynamically adjusts based on screen size, improving adaptability for various devices.

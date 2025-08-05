@@ -100,7 +100,7 @@ export default function Home() {
         setLoading(false);
       }
     },
-    [],
+    [date],
   );
 
   useEffect(() => {
