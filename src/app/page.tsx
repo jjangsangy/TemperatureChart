@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { TemperatureChart } from '@/components/temperature-chart';
 import { Metadata } from '@/components/metadata';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, ThermometerSun, CalendarIcon, MapPin } from 'lucide-react';
+import { Loader2, ThermometerSun, CalendarIcon, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import { RateLimitCard } from '@/components/RateLimitCard';
 import { GenericErrorCard } from '@/components/GenericErrorCard';
 import { DateRangeErrorCard } from '@/components/DateRangeErrorCard';
@@ -179,13 +179,17 @@ export default function Home() {
     setSelectedHourlyVariable(variable);
   };
 
+  const handlePreviousDay = () => {
+    setDate((prevDate) => subDays(prevDate, 1));
+  };
+
+  const handleNextDay = () => {
+    setDate((prevDate) => addDays(prevDate, 1));
+  };
+
   useHotkeys({
-    ArrowLeft: () => {
-      setDate((prevDate) => subDays(prevDate, 1));
-    },
-    ArrowRight: () => {
-      setDate((prevDate) => addDays(prevDate, 1));
-    },
+    ArrowLeft: handlePreviousDay,
+    ArrowRight: handleNextDay,
     ArrowUp: () => {
       setDate((prevDate) => addWeeks(prevDate, 1));
     },
@@ -259,11 +263,27 @@ export default function Home() {
               </div>
             </div>
             <div className="flex w-full space-x-2">
+              <VariableSelector
+                selectedVariable={selectedHourlyVariable}
+                onVariableChange={handleHourlyVariableChange}
+                className="w-full"
+              />
+            </div>
+            <div className="flex w-full items-center justify-center space-x-2 mt-2">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handlePreviousDay}
+                disabled={loading}
+                className="h-9 w-9 shrink-0"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant={'outline'}
-                    className={cn('w-1/2 justify-start text-left font-normal', !date && 'text-muted-foreground')}
+                    className={cn('w-full justify-start text-left font-normal', !date && 'text-muted-foreground')}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {date ? isToday(date) ? 'Today' : format(date, 'PPP') : <span>Pick a date</span>}
@@ -278,11 +298,15 @@ export default function Home() {
                   />
                 </PopoverContent>
               </Popover>
-              <VariableSelector
-                selectedVariable={selectedHourlyVariable}
-                onVariableChange={handleHourlyVariableChange}
-                className="w-1/2"
-              />
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleNextDay}
+                disabled={loading}
+                className="h-9 w-9 shrink-0"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </Button>
             </div>
           </form>
 

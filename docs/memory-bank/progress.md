@@ -35,7 +35,9 @@
   - Updated `src/app/page.tsx` to catch these specific error types and conditionally render `RateLimitCard` or `GenericErrorCard` components, providing clear user feedback.
 - **HTTP Request Caching**: Implemented caching for weather data API calls using `lru-cache` with a 30-minute TTL. Cache keys are generated based on a combination of location data (latitude/longitude or zip code) and the selected date, ensuring unique and type-specific cache hits. The `src/lib/cache.ts` file was created and configured for this purpose, and `src/lib/weather.ts` was updated to integrate the caching logic. Tests in `src/lib/weather.test.ts` were also updated to verify the caching behavior.
 - **Responsive Chart Height**: The chart's height now dynamically adjusts based on screen size, improving adaptability for various devices.
-- **Bug Fix (Date Not Updating)**: The `useEffect` hook in `src/components/temperature-chart.tsx` now correctly uses the `selectedDate` prop for displaying the current day in the chart title, ensuring the chart's date updates correctly with user selection. Additionally, `src/app/page.tsx` was updated to include `date` in the `handleFetchWeather` `useCallback` dependency array, ensuring data refetches when the date changes.
+- **Date Navigation Buttons**: Implemented "previous day" and "next day" buttons adjacent to the date input field, which update the date and trigger new API calls.
+- **Hourly Variable Selector Placement**: Moved the hourly variable dropdown to be below the date selector.
+- **Date Selector and Chevrons Placement**: Swapped the location of the date selector and chevrons to be below the hourly variable dropdown.
 
 ## 2. What's Left to Build
 
@@ -43,7 +45,7 @@
 
 ## 3. Current Status
 
-The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators, enhanced tooltips, and dynamic hourly variable selection. Automated testing has been set up in CI, and all local tests are passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved. All WMO weather codes are now covered with appropriate icons and color coding for intensity. Robust API error handling has been implemented, providing specific feedback for rate limit issues and generic errors. HTTP request caching has been successfully integrated, improving performance and reducing API calls. The chart's height now dynamically adjusts based on screen size, improving adaptability for various devices. Keyboard hotkeys for date navigation (daily and weekly) have been implemented. The bug where the temperature chart's displayed date did not update when the user selected a new date has been fixed.
+The project has undergone significant cleanup and core functionality enhancements. The foundational structure is robust, and the codebase is streamlined. The temperature chart now provides a richer visual experience with day/night indicators, enhanced tooltips, and dynamic hourly variable selection. Automated testing has been set up in CI, and all local tests are passing. The application now supports both Fahrenheit/Celsius and AM/PM/Military time format toggles with persistence. All type-checking errors have been resolved. All WMO weather codes are now covered with appropriate icons and color coding for intensity. Robust API error handling has been implemented, providing specific feedback for rate limit issues and generic errors. HTTP request caching has been successfully integrated, improving performance and reducing API calls. The chart's height now dynamically adjusts based on screen size, improving adaptability for various devices. Keyboard hotkeys for date navigation (daily and weekly) have been implemented. The bug where the temperature chart's displayed date did not update when the user selected a new date has been fixed. Date navigation buttons have been added, and the hourly variable selector has been repositioned. The date selector and its chevron buttons have been moved below the hourly variable dropdown.
 
 ## 4. Known Issues
 
@@ -66,11 +68,6 @@ The project has undergone significant cleanup and core functionality enhancement
 - **Footer Implementation**: Added a footer component with a link to the GitHub repository and author acknowledgment, including the current year.
   - `src/components/footer.tsx`: Created a new component for the footer and added the current year.
   - `src/app/page.tsx`: Integrated the `Footer` component into the main page.
-- **Metadata Component**: Added a new component to display daily weather metadata.
-  - `src/lib/weather.ts`: Modified `getWeatherDataByZip` to fetch `temperature_2m_max`, `temperature_2m_min`, `precipitation_probability_max`, and `daylight_duration`.
-  - `src/components/metadata.tsx`: Created a new component to display these daily metadata points.
-  - `src/app/page.tsx`: Integrated the `Metadata` component between the zip code input and the temperature chart, passing the new data.
-  - **Dependency Added**: Installed `date-fns` for date and time formatting.
 - **CI/CD Setup**: Configured GitHub Actions to run tests automatically.
   - `.github/workflows/ci.yml`: Created the workflow file.
   - `package.json`: Added `ts-node` to `devDependencies` and ran `npm install` to fix CI test failures.
