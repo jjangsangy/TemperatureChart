@@ -19,7 +19,11 @@ TemperatureChart is a minimalist web application designed to provide users with 
 - **Unit and Format Toggles**:
   - Switch between Fahrenheit and Celsius.
   - Choose between 12-hour (AM/PM) and 24-hour (military) time formats.
-- **Responsive Design**: A clean, modern, and responsive user interface that works great on all devices.
+- **Hourly Variable Selection**: Dynamically switch between displaying temperature, apparent temperature, relative humidity, or precipitation probability on the chart.
+- **Date Navigation**: Easily navigate between days using "Previous Day" and "Next Day" buttons, or keyboard hotkeys (ArrowLeft/ArrowRight for daily, ArrowUp/ArrowDown for weekly).
+- **Robust Error Handling**: Provides clear, user-friendly messages for API rate limits and other fetching errors.
+- **Performance Optimization**: Caches API responses to reduce redundant calls and improve loading times.
+- **Responsive Design**: A clean, modern, and responsive user interface that works great on all devices, including dynamic chart height adjustments.
 
 ## Usage
 
@@ -27,11 +31,13 @@ TemperatureChart is a minimalist web application designed to provide users with 
     - Enter a 5-digit US zip code into the input field and click "Get Weather".
     - Alternatively, click the "Use My Location" button to allow the browser to use your current location.
 2.  **Change the Date**:
-    - Click the date button to open a calendar and select a different date for the forecast.
-3.  **View the Forecast**:
-    - The bar chart will display the hourly temperature forecast for the selected location and date.
+    - Click the date button to open a calendar and select a different date for the forecast. You can also use the "Previous Day" and "Next Day" buttons, or keyboard hotkeys (ArrowLeft/ArrowRight for daily, ArrowUp/ArrowDown for weekly).
+3.  **Select Hourly Variable**:
+    - Use the dropdown selector to choose which hourly variable (e.g., Temperature, Apparent Temperature, Humidity, Precipitation Probability) to display on the chart.
+4.  **View the Forecast**:
+    - The bar chart will display the hourly forecast for the selected location, date, and variable.
     - Hover over any bar to see a detailed tooltip with more weather information for that hour.
-4.  **Customize Units**:
+5.  **Customize Units**:
     - Use the toggle buttons in the header to switch between °F/°C and 12/24-hour time formats. Your preferences will be saved in your browser.
 
 ## Technologies Used
@@ -43,6 +49,7 @@ TemperatureChart is a minimalist web application designed to provide users with 
   - Open Meteo API (for weather data)
   - Zippopotam.us API (for geocoding)
 - **Package Management**: npm
+- **Caching**: lru-cache
 
 ## Getting Started
 
