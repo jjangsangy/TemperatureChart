@@ -275,9 +275,9 @@ export default function Home() {
                 size="icon"
                 onClick={handlePreviousDay}
                 disabled={loading}
-                className="h-9 w-9 shrink-0"
+                className="h-9 w-20 shrink-0"
               >
-                <ChevronLeft className="h-5 w-5" />
+                <ChevronLeft className="h-10 w-10" />
               </Button>
               <Popover>
                 <PopoverTrigger asChild>
@@ -303,9 +303,9 @@ export default function Home() {
                 size="icon"
                 onClick={handleNextDay}
                 disabled={loading}
-                className="h-9 w-9 shrink-0"
+                className="h-9 w-20 shrink-0"
               >
-                <ChevronRight className="h-5 w-5" />
+                <ChevronRight className="h-10 w-10" />
               </Button>
             </div>
           </form>
