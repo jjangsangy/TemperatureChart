@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { TemperatureChart } from '@/components/temperature-chart';
 import { Metadata } from '@/components/metadata';
+import { MetadataSkeleton } from '@/components/MetadataSkeleton';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, ThermometerSun, CalendarIcon, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import { RateLimitCard } from '@/components/RateLimitCard';
@@ -312,11 +313,20 @@ export default function Home() {
 
           <div>
             {loading && (
-              <Card className="w-full mx-auto">
-                <CardContent className="flex flex-col items-center justify-center h-96">
-                  <Loader2 className="w-24 h-24 text-primary animate-spin" />
-                </CardContent>
-              </Card>
+              <>
+                <Card className="w-full mx-auto mb-4 shadow-lg border-primary/20">
+                  <CardHeader>
+                    <CardTitle className="text-base sm:text-xl md:text-2xl opacity-0">Loading Forecast</CardTitle>
+                    <CardDescription className="text-xs sm:text-sm md:text-base opacity-0">
+                      Loading Location
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-col items-center justify-center h-[324px] sm:h-[424px] md:h-[524px] lg:h-[624px]">
+                    <Loader2 className="w-24 h-24 text-primary animate-spin" />
+                  </CardContent>
+                </Card>
+                <MetadataSkeleton />
+              </>
             )}
             {errorType === 'rate-limit' && !loading && <RateLimitCard message={rateLimitMessage || undefined} />}
             {errorType === 'generic' && !loading && <GenericErrorCard />}
