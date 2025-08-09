@@ -347,9 +347,34 @@ export function TemperatureChart({
     return chartConfig[variable as keyof typeof chartConfig]?.label || '';
   };
 
-  const maxVariableValue = Math.max(...chartData.map((d) => getVariableValue(d, selectedHourlyVariable)));
-  const topTick = Math.ceil((maxVariableValue + 10) / 10) * 10;
-  const yAxisTicks = Array.from({ length: Math.floor(topTick / 10) + 1 }, (_, i) => i * 10);
+  const maxFeelsLike = Math.max(...chartData.map((d) => d.apparent_temperature));
+
+  // Calculate padded domain for feels like, rounding to nearest 10
+  const paddedMaxFeelsLike = Math.ceil(maxFeelsLike / 10) * 10;
+
+  const minFeelsLike = Math.min(...chartData.map((d) => d.apparent_temperature));
+  const paddedMinFeelsLike = Math.floor(minFeelsLike / 10) * 10;
+
+  let yAxisDomain: [number, number];
+  let yAxisTicks: number[];
+
+  if (selectedHourlyVariable === 'temperature_2m' || selectedHourlyVariable === 'apparent_temperature') {
+    const yMin = paddedMinFeelsLike > 0 ? 0 : paddedMinFeelsLike;
+    yAxisDomain = [yMin, paddedMaxFeelsLike];
+    // Generate ticks based on the padded feels like domain, in increments of 10
+    yAxisTicks = Array.from({ length: (paddedMaxFeelsLike - yMin) / 10 + 1 }, (_, i) => yMin + i * 10);
+  } else if (
+    selectedHourlyVariable === 'relative_humidity_2m' ||
+    selectedHourlyVariable === 'precipitation_probability'
+  ) {
+    yAxisDomain = [0, 100];
+    yAxisTicks = Array.from({ length: 11 }, (_, i) => i * 10); // Ticks from 0 to 100, increment by 10
+  } else {
+    const maxVariableValue = Math.max(...chartData.map((d) => getVariableValue(d, selectedHourlyVariable)));
+    const topTick = Math.ceil((maxVariableValue + 10) / 10) * 10;
+    yAxisDomain = [0, topTick];
+    yAxisTicks = Array.from({ length: Math.floor(topTick / 10) + 1 }, (_, i) => i * 10);
+  }
 
   const unitSymbol = getVariableUnit(selectedHourlyVariable);
 
@@ -409,7 +434,7 @@ export function TemperatureChart({
               axisLine={false}
               tickMargin={10}
               tickFormatter={(value) => `${value}${unitSymbol}`}
-              domain={[0, yAxisTicks[yAxisTicks.length - 1]]}
+              domain={yAxisDomain}
               ticks={yAxisTicks}
               style={{ fontSize: '0.75rem' }}
             />

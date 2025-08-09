@@ -23,6 +23,7 @@ The application follows a component-based architecture, typical of Next.js/React
     - Day/night visual distinction.
     - Current hour highlighting.
     - Weather icons at the base of each bar, with color coding for intensity.
+    - Dynamic Y-axis scaling based on the selected hourly variable, calculating padded minimum and maximum values to provide a user-friendly scale.
       The `metadata.tsx` component receives the daily metadata as props and displays it.
 5.  **Highlighting**: The chart component contains logic to identify and highlight the current hour's bar only if the selected date is the current day.
 

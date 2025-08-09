@@ -78,6 +78,7 @@ The current focus is on implementing a feature to allow users to select differen
   - Updated `src/lib/weather.test.ts` to include tests for caching behavior, verifying that API calls are skipped on cache hits.
 - **Responsive Chart Height**: Implemented responsive height for the temperature chart using Tailwind CSS classes (`h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]`) in `src/components/temperature-chart.tsx`.
 - **Bug Fix (Date Not Updating)**: Corrected the `useEffect` hook in `src/components/temperature-chart.tsx` to use the `selectedDate` prop for displaying the current day in the chart title, ensuring the chart's date updates correctly with user selection. Also, updated `src/app/page.tsx` to include `date` in the `handleFetchWeather` `useCallback` dependency array to ensure data refetches on date change.
+- **Y-Axis Scale Enhancement**: Began refactoring the Y-axis scale calculation in `src/components/temperature-chart.tsx`. The new implementation calculates both the maximum and minimum "feels like" temperature (`apparent_temperature`) to create a more dynamic and user-friendly scale, instead of a fixed scale starting from 0.
 
 ## 3. Next Steps
 
