@@ -23,12 +23,19 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Footer } from '@/components/footer';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { format, isToday, addDays, subDays, addWeeks, subWeeks } from 'date-fns';
+import { format, isToday, addDays, subDays } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { VariableSelector } from '@/components/variable-selector';
 import { useHotkeys } from '@/hooks/use-hotkeys';
 
 export default function Home() {
+  const hourlyVariables = [
+    { value: 'temperature_2m', label: 'Temperature' },
+    { value: 'apparent_temperature', label: 'Feels Like' },
+    { value: 'relative_humidity_2m', label: 'Humidity' },
+    { value: 'precipitation_probability', label: 'Precipitation' },
+  ];
+
   const [data, setData] = useState<ForecastData | null>(null);
   const [celsiusData, setCelsiusData] = useState<ForecastData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -192,10 +199,14 @@ export default function Home() {
     ArrowLeft: handlePreviousDay,
     ArrowRight: handleNextDay,
     ArrowUp: () => {
-      setDate((prevDate) => addWeeks(prevDate, 1));
+      const currentIndex = hourlyVariables.findIndex((variable) => variable.value === selectedHourlyVariable);
+      const nextIndex = currentIndex === 0 ? hourlyVariables.length - 1 : currentIndex - 1;
+      setSelectedHourlyVariable(hourlyVariables[nextIndex].value);
     },
     ArrowDown: () => {
-      setDate((prevDate) => subWeeks(prevDate, 1));
+      const currentIndex = hourlyVariables.findIndex((variable) => variable.value === selectedHourlyVariable);
+      const nextIndex = currentIndex === hourlyVariables.length - 1 ? 0 : currentIndex + 1;
+      setSelectedHourlyVariable(hourlyVariables[nextIndex].value);
     },
   });
 

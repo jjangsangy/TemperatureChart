@@ -20,7 +20,7 @@ TemperatureChart is a minimalist web application designed to provide users with 
   - Switch between Fahrenheit and Celsius.
   - Choose between 12-hour (AM/PM) and 24-hour (military) time formats.
 - **Hourly Variable Selection**: Dynamically switch between displaying temperature, apparent temperature, relative humidity, or precipitation probability on the chart.
-- **Date Navigation**: Easily navigate between days using "Previous Day" and "Next Day" buttons, or keyboard hotkeys (ArrowLeft/ArrowRight for daily, ArrowUp/ArrowDown for weekly).
+- **Date Navigation**: Easily navigate between days using "Previous Day" and "Next Day" buttons, or keyboard hotkeys (ArrowLeft/ArrowRight for daily).
 - **Robust Error Handling**: Provides clear, user-friendly messages for API rate limits and other fetching errors.
 - **Performance Optimization**: Caches API responses to reduce redundant calls and improve loading times.
 - **Responsive Design**: A clean, modern, and responsive user interface that works great on all devices, including dynamic chart height adjustments.
@@ -33,7 +33,7 @@ TemperatureChart is a minimalist web application designed to provide users with 
 2.  **Change the Date**:
     - Click the date button to open a calendar and select a different date for the forecast. You can also use the "Previous Day" and "Next Day" buttons, or keyboard hotkeys (ArrowLeft/ArrowRight for daily, ArrowUp/ArrowDown for weekly).
 3.  **Select Hourly Variable**:
-    - Use the dropdown selector to choose which hourly variable (e.g., Temperature, Apparent Temperature, Humidity, Precipitation Probability) to display on the chart.
+    - Use the dropdown selector or keyboard hotkeys (ArrowUp/ArrowDown) to choose which hourly variable (e.g., Temperature, Apparent Temperature, Humidity, Precipitation Probability) to display on the chart. The hotkeys will cycle through the variables with wrap-around behavior.
 4.  **View the Forecast**:
     - The bar chart will display the hourly forecast for the selected location, date, and variable.
     - Hover over any bar to see a detailed tooltip with more weather information for that hour.
