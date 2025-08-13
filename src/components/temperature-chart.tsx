@@ -258,6 +258,27 @@ function getWeatherIcon(code: number, hour: number, sunriseHour: number, sunsetH
   });
 }
 
+function getVariableIcon(variable: string) {
+  const baseIconClass = 'h-5 w-5 mr-2'; // Smaller icon, with margin-right
+
+  switch (variable) {
+    case 'temperature_2m':
+      return <Thermometer className={`${baseIconClass}`} />;
+    case 'relative_humidity_2m':
+      return <Droplets className={`${baseIconClass}`} />; // Changed to Droplets
+    case 'apparent_temperature':
+      return <ThermometerSun className={`${baseIconClass}`} />;
+    case 'precipitation_probability':
+      return <CloudRain className={`${baseIconClass}`} />;
+    case 'snowfall':
+      return <CloudSnow className={`${baseIconClass}`} />; // Changed to CloudSnow
+    case 'cloud_cover':
+      return <Cloud className={`${baseIconClass}`} />; // Changed to Cloud
+    default:
+      return null;
+  }
+}
+
 function formatTime(dateString: string, format: 'ampm' | 'military'): string {
   const date = new Date(dateString);
   if (format === 'military') {
@@ -434,8 +455,11 @@ export function TemperatureChart({
   return (
     <Card className="w-full mb-4 animate-in fade-in-0 duration-500 shadow-lg border-primary/20">
       <CardHeader>
-        <CardTitle className="text-base sm:text-xl md:text-2xl">
-          {getVariableLabel(selectedHourlyVariable)} Forecast for {currentDay}
+        <CardTitle className="text-base sm:text-xl md:text-2xl flex items-center justify-center gap-2">
+          {getVariableIcon(selectedHourlyVariable)}
+          <span>
+            {getVariableLabel(selectedHourlyVariable)} Forecast for {currentDay}
+          </span>
         </CardTitle>
         <CardDescription className="text-xs sm:text-sm md:text-base">{location}</CardDescription>
       </CardHeader>
