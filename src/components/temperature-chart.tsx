@@ -30,6 +30,8 @@ interface Forecast {
   apparent_temperature: number;
   precipitation_probability: number;
   weatherCode: number;
+  snowfall: number;
+  cloud_cover: number;
 }
 
 interface ChartDataItem {
@@ -39,6 +41,8 @@ interface ChartDataItem {
   apparent_temperature: number;
   precipitation_probability: number;
   weatherCode: number;
+  snowfall: number;
+  cloud_cover: number;
   fill: string;
 }
 
@@ -65,6 +69,12 @@ const chartConfig = {
   },
   precipitation_probability: {
     label: 'Precipitation Probability',
+  },
+  snowfall: {
+    label: 'Snowfall',
+  },
+  cloud_cover: {
+    label: 'Cloud Cover',
   },
 } satisfies ChartConfig;
 
@@ -321,6 +331,8 @@ export function TemperatureChart({
       apparent_temperature: item.apparent_temperature,
       precipitation_probability: item.precipitation_probability,
       weatherCode: item.weatherCode,
+      snowfall: item.snowfall,
+      cloud_cover: item.cloud_cover,
       fill: fill,
     };
   });
@@ -330,6 +342,8 @@ export function TemperatureChart({
     if (variable === 'relative_humidity_2m') return item.relative_humidity_2m;
     if (variable === 'apparent_temperature') return item.apparent_temperature;
     if (variable === 'precipitation_probability') return item.precipitation_probability;
+    if (variable === 'snowfall') return item.snowfall;
+    if (variable === 'cloud_cover') return item.cloud_cover;
     return 0; // Default or error case
   };
 
@@ -337,8 +351,11 @@ export function TemperatureChart({
     if (variable === 'temperature_2m' || variable === 'apparent_temperature') {
       return unit === 'f' ? '°F' : '°C';
     }
-    if (variable === 'relative_humidity_2m' || variable === 'precipitation_probability') {
+    if (variable === 'relative_humidity_2m' || variable === 'precipitation_probability' || variable === 'cloud_cover') {
       return '%';
+    }
+    if (variable === 'snowfall') {
+      return 'cm';
     }
     return '';
   };
@@ -365,10 +382,16 @@ export function TemperatureChart({
     yAxisTicks = Array.from({ length: (paddedMaxFeelsLike - yMin) / 10 + 1 }, (_, i) => yMin + i * 10);
   } else if (
     selectedHourlyVariable === 'relative_humidity_2m' ||
-    selectedHourlyVariable === 'precipitation_probability'
+    selectedHourlyVariable === 'precipitation_probability' ||
+    selectedHourlyVariable === 'cloud_cover'
   ) {
     yAxisDomain = [0, 100];
     yAxisTicks = Array.from({ length: 11 }, (_, i) => i * 10); // Ticks from 0 to 100, increment by 10
+  } else if (selectedHourlyVariable === 'snowfall') {
+    const maxSnowfall = Math.max(...chartData.map((d) => d.snowfall));
+    const paddedMaxSnowfall = Math.ceil(maxSnowfall / 5) * 5; // Round up to nearest 5 for snowfall
+    yAxisDomain = [0, paddedMaxSnowfall];
+    yAxisTicks = Array.from({ length: Math.floor(paddedMaxSnowfall / 5) + 1 }, (_, i) => i * 5); // Ticks in increments of 5
   } else {
     const maxVariableValue = Math.max(...chartData.map((d) => getVariableValue(d, selectedHourlyVariable)));
     const topTick = Math.ceil((maxVariableValue + 10) / 10) * 10;
@@ -471,6 +494,18 @@ export function TemperatureChart({
                         <span className="text-muted-foreground">
                           <span className="font-bold">Precipitation:</span>{' '}
                           {`${props.payload.precipitation_probability}%`}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <CloudSnow className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-muted-foreground">
+                          <span className="font-bold">Snowfall:</span> {`${props.payload.snowfall}cm`}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <Cloud className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-muted-foreground">
+                          <span className="font-bold">Cloud Cover:</span> {`${props.payload.cloud_cover}%`}
                         </span>
                       </div>
                       <div className="flex items-center space-x-2">

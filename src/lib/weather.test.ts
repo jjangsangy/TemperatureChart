@@ -86,6 +86,8 @@ describe('getWeatherDataByZip', () => {
         apparent_temperature: [22, 20],
         precipitation_probability: [10, 5],
         weather_code: [0, 1],
+        snowfall: [0, 0.5],
+        cloud_cover: [20, 80],
       },
       daily: {
         sunrise: ['2025-07-24T05:30'],
@@ -114,6 +116,8 @@ describe('getWeatherDataByZip', () => {
           temperature_2m: 20,
           time: '2025-07-24T00:00',
           weatherCode: 0,
+          snowfall: 0,
+          cloud_cover: 20,
         },
         {
           apparent_temperature: 20,
@@ -122,6 +126,8 @@ describe('getWeatherDataByZip', () => {
           temperature_2m: 19,
           time: '2025-07-24T01:00',
           weatherCode: 1,
+          snowfall: 0.5,
+          cloud_cover: 80,
         },
       ],
       sunrise: '2025-07-24T05:30',
@@ -135,7 +141,7 @@ describe('getWeatherDataByZip', () => {
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(fetchMock).toHaveBeenCalledWith('https://api.zippopotam.us/us/90210');
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://api.open-meteo.com/v1/forecast?latitude=34.05&longitude=-118.25&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&timezone=auto&start_date=2025-07-24&end_date=2025-07-24',
+      'https://api.open-meteo.com/v1/forecast?latitude=34.05&longitude=-118.25&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code,snowfall,cloud_cover&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&timezone=auto&start_date=2025-07-24&end_date=2025-07-24',
     );
   });
 
@@ -159,6 +165,8 @@ describe('getWeatherDataByZip', () => {
         apparent_temperature: [22, 20],
         precipitation_probability: [10, 5],
         weather_code: [0, 1],
+        snowfall: [0, 0.5],
+        cloud_cover: [20, 80],
       },
       daily: {
         sunrise: ['2025-07-24T05:30'],
@@ -210,6 +218,8 @@ describe('getWeatherDataByCoords', () => {
         apparent_temperature: [22, 20],
         precipitation_probability: [10, 5],
         weather_code: [0, 1],
+        snowfall: [0, 0.5],
+        cloud_cover: [20, 80],
       },
       daily: {
         sunrise: ['2025-07-24T05:30'],
@@ -235,6 +245,8 @@ describe('getWeatherDataByCoords', () => {
           temperature_2m: 20,
           time: '2025-07-24T00:00',
           weatherCode: 0,
+          snowfall: 0,
+          cloud_cover: 20,
         },
         {
           apparent_temperature: 20,
@@ -243,6 +255,8 @@ describe('getWeatherDataByCoords', () => {
           temperature_2m: 19,
           time: '2025-07-24T01:00',
           weatherCode: 1,
+          snowfall: 0.5,
+          cloud_cover: 80,
         },
       ],
       sunrise: '2025-07-24T05:30',
@@ -255,7 +269,7 @@ describe('getWeatherDataByCoords', () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://api.open-meteo.com/v1/forecast?latitude=34.05&longitude=-118.25&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&timezone=auto&start_date=2025-07-24&end_date=2025-07-24',
+      'https://api.open-meteo.com/v1/forecast?latitude=34.05&longitude=-118.25&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code,snowfall,cloud_cover&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&timezone=auto&start_date=2025-07-24&end_date=2025-07-24',
     );
   });
 
@@ -269,6 +283,8 @@ describe('getWeatherDataByCoords', () => {
         apparent_temperature: [22, 20],
         precipitation_probability: [10, 5],
         weather_code: [0, 1],
+        snowfall: [0, 0.5],
+        cloud_cover: [20, 80],
       },
       daily: {
         sunrise: ['2025-07-24T05:30'],

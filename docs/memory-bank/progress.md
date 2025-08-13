@@ -11,7 +11,8 @@
 - **Chart Visualization**: The temperature chart now visually distinguishes between day and night hours.
 - **CI/CD Setup**: GitHub Actions workflow for running tests has been created and configured.
 - **Test Dependency Fix**: `ts-node` has been added and installed to resolve CI test failures.
-- **Hourly Variable Integration**: The REST API for Open-Meteo now includes Relative Humidity, Apparent Temperature, Precipitation Probability, and Weather Code. These data points are displayed on the tooltip with improved aesthetics, including icons and bolded key-value pairs. The `getWeatherDescription` helper function has been refactored to use consistent function definitions.
+- **Hourly Variable Integration**: The REST API for Open-Meteo now includes Relative Humidity, Apparent Temperature, Precipitation Probability, Weather Code, Snowfall, and Cloud Cover. These data points are displayed on the tooltip with improved aesthetics, including icons and bolded key-value pairs. The `getWeatherDescription` helper function has been refactored to use consistent function definitions. Ensured consistent naming for `cloud_cover` across components. The `getVariableIcon` function in `src/components/variable-selector.tsx` was corrected to use `cloud_cover` as the case for consistency.
+- **Hotkey Fix**: The hotkey for cycling through hourly variables was fixed by updating the `hourlyVariables` array in `src/app/page.tsx` to include `snowfall` and `cloud_cover`.
 - **Temperature Unit Toggle**: Implemented a toggle for Fahrenheit/Celsius conversion with `localStorage` persistence.
 - **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
 - **Responsive Header Layout**: The header is now fully responsive, with toggle buttons positioned inline with the main title on larger screens for a cleaner UI. The breakpoint for rearrangement has been adjusted to `lg` for better tablet responsiveness.

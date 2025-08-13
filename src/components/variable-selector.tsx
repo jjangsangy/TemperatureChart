@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Thermometer, Droplets, ThermometerSun, CloudRain } from 'lucide-react';
+import { Thermometer, Droplets, ThermometerSun, CloudRain, CloudSnow, Cloud } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface VariableSelectorProps {
@@ -25,6 +25,8 @@ export function VariableSelector({ selectedVariable, onVariableChange, className
     { value: 'apparent_temperature', label: 'Feels Like' },
     { value: 'relative_humidity_2m', label: 'Humidity' },
     { value: 'precipitation_probability', label: 'Precipitation' },
+    { value: 'snowfall', label: 'Snowfall' },
+    { value: 'cloud_cover', label: 'Cloud Cover' },
   ];
 
   const getVariableIcon = (variable: string) => {
@@ -37,6 +39,10 @@ export function VariableSelector({ selectedVariable, onVariableChange, className
         return <ThermometerSun className="mr-2 h-4 w-4" />;
       case 'precipitation_probability':
         return <CloudRain className="mr-2 h-4 w-4" />;
+      case 'snowfall':
+        return <CloudSnow className="mr-2 h-4 w-4" />;
+      case 'cloud_cover':
+        return <Cloud className="mr-2 h-4 w-4" />;
       default:
         return null;
     }

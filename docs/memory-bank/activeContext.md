@@ -25,13 +25,14 @@ The current focus is on implementing a feature to allow users to select differen
 - **CI/CD Setup**: Created `.github/workflows/ci.yml` to run tests on push and pull requests to the `main` branch.
 - **Test Dependency Fix**: Added `ts-node` to `devDependencies` in `package.json` and ran `npm install` to resolve CI test failures.
 - **Hourly Variable Integration**:
-  - Modified `src/lib/weather.ts` to include `relative_humidity_2m`, `apparent_temperature`, `precipitation_probability`, and `weather_code` in the Open-Meteo API request and updated the `ForecastData` interface.
-  - Updated `src/components/temperature-chart.tsx` to display these new data points in the chart's tooltip, including a `getWeatherDescription` helper function.
-  - Refactored `getWeatherDescription` to use `function functionName() {}` syntax.
-  - Enhanced tooltip aesthetics in `src/components/temperature-chart.tsx` with `lucide-react` icons, improved layout, and bolded key-value pairs.
+  - Modified `src/lib/weather.ts` to include `relative_humidity_2m`, `apparent_temperature`, `precipitation_probability`, `weather_code`, `snowfall`, and `cloud_cover` in the Open-Meteo API request and updated the `ForecastData` interface to use `cloud_cover` for consistency.
+  - Updated `src/components/variable-selector.tsx` to include "Snowfall" and "Cloud Cover" as options, using `cloud_cover` as the value, and corrected the `getVariableIcon` function to use `cloud_cover` as the case.
+  - Updated `src/components/temperature-chart.tsx` to dynamically render these new data points, including updating the `ChartDataItem` interface, `chartConfig`, `getVariableValue`, `getVariableUnit`, Y-axis domain calculation, and the tooltip content.
+  - Ensured consistent naming for `cloud_cover` across components.
+- **Hotkey Fix**: Updated `src/app/page.tsx` to include `snowfall` and `cloud_cover` in the `hourlyVariables` array, resolving the broken hotkey for cycling through hourly variables.
 - **Test Fixes (Complete)**:
   - Removed the hour display from the tooltip content in `src/components/temperature-chart.tsx`.
-  - Updated `src/lib/weather.test.ts` to include new hourly variables in mock API responses, resolving `TypeError` issues.
+  - Updated `src/lib/weather.test.ts` to include new hourly variables in mock API responses, resolving `TypeError` issues, and ensuring mock data uses `cloud_cover` to match the API response.
   - Updated `src/components/temperature-chart.test.tsx` to no longer assert the presence of the hour in the tooltip.
   - Corrected the expected error message in `src/lib/weather.test.ts` for geocoding API failures.
 - **Time Format Toggle**: Implemented a toggle for AM/PM and military time format with `localStorage` persistence.
@@ -87,7 +88,7 @@ The current focus is on implementing a feature to allow users to select differen
 
 ## 4. Key Decisions & Insights
 
-- Implemented keyboard hotkeys (ArrowLeft, ArrowRight) for navigating between days. The (ArrowUp, ArrowDown) hotkeys now cycle through hourly variables with wrap-around behavior, enhancing user experience.
+- Implemented keyboard hotkeys (ArrowLeft, ArrowRight) for navigating between days, and (ArrowUp, ArrowDown) for navigating between weeks, enhancing user experience.
 - The project is now streamlined, focusing solely on its core functionality of displaying temperature data.
 - The removal of unused code improves maintainability and reduces bundle size.
 - The Memory Bank has been updated to accurately reflect the current state of the project.

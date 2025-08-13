@@ -34,6 +34,8 @@ export interface ForecastData {
     apparent_temperature: number;
     precipitation_probability: number;
     weatherCode: number;
+    snowfall: number;
+    cloud_cover: number;
   }[];
   sunrise: string;
   sunset: string;
@@ -57,7 +59,7 @@ export async function getWeatherDataByCoords(
     return cachedData;
   }
 
-  const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&timezone=auto&start_date=${formattedDate}&end_date=${formattedDate}`;
+  const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code,snowfall,cloud_cover&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,precipitation_probability_max,daylight_duration&temperature_unit=celsius&timezone=auto&start_date=${formattedDate}&end_date=${formattedDate}`;
   const weatherResponse = await fetch(weatherUrl);
   if (!weatherResponse.ok) {
     const errorData = await weatherResponse.json();
@@ -80,6 +82,8 @@ export async function getWeatherDataByCoords(
     apparent_temperature: Math.round(hourlyData.apparent_temperature[index]),
     precipitation_probability: Math.round(hourlyData.precipitation_probability[index]),
     weatherCode: hourlyData.weather_code[index],
+    snowfall: hourlyData.snowfall[index],
+    cloud_cover: hourlyData.cloud_cover[index],
   }));
 
   const sunrise = dailyData.sunrise[0];

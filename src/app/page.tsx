@@ -34,6 +34,8 @@ export default function Home() {
     { value: 'apparent_temperature', label: 'Feels Like' },
     { value: 'relative_humidity_2m', label: 'Humidity' },
     { value: 'precipitation_probability', label: 'Precipitation' },
+    { value: 'snowfall', label: 'Snowfall' },
+    { value: 'cloud_cover', label: 'Cloud Cover' },
   ];
 
   const [data, setData] = useState<ForecastData | null>(null);
