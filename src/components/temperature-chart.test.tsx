@@ -80,6 +80,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 14,
       precipitation_probability: 10,
       weatherCode: 0,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T01:00:00Z',
@@ -88,6 +90,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 13,
       precipitation_probability: 10,
       weatherCode: 0,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T02:00:00Z',
@@ -96,6 +100,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 12,
       precipitation_probability: 10,
       weatherCode: 0,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T03:00:00Z',
@@ -104,6 +110,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 11,
       precipitation_probability: 10,
       weatherCode: 0,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T04:00:00Z',
@@ -112,6 +120,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 10,
       precipitation_probability: 10,
       weatherCode: 0,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T05:00:00Z',
@@ -120,6 +130,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 9,
       precipitation_probability: 10,
       weatherCode: 0,
+      snowfall: 0,
+      cloud_cover: 0,
     }, // Sunrise hour
     {
       time: '2025-07-24T06:00:00Z',
@@ -128,6 +140,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 15,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T07:00:00Z',
@@ -136,6 +150,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 17,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T08:00:00Z',
@@ -144,6 +160,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 19,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T09:00:00Z',
@@ -152,6 +170,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 21,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T10:00:00Z',
@@ -160,6 +180,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 23,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T11:00:00Z',
@@ -168,6 +190,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 24,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T12:00:00Z',
@@ -176,6 +200,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 25,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T13:00:00Z',
@@ -184,6 +210,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 26,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T14:00:00Z',
@@ -192,6 +220,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 27,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T15:00:00Z',
@@ -200,6 +230,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 26,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T16:00:00Z',
@@ -208,6 +240,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 25,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T17:00:00Z',
@@ -216,6 +250,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 24,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T18:00:00Z',
@@ -224,6 +260,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 23,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T19:00:00Z',
@@ -232,6 +270,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 22,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T20:00:00Z',
@@ -240,6 +280,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 21,
       precipitation_probability: 5,
       weatherCode: 1,
+      snowfall: 0,
+      cloud_cover: 0,
     }, // Sunset hour
     {
       time: '2025-07-24T21:00:00Z',
@@ -248,6 +290,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 19,
       precipitation_probability: 10,
       weatherCode: 0,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T22:00:00Z',
@@ -256,6 +300,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 17,
       precipitation_probability: 10,
       weatherCode: 0,
+      snowfall: 0,
+      cloud_cover: 0,
     },
     {
       time: '2025-07-24T23:00:00Z',
@@ -264,6 +310,8 @@ describe('TemperatureChart', () => {
       apparent_temperature: 15,
       precipitation_probability: 10,
       weatherCode: 0,
+      snowfall: 0,
+      cloud_cover: 0,
     },
   ];
 
